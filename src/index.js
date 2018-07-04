@@ -25,11 +25,11 @@ class Tenor extends Component {
     this.timeout = setTimeout(() => this.performSearch(search), DELAY);
   };
 
-  performSearch = query => {
-    return new Client(this.props.token).search(query).then(results => {
+  performSearch = query => (
+    new Client(this.props.token).search(query).then(results => {
       this.setState({ results, searching: false });
-    });
-  };
+    })
+  );
 
   render() {
     const { onSelect } = this.props;

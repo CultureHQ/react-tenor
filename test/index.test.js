@@ -23,5 +23,8 @@ test("performs searches", async () => {
   component.update();
   expect(component.find(Result)).toHaveLength(results.length);
 
+  component.find(Result).at(3).simulate("click");
+  expect(selected).toEqual(results[3]);
+
   testServer.close();
 });

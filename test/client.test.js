@@ -1,5 +1,3 @@
-import http from "http";
-
 import Client from "../src/client";
 import testServer, { results } from "./test-server";
 
