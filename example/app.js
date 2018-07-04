@@ -3,4 +3,4 @@ import ReactDOM from "react-dom";
 
 import Tenor from "../src";
 
-ReactDOM.render(<Tenor />, document.getElementById("main"));
+ReactDOM.render(<Tenor key="LIVDSRZULELA" />, document.getElementById("main"));

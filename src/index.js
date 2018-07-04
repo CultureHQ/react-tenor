@@ -1,6 +1,6 @@
-import "isomorphic-fetch";
 import React, { Component } from "react";
-import queryString from "query-string";
+
+import Client from "./client";
 
 const DELAY = 250;
 
@@ -22,12 +22,10 @@ class Tenor extends Component {
     this.timeout = setTimeout(() => this.performSearch(search), DELAY);
   };
 
-  performSearch = search => {
-    const query = queryString.stringify({ key: "LIVDSRZULELA", q: search, limit: 9 });
-
-    fetch(`https://api.tenor.com/v1/search?${query}`)
-      .then(response => response.json())
-      .then(({ results }) => this.setState({ results, searching: false }));
+  performSearch = query => {
+    new Client(this.props.key).search(query).then(results => {
+      this.setState({ results, searching: false });
+    });
   };
 
   render() {
