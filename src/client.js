@@ -1,15 +1,20 @@
 import "isomorphic-fetch";
 import queryString from "query-string";
 
+const BASE =
+  process.env.NODE_ENV === "test" ?
+    "http://localhost:8080" :
+    "https://api.tenor.com/v1";
+
 class Client {
-  constructor(key) {
-    this.key = key;
+  constructor(token) {
+    this.token = token;
   }
 
   search(q) {
-    const query = queryString.stringify({ key: this.key, q, limit: 12 });
+    const query = queryString.stringify({ key: this.token, q, limit: 12 });
 
-    return fetch(`https://api.tenor.com/v1/search?${query}`)
+    return fetch(`${BASE}/search?${query}`)
       .then(response => response.json())
       .then(({ results }) => results);
   }
