@@ -2,20 +2,15 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import Result from "../src/result";
+import { results } from "./test-server";
 
 test("renders without crashing", () => {
-  const result = {
-    media: [{
-      tinygif: { url: "https://via.placeholder.com/350x150" }
-    }]
-  };
+  let selected = null;
+  const onSelect = result => { selected = result; };
 
-  let selected = false;
-  const onSelect = () => { selected = true; };
-
-  const component = shallow(<Result result={result} onSelect={onSelect} />);
+  const component = shallow(<Result result={results[0]} onSelect={onSelect} />);
   expect(component.type()).toEqual("button");
 
   component.simulate("click");
-  expect(selected).toBe(true);
+  expect(selected).toEqual(results[0]);
 });

@@ -26,7 +26,7 @@ class Tenor extends Component {
   };
 
   performSearch = query => {
-    new Client(this.props.token).search(query).then(results => {
+    return new Client(this.props.token).search(query).then(results => {
       this.setState({ results, searching: false });
     });
   };
