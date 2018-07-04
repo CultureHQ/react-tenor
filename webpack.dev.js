@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   output: {
@@ -18,5 +19,8 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "example")
   },
-  mode: "development"
+  mode: "development",
+  plugins: [
+    new webpack.EnvironmentPlugin(["TOKEN"])
+  ]
 };
