@@ -1,0 +1,45 @@
+{
+  "name": "react-tenor",
+  "version": "0.0.1",
+  "description": "Integrate with the Tenor GIF API",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack --config webpack.prod.js --progress",
+    "start": "webpack-dev-server --config webpack.dev.js --hot",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CultureHQ/react-tenor.git"
+  },
+  "author": "Kevin Deisz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CultureHQ/react-tenor/issues"
+  },
+  "homepage": "https://github.com/CultureHQ/react-tenor#readme",
+  "peerDependencies": {
+    "react": "^16",
+    "react-dom": "^16"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "query-string": "^6.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "jest": "^22.4.3",
+    "packfiles": "^0.0.2",
+    "prettier": "^1.12.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.2",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
