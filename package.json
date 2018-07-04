@@ -2,7 +2,7 @@
   "name": "react-tenor",
   "version": "0.0.1",
   "description": "Integrate with the Tenor GIF API",
-  "main": "src/index.js",
+  "main": "dist/main.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js --progress",
     "lint": "eslint .",
@@ -52,7 +52,8 @@
     "style-loader": "^0.21.0",
     "webpack": "^4.10.2",
     "webpack-cli": "^3.0.2",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "webpack-node-externals": "^1.7.2"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./test/setup-tests.js",

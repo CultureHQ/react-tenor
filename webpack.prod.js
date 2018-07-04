@@ -1,3 +1,5 @@
+const nodeExternals = require("webpack-node-externals");
+
 module.exports = {
   output: {
     libraryTarget: "umd"
@@ -13,5 +15,6 @@ module.exports = {
     ]
   },
   target: "node",
-  mode: "production"
+  mode: "production",
+  externals: [nodeExternals()]
 };
