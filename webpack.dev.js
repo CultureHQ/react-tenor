@@ -6,7 +6,14 @@ module.exports = {
   },
   entry: path.join(__dirname, "example", "app.js"),
   module: {
-    rules: [{ test: /\.js$/, use: "babel-loader", exclude: /node_modules/ }]
+    rules: [
+      { test: /\.js$/, use: "babel-loader", exclude: /node_modules/ },
+      {
+        test: /\.css$/,
+        use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+        exclude: /node_modules/
+      }
+    ]
   },
   devServer: {
     contentBase: path.join(__dirname, "example")

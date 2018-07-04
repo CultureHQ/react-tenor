@@ -7,7 +7,7 @@ class Client {
   }
 
   search(q) {
-    const query = queryString.stringify({ key: this.key, q, limit: 9 });
+    const query = queryString.stringify({ key: this.key, q, limit: 12 });
 
     return fetch(`https://api.tenor.com/v1/search?${query}`)
       .then(response => response.json())
