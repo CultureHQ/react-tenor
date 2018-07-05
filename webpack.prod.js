@@ -1,3 +1,4 @@
+/* eslint import/no-extraneous-dependencies: off */
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {

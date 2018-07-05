@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import Tenor from "../src";
 
 ReactDOM.render(
-  <Tenor token={process.env.TOKEN} onSelect={result => console.log(result)} />, /* eslint no-console: off */
+  /* eslint no-console: off */
+  <Tenor token={process.env.TOKEN} onSelect={result => console.log(result)} />,
   document.getElementById("main")
 );
