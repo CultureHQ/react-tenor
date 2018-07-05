@@ -1,5 +1,6 @@
-/.eslintrc.json
-/.travis.yml
+/.*
+/webpack*
 /example/
+/src/
 /test/
 /yarn.lock
