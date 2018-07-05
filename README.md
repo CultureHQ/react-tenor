@@ -6,8 +6,8 @@ A React component for selected GIFs from [Tenor](https://tenor.com/gifapi).
 
 First, add `react-tenor` to your `package.json` `dependencies`, then install using either `npm install` or `yarn install`. Then, get your API key from tenor. Finally, you can add the selector component by adding:
 
-```javascript
-<Tenor token="your-token-here" />
+```jsx
+<Tenor token="your-token-here" onSelect={result => console.log(result)} />
 ```
 
 You can style it appropriately for your app by overriding the CSS classes used internally. They are listed in [`styles.css`](src/styles.css).
