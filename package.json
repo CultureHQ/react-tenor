@@ -24,8 +24,7 @@
     "react-dom": "^16"
   },
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1",
-    "query-string": "^5.1.1"
+    "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

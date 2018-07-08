@@ -10,7 +10,7 @@ export const results = [
 
 const server = http.createServer();
 
-server.on("request", async (request, response) => {
+server.on("request", (request, response) => {
   response.writeHead(200, { "Content-Type": "application/json" });
   response.write(JSON.stringify({ results }));
   response.end();
