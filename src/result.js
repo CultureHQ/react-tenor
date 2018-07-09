@@ -13,6 +13,7 @@ class Result extends Component {
     return (
       <button
         key={result.id}
+        type="button"
         onClick={this.handleClick}
         className="react-tenor--result"
         style={{ backgroundImage: `url(${result.media[0].tinygif.url})` }}
