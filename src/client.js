@@ -2,10 +2,9 @@ import "isomorphic-fetch";
 
 import stringify from "./stringify";
 
-const BASE =
-  process.env.NODE_ENV === "test" ?
-    "http://localhost:8080" :
-    "https://api.tenor.com/v1";
+const BASE = process.env.NODE_ENV === "test"
+  ? "http://localhost:8080"
+  : "https://api.tenor.com/v1";
 
 class Client {
   constructor(token) {
