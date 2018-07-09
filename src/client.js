@@ -1,5 +1,3 @@
-import "isomorphic-fetch";
-
 import stringify from "./stringify";
 
 const BASE = process.env.NODE_ENV === "test"
