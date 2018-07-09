@@ -45,6 +45,7 @@ class Tenor extends Component {
             type="text"
             value={search}
             onChange={this.handleSearchChange}
+            placeholder="Search Tenor"
           />
           {searching && (
             <svg className="react-tenor--spinner" viewBox="0 0 1024 1024">
