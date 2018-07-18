@@ -20,4 +20,4 @@ This package uses the `isomorphic-fetch` package to allow `fetch` to be used whe
 
 ## Testing locally
 
-You can run the tests by running `yarn test` and lint by running `yarn lint`. You can run the local server by running `TOKEN=your-token-here yarn start` which will start the example server on `http://localhost:8080`.
+You can run the tests by running `yarn test` and lint by running `yarn lint`. You can run the local server by running `TOKEN=your-token-here yarn start` which will start the docs server on `http://localhost:8080`.

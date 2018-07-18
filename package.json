@@ -1,12 +1,14 @@
 {
   "name": "react-tenor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Integrate with the Tenor GIF API",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js --progress",
+    "build": "yarn build:js && yarn build:docs",
+    "build:js": "babel src --out-dir dist --copy-files",
+    "build:docs": "TOKEN=LIVDSRZULELA webpack --mode production",
     "lint": "eslint .",
-    "start": "webpack-dev-server --config webpack.dev.js --hot",
+    "start": "webpack-dev-server --hot",
     "test": "jest"
   },
   "repository": {
@@ -26,7 +28,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
@@ -37,20 +39,19 @@
     "eslint": "^5.1.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.9.1",
     "identity-obj-proxy": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "jest": "^23.3.0",
+    "jest": "^23.4.1",
     "packfiles": "^0.0.2",
     "prettier": "^1.12.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "style-loader": "^0.21.0",
-    "webpack": "^4.15.1",
+    "webpack": "^4.16.1",
     "webpack-cli": "^3.0.2",
-    "webpack-dev-server": "^3.1.4",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-dev-server": "^3.1.4"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./test/setup-tests.js",
