@@ -1,6 +1,7 @@
 /.*
 /webpack*
+/docs/
 /example/
 /src/
 /test/
-/yarn.lock
+/yarn*
