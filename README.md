@@ -24,6 +24,10 @@ If you need to change the API endpoint that this component hits, you can set the
 
 If you need access to the actual `div` that `Tenor` renders, you can pass any valid `React` ref to the `contentRef` prop.
 
+### `focus()`
+
+The `Tenor` component has a `focus()` member function that can be called to request focus be placed on the search input.
+
 ## Running with node
 
 This package uses the `isomorphic-fetch` package to allow `fetch` to be used when running in the `node` environment, but only in development. In production, it assumes `global.fetch` is already in place from either the browser or a polyfill of your choice.
