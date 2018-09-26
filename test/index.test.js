@@ -34,4 +34,5 @@ test("handles the contentRef prop", () => {
   const component = mount(<Tenor token="token" contentRef={contentRef} />);
 
   expect(contentRef.current).not.toBe(null);
+  component.unmount();
 });

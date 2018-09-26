@@ -5,7 +5,9 @@ import Result from "./result";
 
 const DELAY = 250;
 
-const Search = ({ contentRef, onSearchChange, onSelect, results, search, searching }) => (
+const Search = ({
+  contentRef, onSearchChange, onSelect, results, search, searching
+}) => (
   <div className="react-tenor" ref={contentRef}>
     <div className="react-tenor--search-bar">
       <input
