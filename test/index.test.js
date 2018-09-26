@@ -6,28 +6,61 @@ import Result from "../src/result";
 import withTestServer, { results } from "./test-server";
 
 test("performs searches", () => (
-  withTestServer(8080, async () => {
+  withTestServer(8081, async server => {
     let selected = null;
     const onSelect = result => { selected = result; };
+    const search = "Happy";
 
     const component = mount(
-      <Tenor base="http://localhost:8080" token="token" onSelect={onSelect} />
+      <Tenor base="http://localhost:8081" token="token" onSelect={onSelect} />
     );
-    component.find("input").simulate("change", { target: { value: "Happy" } });
+    component.find("input").simulate("change", { target: { value: search } });
 
     component.update();
-    expect(component.state().search).toEqual("Happy");
+    expect(component.state().search).toEqual(search);
     expect(component.find("svg")).toHaveLength(1);
 
-    await component.instance().performSearch("Happy");
+    await component.instance().performSearch(search);
 
     component.update();
     expect(component.find(Result)).toHaveLength(results.length);
 
     component.find(Result).at(3).simulate("click");
     expect(selected).toEqual(results[3]);
+
+    component.unmount();
   })
 ));
+
+test("dedups fast searches", () => (
+  withTestServer(8082, server => {
+    const component = mount(<Tenor base="http://localhost:8082" token="token" />);
+    const search = "Happy";
+
+    search.split("").forEach((_, index) => {
+      const value = search.slice(0, index + 1);
+      component.instance().handleSearchChange({ target: { value } });
+    });
+
+    return new Promise(resolve => {
+      // Yeah this is not great, but if you're going to test setTimeout,
+      // sometimes you just want to use setTimeout.
+      setTimeout(() => {
+        expect(server.requests).toEqual(1);
+
+        resolve();
+      }, 300);
+    });
+  })
+));
+
+test("does not enqueue searches for empty inputs", () => {
+  const component = mount(<Tenor />);
+
+  component.instance().handleSearchChange({ target: { value: "" } });
+
+  expect(component.instance().timeout).toBe(undefined);
+});
 
 test("handles the contentRef prop", () => {
   const contentRef = React.createRef();

@@ -37,26 +37,37 @@ class Tenor extends Component {
 
   state = { results: [], search: "", searching: false };
 
+  componentDidMount() {
+    this.componentIsMounted = true;
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
+  }
+
   focus() {
     this.inputRef.current.focus();
   }
 
   handleSearchChange = ({ target: { value: search } }) => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
     if (!search.length) {
       this.setState({ results: [], search, searching: false });
       return;
     }
 
     this.setState({ search, searching: true });
-
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-
     this.timeout = setTimeout(() => this.performSearch(search), DELAY);
   };
 
   performSearch = query => {
+    if (!this.componentIsMounted) {
+      return Promise.resolve();
+    }
+
     const { base, token } = this.props;
 
     return new Client({ base, token }).search(query).then(results => {

@@ -5,9 +5,9 @@ export const stringify = query => (
 );
 
 class Client {
-  constructor({ base, token }) {
-    this.base = base || "https://api.tenor.com/v1";
-    this.token = token || "LIVDSRZULELA";
+  constructor(options = {}) {
+    this.base = options.base || "https://api.tenor.com/v1";
+    this.token = options.token || "LIVDSRZULELA";
   }
 
   search(q) {
