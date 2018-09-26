@@ -3,11 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
-
-var _stringify = _interopRequireDefault(require("./stringify"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+exports.default = exports.stringify = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15,21 +11,30 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var BASE = process.env.NODE_ENV === "test" ? "http://localhost:8080" : "https://api.tenor.com/v1";
+var stringify = function stringify(query) {
+  return Object.keys(query).reduce(function (accum, key, index) {
+    return "".concat(accum).concat(index === 0 ? "" : "&").concat(key, "=").concat(query[key]);
+  }, "?");
+};
+
+exports.stringify = stringify;
 
 var Client =
 /*#__PURE__*/
 function () {
-  function Client(token) {
+  function Client() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     _classCallCheck(this, Client);
 
-    this.token = token;
+    this.base = options.base || "https://api.tenor.com/v1";
+    this.token = options.token || "LIVDSRZULELA";
   }
 
   _createClass(Client, [{
     key: "search",
     value: function search(q) {
-      return fetch("".concat(BASE, "/search").concat(this.queryFor(q))).then(function (response) {
+      return fetch("".concat(this.base, "/search").concat(this.queryFor(q))).then(function (response) {
         return response.json();
       }).then(function (_ref) {
         var results = _ref.results;
@@ -39,7 +44,7 @@ function () {
   }, {
     key: "queryFor",
     value: function queryFor(q) {
-      return (0, _stringify.default)({
+      return stringify({
         key: this.token,
         q: q,
         limit: 12,

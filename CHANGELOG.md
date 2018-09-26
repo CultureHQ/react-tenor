@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.0.0] - 2018-09-26
+### Added
+- The optional `contentRef` prop to get access to the actual div that is being rendered.
+- The optional `base` prop that will specify the base of the API for the search URLs that are generated.
+- The `focus()` function on the main component to allow consumers to focus into the input field.
+
+### Changed
+- Removed the style import by default. It's now up to the consumers of this package to import `react-tenor/dist/styles.css` into their applications. This avoids a lot of weird webpack bugs.
+
 ## [0.2.0] - 2018-07-18
 ### Changed
 - Don't build the final distribution with `webpack`, just use `babel`.

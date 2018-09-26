@@ -21,7 +21,7 @@
 }
 
 .react-tenor--spinner {
-  animation: spin 1s linear infinite;
+  animation: react-tenor-spin 1s linear infinite;
   height: 22px;
   position: absolute;
   right: .5rem;
@@ -63,7 +63,7 @@
   }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(359deg); }
+@keyframes react-tenor-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

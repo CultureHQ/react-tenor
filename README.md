@@ -14,7 +14,19 @@ First, add `react-tenor` to your `package.json` `dependencies`, then install usi
 <Tenor token="your-token-here" onSelect={result => console.log(result)} />
 ```
 
-You can style it appropriately for your app by overriding the CSS classes used internally. They are listed in [`styles.css`](src/styles.css).
+To get the styles, be sure it import `react-tenor/dist/styles.css` into your application. You can style it appropriately for your app by overriding the CSS classes used internally. They are listed in [`styles.css`](src/styles.css).
+
+### `base`
+
+If you need to change the API endpoint that this component hits, you can set the `base` prop on the component to a valid URL.
+
+### `contentRef`
+
+If you need access to the actual `div` that `Tenor` renders, you can pass any valid `React` ref to the `contentRef` prop.
+
+### `focus()`
+
+The `Tenor` component has a `focus()` member function that can be called to request focus be placed on the search input.
 
 ## Running with node
 
@@ -22,4 +34,4 @@ This package uses the `isomorphic-fetch` package to allow `fetch` to be used whe
 
 ## Testing locally
 
-You can run the tests by running `yarn test` and lint by running `yarn lint`. You can run the local server by running `TOKEN=your-token-here yarn start` which will start the docs server on `http://localhost:8080`.
+You can run the tests by running `yarn test` and lint by running `yarn lint`. You can run the local server by running `yarn start` which will start the docs server on `http://localhost:8080`.
