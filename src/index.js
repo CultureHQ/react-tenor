@@ -6,11 +6,12 @@ import Result from "./result";
 const DELAY = 250;
 
 const Search = ({
-  contentRef, onSearchChange, onSelect, results, search, searching
+  contentRef, inputRef, onSearchChange, onSelect, results, search, searching
 }) => (
   <div className="react-tenor" ref={contentRef}>
     <div className="react-tenor--search-bar">
       <input
+        ref={inputRef}
         className="react-tenor--search"
         type="text"
         value={search}
@@ -32,7 +33,13 @@ const Search = ({
 );
 
 class Tenor extends Component {
+  inputRef = React.createRef();
+
   state = { results: [], search: "", searching: false };
+
+  focus() {
+    this.inputRef.current.focus();
+  }
 
   handleSearchChange = ({ target: { value: search } }) => {
     if (!search.length) {
@@ -64,6 +71,7 @@ class Tenor extends Component {
     return (
       <Search
         contentRef={contentRef}
+        inputRef={this.inputRef}
         onSearchChange={this.handleSearchChange}
         onSelect={onSelect}
         results={results}

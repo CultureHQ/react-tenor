@@ -31,8 +31,15 @@ test("performs searches", () => (
 
 test("handles the contentRef prop", () => {
   const contentRef = React.createRef();
-  const component = mount(<Tenor token="token" contentRef={contentRef} />);
+  const component = mount(<Tenor contentRef={contentRef} />);
 
   expect(contentRef.current).not.toBe(null);
   component.unmount();
+});
+
+test("allows you to call focus() on the parent", () => {
+  const component = mount(<Tenor />);
+
+  component.instance().focus();
+  expect(document.activeElement.classList[0]).toEqual("react-tenor--search");
 });
