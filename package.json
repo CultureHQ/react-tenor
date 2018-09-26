@@ -8,7 +8,6 @@
     "build:js": "babel src --out-dir dist --copy-files",
     "build:docs": "TOKEN=LIVDSRZULELA webpack --mode production",
     "lint": "eslint .",
-    "prettier": "prettier --write '**/*.js'",
     "start": "webpack-dev-server --hot",
     "test": "jest"
   },
@@ -46,7 +45,6 @@
     "eslint-plugin-react": "^7.11.0",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^23.6.0",
-    "prettier": "^1.14.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "style-loader": "^0.23.0",
