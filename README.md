@@ -14,7 +14,15 @@ First, add `react-tenor` to your `package.json` `dependencies`, then install usi
 <Tenor token="your-token-here" onSelect={result => console.log(result)} />
 ```
 
-You can style it appropriately for your app by overriding the CSS classes used internally. They are listed in [`styles.css`](src/styles.css).
+To get the styles, be sure it import `react-tenor/dist/styles.css` into your application. You can style it appropriately for your app by overriding the CSS classes used internally. They are listed in [`styles.css`](src/styles.css).
+
+### `base`
+
+If you need to change the API endpoint that this component hits, you can set the `base` prop on the component to a valid URL.
+
+### `contentRef`
+
+If you need access to the actual `div` that `Tenor` renders, you can pass any valid `React` ref to the `contentRef` prop.
 
 ## Running with node
 
