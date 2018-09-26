@@ -1,13 +1,11 @@
 import Client from "../src/client";
-import testServer, { results } from "./test-server";
+import withTestServer, { results } from "./test-server";
 
-test("fetches the expected results", async () => {
-  testServer.listen(8080);
+test("fetches the expected results", () => (
+  withTestServer(8081, async () => {
+    const client = new Client({ base: "http://localhost:8081", token: "token" });
+    const response = await client.search("Happy");
 
-  const client = new Client({ base: "http://localhost:8080", token: "token" });
-  const response = await client.search("Happy");
-
-  expect(response).toEqual(results);
-
-  testServer.close();
-});
+    expect(response).toEqual(results);
+  })
+));
