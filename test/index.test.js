@@ -6,7 +6,7 @@ import Result from "../src/result";
 import withTestServer, { results } from "./test-server";
 
 test("performs searches", () => (
-  withTestServer(8081, async server => {
+  withTestServer(8081, async () => {
     let selected = null;
     const onSelect = result => { selected = result; };
     const search = "Happy";

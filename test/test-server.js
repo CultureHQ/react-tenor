@@ -20,7 +20,7 @@ const withTestServer = async (port, callback) => {
   });
 
   server.listen(port);
-  await callback(server)
+  await callback(server);
 
   server.close();
 };

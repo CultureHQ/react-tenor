@@ -45,10 +45,6 @@ class Tenor extends Component {
     this.componentIsMounted = false;
   }
 
-  focus() {
-    this.inputRef.current.focus();
-  }
-
   handleSearchChange = ({ target: { value: search } }) => {
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -74,6 +70,10 @@ class Tenor extends Component {
       this.setState({ results, searching: false });
     });
   };
+
+  focus() {
+    this.inputRef.current.focus();
+  }
 
   render() {
     const { contentRef, onSelect } = this.props;
