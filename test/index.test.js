@@ -11,7 +11,7 @@ test("performs searches", async () => {
   let selected = null;
   const onSelect = result => { selected = result; };
 
-  const component = mount(<Tenor token="token" onSelect={onSelect} />);
+  const component = mount(<Tenor base="http://localhost:8080" token="token" onSelect={onSelect} />);
   component.find("input").simulate("change", { target: { value: "Happy" } });
 
   component.update();
@@ -27,4 +27,11 @@ test("performs searches", async () => {
   expect(selected).toEqual(results[3]);
 
   testServer.close();
+});
+
+test("handles the contentRef prop", () => {
+  const contentRef = React.createRef();
+  const component = mount(<Tenor token="token" contentRef={contentRef} />);
+
+  expect(contentRef.current).not.toBe(null);
 });

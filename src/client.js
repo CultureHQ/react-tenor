@@ -1,16 +1,17 @@
-import stringify from "./stringify";
-
-const BASE = process.env.NODE_ENV === "test"
-  ? "http://localhost:8080"
-  : "https://api.tenor.com/v1";
+export const stringify = query => (
+  Object.keys(query).reduce((accum, key, index) => (
+    `${accum}${index === 0 ? "" : "&"}${key}=${query[key]}`
+  ), "?")
+);
 
 class Client {
-  constructor(token) {
-    this.token = token;
+  constructor({ base, token }) {
+    this.base = base || "https://api.tenor.com/v1";
+    this.token = token || "LIVDSRZULELA";
   }
 
   search(q) {
-    return fetch(`${BASE}/search${this.queryFor(q)}`)
+    return fetch(`${this.base}/search${this.queryFor(q)}`)
       .then(response => response.json()).then(({ results }) => results);
   }
 
