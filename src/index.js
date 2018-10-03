@@ -150,7 +150,7 @@ class Tenor extends Component {
       return;
     }
 
-    this.setState({ search, searching: true });
+    this.setState({ autocomplete: null, search, searching: true });
     this.fetchAutocomplete(search);
     this.fetchSuggestions(search);
     this.timeout = setTimeout(() => this.performSearch(search), DELAY);
