@@ -129,7 +129,7 @@ class Tenor extends Component {
       return Promise.resolve();
     }
 
-    if (page !== pages.length - 1) {
+    if (page < pages.length - 1) {
       this.setState(({ page: prevPage }) => ({ page: prevPage + 1 }));
       return Promise.resolve();
     }

@@ -23,7 +23,7 @@ const getRequestKey = url => (
   url.slice(1).substring(0, url.indexOf("?") - 1)
 );
 
-const withTestServer = async (port, callback) => {
+const withTestServer = (port, callback) => async () => {
   const server = http.createServer();
 
   server.requests = Object.keys(results).reduce((accum, key) => (
@@ -40,9 +40,12 @@ const withTestServer = async (port, callback) => {
   });
 
   server.listen(port);
-  await callback(server);
 
-  server.close();
+  try {
+    await callback(server);
+  } finally {
+    server.close();
+  }
 };
 
 export default withTestServer;
