@@ -10,7 +10,7 @@ class Suggestion extends Component {
   render() {
     const { suggestion } = this.props;
 
-    return <button onClick={this.handleClick}>{suggestion}</button>;
+    return <button type="button" onClick={this.handleClick}>{suggestion}</button>;
   }
 }
 

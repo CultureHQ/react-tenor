@@ -46,25 +46,25 @@ class Tenor extends Component {
     window.removeEventListener("click", this.handleWindowClick);
   }
 
-  fetchAutocomplete = currentSearch => {
-    return this.client.autocomplete(currentSearch).then(autocomplete => {
+  fetchAutocomplete = currentSearch => (
+    this.client.autocomplete(currentSearch).then(autocomplete => {
       const { search } = this.state;
 
       if (this.componentIsMounted && search === currentSearch) {
         this.setState({ autocomplete });
       }
-    });
-  };
+    })
+  );
 
-  fetchSuggestions = currentSearch => {
-    return this.client.suggestions(currentSearch).then(suggestions => {
+  fetchSuggestions = currentSearch => (
+    this.client.suggestions(currentSearch).then(suggestions => {
       const { search } = this.state;
 
       if (this.componentIsMounted && search === currentSearch) {
         this.setState({ suggestions });
       }
-    });
-  };
+    })
+  );
 
   handleWindowClick = event => {
     const { contentRef } = this.props;
@@ -74,8 +74,7 @@ class Tenor extends Component {
       return;
     }
 
-    const content = (contentRef || this.contentRef).current;
-
+    const container = (contentRef || this.contentRef).current;
     if (container.contains(event.target)) {
       return;
     }
@@ -141,8 +140,6 @@ class Tenor extends Component {
       return Promise.resolve();
     }
 
-    const { base, token } = this.props;
-
     return this.client.search(query).then(results => {
       if (this.componentIsMounted) {
         this.setState({ results, searching: false });
@@ -156,7 +153,9 @@ class Tenor extends Component {
 
   render() {
     const { contentRef, onSelect } = this.props;
-    const { autocomplete, results, search, searching, suggestions } = this.state;
+    const {
+      autocomplete, results, search, searching, suggestions
+    } = this.state;
 
     return (
       <Search

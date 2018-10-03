@@ -29,7 +29,6 @@ class Result extends Component {
   };
 
   render() {
-    const { result } = this.props;
     const { loaded } = this.state;
 
     return (

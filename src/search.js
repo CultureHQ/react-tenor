@@ -33,7 +33,8 @@ const Search = ({
         />
         {autocomplete && (
           <div className="react-tenor--autocomplete">
-            <span aria-hidden>{search}</span>{typeahead}
+            <span aria-hidden>{search}</span>
+            {typeahead}
           </div>
         )}
         {searching && (
