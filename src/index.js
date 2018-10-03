@@ -34,12 +34,26 @@ const Search = ({
 );
 
 class Tenor extends Component {
-  inputRef = React.createRef();
+  constructor(props) {
+    super(props);
 
-  state = { results: [], search: "", searching: false };
+    const { base, token } = props;
+    this.client = new Client({ base, token });
+
+    this.inputRef = React.createRef();
+    this.state = { results: [], search: "", searching: false };
+  }
 
   componentDidMount() {
     this.componentIsMounted = true;
+  }
+
+  componentDidUpdate(prevProps) {
+    const { base, token } = this.props;
+
+    if (base !== prevProps.base || token !== prevProps.token) {
+      this.client = new Client({ base, token });
+    }
   }
 
   componentWillUnmount() {
@@ -67,7 +81,7 @@ class Tenor extends Component {
 
     const { base, token } = this.props;
 
-    return new Client({ base, token }).search(query).then(results => {
+    return this.client.search(query).then(results => {
       this.setState({ results, searching: false });
     });
   };
