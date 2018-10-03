@@ -118,15 +118,20 @@ class Tenor extends Component {
   };
 
   handlePageRight = () => {
-    const { page, pages, search, searching } = this.state;
+    const {
+      page,
+      pages,
+      search,
+      searching
+    } = this.state;
 
     if (!search || searching) {
-      return;
+      return Promise.resolve();
     }
 
     if (page !== pages.length - 1) {
-      this.setState(({ page }) => ({ page: page + 1 }));
-      return;
+      this.setState(({ page: prevPage }) => ({ page: prevPage + 1 }));
+      return Promise.resolve();
     }
 
     return this.client.search(search, { pos: pages[page].next }).then(nextPage => {
@@ -215,7 +220,9 @@ class Tenor extends Component {
 
   render() {
     const { contentRef, onSelect } = this.props;
-    const { autocomplete, page, pages, search, searching, suggestions } = this.state;
+    const {
+      autocomplete, page, pages, search, searching, suggestions
+    } = this.state;
 
     return (
       <Search

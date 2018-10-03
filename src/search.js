@@ -54,7 +54,9 @@ const Suggestions = ({ suggestions, onSuggestionClick }) => (
   </div>
 );
 
-const Results = ({ results, onPageLeft, onPageRight, onSelect }) => (
+const Results = ({
+  results, onPageLeft, onPageRight, onSelect
+}) => (
   <div className="react-tenor--results">
     {results.map(result => (
       <Result key={result.id} result={result} onSelect={onSelect} />
