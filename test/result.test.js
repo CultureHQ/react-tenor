@@ -24,3 +24,11 @@ test("loads the image in the background", () => {
 
   expect(component.find("span")).toHaveLength(1);
 });
+
+test("does not attempt to set state if the image finishes after unmount", () => {
+  const component = shallow(<Result result={results.search[0]} />);
+  const { image } = component.instance();
+
+  component.unmount();
+  image.onload();
+});
