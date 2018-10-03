@@ -17,7 +17,7 @@ const Search = ({
 
   let typeahead = null;
   if (autocomplete) {
-    typeahead = autocomplete.toLowerCase().replace(search.toLowerCase(), "");
+    typeahead = autocomplete.toLowerCase().replace(search.toLowerCase().trim(), "");
   }
 
   return (
