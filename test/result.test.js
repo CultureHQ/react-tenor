@@ -14,3 +14,13 @@ test("renders without crashing", () => {
   component.simulate("click");
   expect(selected).toEqual(results.search[0]);
 });
+
+test("loads the image in the background", () => {
+  const component = shallow(<Result result={results.search[0]} />);
+  expect(component.find("span")).toHaveLength(0);
+
+  component.instance().image.onload();
+  component.update();
+
+  expect(component.find("span")).toHaveLength(1);
+});
