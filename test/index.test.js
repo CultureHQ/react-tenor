@@ -76,3 +76,37 @@ test("allows you to call focus() on the parent", () => {
   component.instance().focus();
   expect(document.activeElement.classList[0]).toEqual("react-tenor--search");
 });
+
+test("handles clicking a suggestion", () => (
+  withTestServer(8083, async () => {
+    const component = mount(<Tenor base="http://localhost:8083" token="token" />);
+
+    component.setState({ search: "test" });
+    await component.instance().fetchSuggestions("test");
+    component.update();
+
+    expect(component.find("Suggestion")).toHaveLength(5);
+
+    component.find("Suggestion").at(2).find("button").simulate("click");
+    expect(component.state().search).toEqual(results.search_suggestions[2]);
+
+    await component.instance().performSearch(results.search_suggestions[2]);
+  })
+));
+
+test("handles tab completing the typeahead", () => (
+  withTestServer(8084, async () => {
+    const component = mount(<Tenor base="http://localhost:8084" token="token" />);
+
+    component.setState({ search: "t" });
+    await component.instance().fetchAutocomplete("t");
+    component.update();
+
+    expect(component.find("Autocomplete")).toHaveLength(1);
+
+    component.find("input").simulate("keyDown", { keyCode: 9 });
+    expect(component.state().search).toEqual(results.autocomplete[0]);
+
+    await component.instance().performSearch(results.autocomplete[0]);
+  })
+));

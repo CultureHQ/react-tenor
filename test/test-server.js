@@ -14,7 +14,7 @@ const makeResult = () => ({
 });
 
 export const results = {
-  autocomplete: ["Test", "Testing", "Test2", "Testingtesting", "Testy Testerson"],
+  autocomplete: ["test", "testing", "test2", "testingtesting", "testy testerson"],
   search_suggestions: ["test", "unit test", "acceptance test", "testing", "how to test"],
   search: [makeResult(), makeResult(), makeResult(), makeResult(), makeResult()]
 };

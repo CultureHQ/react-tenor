@@ -1,7 +1,7 @@
 export const stringify = query => (
-  Object.keys(query).reduce((accum, key, index) => (
+  encodeURI(Object.keys(query).reduce((accum, key, index) => (
     `${accum}${index === 0 ? "" : "&"}${key}=${query[key]}`
-  ), "?")
+  ), "?"))
 );
 
 class Client {

@@ -50,8 +50,8 @@ class Tenor extends Component {
     this.client.autocomplete(currentSearch).then(autocomplete => {
       const { search } = this.state;
 
-      if (this.componentIsMounted && search === currentSearch) {
-        this.setState({ autocomplete });
+      if (search === currentSearch) {
+        this.mountedSetState({ autocomplete });
       }
     })
   );
@@ -60,8 +60,8 @@ class Tenor extends Component {
     this.client.suggestions(currentSearch).then(suggestions => {
       const { search } = this.state;
 
-      if (this.componentIsMounted && search === currentSearch) {
-        this.setState({ suggestions });
+      if (search === currentSearch) {
+        this.mountedSetState({ suggestions });
       }
     })
   );
@@ -141,15 +141,21 @@ class Tenor extends Component {
     }
 
     return this.client.search(query).then(results => {
-      if (this.componentIsMounted) {
-        this.setState({ results, searching: false });
-      }
+      this.mountedSetState({ results, searching: false });
+    }).catch(() => {
+      this.mountedSetState({ searching: false });
     });
   };
 
   focus() {
     this.inputRef.current.focus();
   }
+
+  mountedSetState = mutation => {
+    if (this.componentIsMounted) {
+      this.setState(mutation);
+    }
+  };
 
   render() {
     const { contentRef, onSelect } = this.props;

@@ -9,8 +9,8 @@ test("sets sane defaults", () => {
 });
 
 test("fetches the expected results", () => (
-  withTestServer(8083, async () => {
-    const client = new Client({ base: "http://localhost:8083", token: "token" });
+  withTestServer(8090, async () => {
+    const client = new Client({ base: "http://localhost:8090", token: "token" });
     const response = await client.search("Happy");
 
     expect(response).toEqual(results.search);
