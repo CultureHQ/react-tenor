@@ -12,8 +12,9 @@ const Search = ({
     <div className="react-tenor--search-bar">
       <input
         ref={inputRef}
+        aria-label="Search"
         className="react-tenor--search"
-        type="text"
+        type="search"
         value={search}
         onChange={onSearchChange}
         placeholder="Search Tenor"

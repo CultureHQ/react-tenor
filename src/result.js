@@ -12,7 +12,7 @@ class Result extends Component {
 
     return (
       <button
-        key={result.id}
+        aria-label={result.itemurl}
         type="button"
         onClick={this.handleClick}
         className="react-tenor--result"
