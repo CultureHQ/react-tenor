@@ -2,22 +2,9 @@ import React, { Component } from "react";
 
 import Client from "./client";
 import Result from "./result";
+import Suggestion from "./suggestion";
 
 const DELAY = 250;
-
-class Suggestion extends Component {
-  handleClick = () => {
-    const { suggestion, onSuggestionClick } = this.props;
-
-    onSuggestionClick(suggestion);
-  };
-
-  render() {
-    const { suggestion } = this.props;
-
-    return <button onClick={this.handleClick}>{suggestion}</button>;
-  }
-}
 
 const Search = ({
   contentRef, inputRef, onSearchChange, onSuggestionClick, onSelect, results,
