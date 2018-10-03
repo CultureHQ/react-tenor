@@ -78,6 +78,7 @@
 .react-tenor--results {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .react-tenor--result {
@@ -116,6 +117,60 @@
   .react-tenor--result {
     flex-basis: 33%;
   }
+}
+
+.react-tenor--page-left,
+.react-tenor--page-right {
+  background: #6a89af;
+  border: 0;
+  height: 1.8em;
+  position: absolute;
+  top: calc(50% - .9em);
+  opacity: .5;
+  position: absolute;
+  transition: opacity .2s, left .2s, right .2s;
+  width: 1.8em;
+  z-index: -1;
+}
+
+.react-tenor--results:hover .react-tenor--page-left,
+.react-tenor--results:hover .react-tenor--page-right {
+  opacity: 1;
+  z-index: 1;
+}
+
+.react-tenor--results:hover .react-tenor--page-left {
+  left: -1em;
+}
+
+.react-tenor--results:hover .react-tenor--page-right {
+  right: -1em;
+}
+
+.react-tenor--page-left div,
+.react-tenor--page-right div {
+  background: inherit;
+  height: 1.6em;
+  transform: rotate(45deg);
+  top: .1em;
+  position: absolute;
+  width: 1.6em;
+}
+
+.react-tenor--page-left {
+  left: -.3em;
+}
+
+.react-tenor--page-left div {
+  left: -.7em;
+}
+
+.react-tenor--page-right {
+  right: -.3em;
+}
+
+.react-tenor--page-right div {
+  right: -.7em;
 }
 
 @keyframes react-tenor-fade-in {

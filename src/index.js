@@ -5,7 +5,8 @@ import Search from "./search";
 
 const DEFAULT_STATE = {
   autocomplete: null,
-  results: [],
+  page: 0,
+  pages: [],
   search: "",
   searching: false,
   suggestions: []
@@ -13,7 +14,11 @@ const DEFAULT_STATE = {
 
 const DELAY = 250;
 
-const TAB_KEY = 9;
+const KEYS = {
+  Tab: 9,
+  ArrowLeft: 37,
+  ArrowRight: 39
+};
 
 class Tenor extends Component {
   constructor(props) {
@@ -30,6 +35,7 @@ class Tenor extends Component {
 
   componentDidMount() {
     this.componentIsMounted = true;
+    window.addEventListener("keydown", this.handleWindowKeyDown);
     window.addEventListener("click", this.handleWindowClick);
   }
 
@@ -42,8 +48,9 @@ class Tenor extends Component {
   }
 
   componentWillUnmount() {
-    this.componentIsMounted = false;
     window.removeEventListener("click", this.handleWindowClick);
+    window.removeEventListener("keydown", this.handleWindowKeyDown);
+    this.componentIsMounted = false;
   }
 
   fetchAutocomplete = currentSearch => (
@@ -86,6 +93,55 @@ class Tenor extends Component {
     this.setState(DEFAULT_STATE);
   };
 
+  handleWindowKeyDown = event => {
+    const { contentRef } = this.props;
+
+    if (
+      !(contentRef || this.contentRef).current.contains(event.target)
+      || ([KEYS.ArrowLeft, KEYS.ArrowRight].indexOf(event.keyCode) === -1)
+      || !event.metaKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (event.keyCode === KEYS.ArrowLeft) {
+      this.handlePageLeft();
+    } else {
+      this.handlePageRight();
+    }
+  };
+
+  handlePageLeft = () => {
+    this.setState(({ page }) => ({ page: page === 0 ? 0 : page - 1 }));
+  };
+
+  handlePageRight = () => {
+    const { page, pages, search, searching } = this.state;
+
+    if (!search || searching) {
+      return;
+    }
+
+    if (page !== pages.length - 1) {
+      this.setState(({ page }) => ({ page: page + 1 }));
+      return;
+    }
+
+    return this.client.search(search, { pos: pages[page].next }).then(nextPage => {
+      if (nextPage.results) {
+        this.mountedSetState(({ page: prevPage, pages: prevPages }) => ({
+          page: prevPage + 1,
+          pages: prevPages.concat([nextPage]),
+          searching: false
+        }));
+      }
+    }).catch(() => {
+      this.mountedSetState({ searching: false });
+    });
+  };
+
   handleSearchChange = ({ target: { value: search } }) => {
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -105,7 +161,7 @@ class Tenor extends Component {
   handleSearchKeyDown = event => {
     const { autocomplete, search: prevSearch } = this.state;
 
-    if (event.keyCode !== TAB_KEY || !autocomplete || !prevSearch) {
+    if (event.keyCode !== KEYS.Tab || !autocomplete || !prevSearch) {
       return;
     }
 
@@ -135,13 +191,13 @@ class Tenor extends Component {
     this.performSearch(suggestion);
   };
 
-  performSearch = query => {
+  performSearch = search => {
     if (!this.componentIsMounted) {
       return Promise.resolve();
     }
 
-    return this.client.search(query).then(results => {
-      this.mountedSetState({ results, searching: false });
+    return this.client.search(search).then(page => {
+      this.mountedSetState({ page: 0, pages: [page], searching: false });
     }).catch(() => {
       this.mountedSetState({ searching: false });
     });
@@ -159,20 +215,20 @@ class Tenor extends Component {
 
   render() {
     const { contentRef, onSelect } = this.props;
-    const {
-      autocomplete, results, search, searching, suggestions
-    } = this.state;
+    const { autocomplete, page, pages, search, searching, suggestions } = this.state;
 
     return (
       <Search
         autocomplete={autocomplete}
         contentRef={contentRef || this.contentRef}
         inputRef={this.inputRef}
+        onPageLeft={this.handlePageLeft}
+        onPageRight={this.handlePageRight}
         onSearchChange={this.handleSearchChange}
         onSearchKeyDown={this.handleSearchKeyDown}
         onSuggestionClick={this.handleSuggestionClick}
         onSelect={onSelect}
-        results={results}
+        results={pages[page] ? pages[page].results : []}
         search={search}
         searching={searching}
         suggestions={suggestions}

@@ -15,9 +15,9 @@ class Client {
       .then(response => response.json()).then(({ results }) => results[0]);
   }
 
-  search(search) {
-    return fetch(`${this.base}/search${this.searchQueryFor(search)}`)
-      .then(response => response.json()).then(({ results }) => results);
+  search(search, params = {}) {
+    return fetch(`${this.base}/search${this.searchQueryFor(search, params)}`)
+      .then(response => response.json());
   }
 
   suggestions(search) {
@@ -34,8 +34,8 @@ class Client {
     });
   }
 
-  searchQueryFor(search) {
-    return stringify({
+  searchQueryFor(search, params) {
+    return stringify(Object.assign({}, {
       key: this.token,
       q: search,
       limit: 12,
@@ -43,7 +43,7 @@ class Client {
       safesearch: "mild",
       media_filter: "minimal",
       ar_range: "all"
-    });
+    }, params));
   }
 
   suggestionsQueryFor(search) {

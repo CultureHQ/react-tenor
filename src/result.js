@@ -6,14 +6,22 @@ class Result extends Component {
   state = { loaded: false };
 
   componentDidMount() {
+    this.componentIsMounted = true;
+
     const { result } = this.props;
 
     this.image = new Image();
     this.image.src = result.media[0].tinygif.url;
 
     this.image.onload = () => {
-      this.setState({ loaded: true });
+      if (this.componentIsMounted) {
+        this.setState({ loaded: true });
+      }
     };
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
   }
 
   getLabel() {

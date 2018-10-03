@@ -54,17 +54,31 @@ const Suggestions = ({ suggestions, onSuggestionClick }) => (
   </div>
 );
 
-const Results = ({ results, onSelect }) => (
+const Results = ({ results, onPageLeft, onPageRight, onSelect }) => (
   <div className="react-tenor--results">
     {results.map(result => (
       <Result key={result.id} result={result} onSelect={onSelect} />
     ))}
+    <PageControl direction="left" onClick={onPageLeft} />
+    <PageControl direction="right" onClick={onPageRight} />
   </div>
 );
 
+const PageControl = ({ direction, onClick }) => (
+  <button
+    aria-label={`Page ${direction}`}
+    className={`react-tenor--page-${direction}`}
+    type="button"
+    onClick={onClick}
+  >
+    <div />
+  </button>
+);
+
 const Search = ({
-  autocomplete, contentRef, inputRef, onSearchChange, onSearchKeyDown,
-  onSuggestionClick, onSelect, results, search, searching, suggestions
+  autocomplete, contentRef, inputRef, onPageLeft, onPageRight, onSearchChange,
+  onSearchKeyDown, onSuggestionClick, onSelect, results, search, searching,
+  suggestions
 }) => {
   let classList = "react-tenor";
   if (suggestions.length > 0 || results.length > 0) {
@@ -90,6 +104,8 @@ const Search = ({
       {results.length > 0 && (
         <Results
           results={results}
+          onPageLeft={onPageLeft}
+          onPageRight={onPageRight}
           onSelect={onSelect}
         />
       )}
