@@ -1,6 +1,4 @@
-/* eslint import/no-extraneous-dependencies: off */
 const path = require("path");
-const webpack = require("webpack");
 
 module.exports = {
   output: {
@@ -20,8 +18,5 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, "docs")
-  },
-  plugins: [
-    new webpack.EnvironmentPlugin(["TOKEN"])
-  ]
+  }
 };

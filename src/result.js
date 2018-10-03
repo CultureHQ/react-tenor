@@ -1,6 +1,35 @@
 import React, { Component } from "react";
 
+const BASE = "https://tenor.com/view/";
+
 class Result extends Component {
+  state = { loaded: false };
+
+  componentDidMount() {
+    this.componentIsMounted = true;
+
+    const { result } = this.props;
+
+    this.image = new Image();
+    this.image.src = result.media[0].tinygif.url;
+
+    this.image.onload = () => {
+      if (this.componentIsMounted) {
+        this.setState({ loaded: true });
+      }
+    };
+  }
+
+  componentWillUnmount() {
+    this.componentIsMounted = false;
+  }
+
+  getLabel() {
+    const { result: { itemurl } } = this.props;
+
+    return itemurl.replace(BASE, "").replace(/-gif-\d+$/, "").replace(/-/g, " ");
+  }
+
   handleClick = () => {
     const { result, onSelect } = this.props;
 
@@ -8,16 +37,17 @@ class Result extends Component {
   };
 
   render() {
-    const { result } = this.props;
+    const { loaded } = this.state;
 
     return (
       <button
-        key={result.id}
+        aria-label={this.getLabel()}
         type="button"
         onClick={this.handleClick}
         className="react-tenor--result"
-        style={{ backgroundImage: `url(${result.media[0].tinygif.url})` }}
-      />
+      >
+        {loaded && <span style={{ backgroundImage: `url(${this.image.src})` }} />}
+      </button>
     );
   }
 }

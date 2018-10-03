@@ -1,14 +1,14 @@
 {
   "name": "react-tenor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Integrate with the Tenor GIF API",
   "main": "dist/index.js",
   "scripts": {
     "build": "yarn build:js && yarn build:docs",
     "build:js": "babel src --out-dir dist --copy-files",
-    "build:docs": "TOKEN=LIVDSRZULELA webpack --mode production",
+    "build:docs": "webpack --mode production",
     "lint": "eslint .",
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --mode development --hot",
     "test": "jest"
   },
   "repository": {

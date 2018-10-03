@@ -29,88 +29,47 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var BASE = "https://tenor.com/view/";
-
-var Result =
+var Suggestion =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(Result, _Component);
+  _inherits(Suggestion, _Component);
 
-  function Result() {
+  function Suggestion() {
     var _getPrototypeOf2;
 
     var _this;
 
-    _classCallCheck(this, Result);
+    _classCallCheck(this, Suggestion);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Result)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
-      loaded: false
-    });
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Suggestion)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleClick", function () {
       var _this$props = _this.props,
-          result = _this$props.result,
-          onSelect = _this$props.onSelect;
-      onSelect(result);
+          suggestion = _this$props.suggestion,
+          onSuggestionClick = _this$props.onSuggestionClick;
+      onSuggestionClick(suggestion);
     });
 
     return _this;
   }
 
-  _createClass(Result, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      this.componentIsMounted = true;
-      var result = this.props.result;
-      this.image = new Image();
-      this.image.src = result.media[0].tinygif.url;
-
-      this.image.onload = function () {
-        if (_this2.componentIsMounted) {
-          _this2.setState({
-            loaded: true
-          });
-        }
-      };
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.componentIsMounted = false;
-    }
-  }, {
-    key: "getLabel",
-    value: function getLabel() {
-      var itemurl = this.props.result.itemurl;
-      return itemurl.replace(BASE, "").replace(/-gif-\d+$/, "").replace(/-/g, " ");
-    }
-  }, {
+  _createClass(Suggestion, [{
     key: "render",
     value: function render() {
-      var loaded = this.state.loaded;
+      var suggestion = this.props.suggestion;
       return _react.default.createElement("button", {
-        "aria-label": this.getLabel(),
         type: "button",
-        onClick: this.handleClick,
-        className: "react-tenor--result"
-      }, loaded && _react.default.createElement("span", {
-        style: {
-          backgroundImage: "url(".concat(this.image.src, ")")
-        }
-      }));
+        onClick: this.handleClick
+      }, suggestion);
     }
   }]);
 
-  return Result;
+  return Suggestion;
 }(_react.Component);
 
-var _default = Result;
+var _default = Suggestion;
 exports.default = _default;
