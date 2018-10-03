@@ -99,7 +99,7 @@ describe("suggestions", () => {
     const component = mount(<Tenor />);
     component.setState({ search: "t", suggestions: ["test"] });
 
-    component.instance().client.search = () => Promise.resolve(results.search);
+    component.instance().client.search = () => Promise.resolve({ results: results.search });
     component.instance().timeout = setTimeout(() => {}, 1000);
 
     component.find("Suggestion").find("button").simulate("click");

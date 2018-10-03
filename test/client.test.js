@@ -13,6 +13,6 @@ test("fetches the expected results", () => (
     const client = new Client({ base: "http://localhost:8090", token: "token" });
     const response = await client.search("Happy");
 
-    expect(response).toEqual(results.search);
+    expect(response.results).toEqual(results.search);
   })
 ));

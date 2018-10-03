@@ -35,7 +35,7 @@ const withTestServer = async (port, callback) => {
     server.requests[requestKey] += 1;
 
     response.writeHead(200, { "Content-Type": "application/json" });
-    response.write(JSON.stringify({ results: results[requestKey] }));
+    response.write(JSON.stringify({ results: results[requestKey], next: "12" }));
     response.end();
   });
 
