@@ -20,8 +20,10 @@ class Client {
       key: this.token,
       q,
       limit: 12,
+      locale: "en_US",
       safesearch: "mild",
-      media_filter: "minimal"
+      media_filter: "minimal",
+      ar_range: "all"
     });
   }
 }
