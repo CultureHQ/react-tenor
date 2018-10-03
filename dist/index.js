@@ -9,7 +9,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _client = _interopRequireDefault(require("./client"));
 
-var _result = _interopRequireDefault(require("./result"));
+var _search = _interopRequireDefault(require("./search"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,42 +35,19 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var DEFAULT_STATE = {
+  autocomplete: null,
+  page: 0,
+  pages: [],
+  search: "",
+  searching: false,
+  suggestions: []
+};
 var DELAY = 250;
-
-var Search = function Search(_ref) {
-  var contentRef = _ref.contentRef,
-      inputRef = _ref.inputRef,
-      onSearchChange = _ref.onSearchChange,
-      onSelect = _ref.onSelect,
-      results = _ref.results,
-      search = _ref.search,
-      searching = _ref.searching;
-  return _react.default.createElement("div", {
-    className: "react-tenor",
-    ref: contentRef
-  }, _react.default.createElement("div", {
-    className: "react-tenor--search-bar"
-  }, _react.default.createElement("input", {
-    ref: inputRef,
-    className: "react-tenor--search",
-    type: "text",
-    value: search,
-    onChange: onSearchChange,
-    placeholder: "Search Tenor"
-  }), searching && _react.default.createElement("svg", {
-    className: "react-tenor--spinner",
-    viewBox: "0 0 1024 1024"
-  }, _react.default.createElement("path", {
-    d: "M959.6 452.2c-2.8-17.4-6.2-34.6-10.6-51.6-5.6-21.6-12.8-43-21.6-63.6-17.8-42.4-42.2-82-71.8-117.2-32-37.8-70.6-70.4-113.4-95.4-42.2-24.8-88.2-42.4-136.2-52.2-24.8-5-49.8-8-75.2-8.2-19.8-0.2-39.6 0.6-59.2 2.4-51 5-101.4 19.2-147.8 41-39.8 18.8-76.8 43.2-109.6 72.4s-61.4 63.2-84.4 100.6c-25.4 41.6-44.4 87-54.8 134.6-8.4 38-12.4 77.2-10.4 116.2 1.8 37.8 7.6 75.6 19 111.8 7.2 23 15.8 45.4 26.6 67.2 10.6 21.4 23 42 36.8 61.4 27.6 38.6 61.2 72.8 99.6 101 39.2 29 83.4 51.4 129.8 66.2 48.4 15.4 99.8 22.6 150.6 20.8 49.6-1.6 98.8-11.2 145.2-29 44.6-17.2 86.4-41.8 123-72.6 18.4-15.6 34.8-33.2 50.2-51.8 15.6-18.8 29.6-38.6 41.2-60 10-18.4 18.4-37.6 25.6-57 3.6-9.6 7-19.2 9.8-29.2 3-10.6 5.2-21.6 7.2-32.4 3-17 4.2-34.6 2.6-51.8-1.4 7.6-2.6 15-4.4 22.4-2.2 8.6-5 17-8.2 25.2-6.4 17.4-14.4 34.2-22 51-9.8 21.4-21.2 41.8-33.6 61.6-6.4 10.2-13 20.2-20.2 29.8s-15.4 18.8-23.6 27.8-34.2 34.4-54 48.8c-20.2 14.8-41.6 27.8-64.2 38.6-45.2 22-94.6 35.2-144.6 39.6-51.2 4.4-103.4-0.6-152.6-15.2-46.8-13.8-91.2-36.2-130.2-65.6-37.8-28.6-70.6-63.8-96.4-103.6-27-40.6-45.6-86.4-55.8-134.2-2.6-12.4-4.6-25.2-6-37.8-1.2-10.8-2.2-21.8-2.6-32.8-0.6-22.6 0.8-46 4.2-68.4 7.4-49.2 23.4-96.6 48.2-139.8 22-38.6 50.6-73.4 84.2-102.8 33.6-29.6 72-53.4 113.6-70.2 24-9.8 49.2-17 74.8-21.8 13-2.4 26-4.4 39-5.4 6.4-0.6 12.6-0.6 19-1.2 2.6 0 5.2 0.2 7.8 0.2 43.4-0.8 87 4.8 128.4 17.8 44.6 14 86.6 36.6 123 66 38.2 30.8 70 68.8 94 111.6 20.4 36.4 35 75.6 43.8 116.4 2 9.4 3.6 18.8 5.2 28.2 1.4 8.6 6.2 16.6 13.6 21.4 15.6 10.4 37.4 3.4 45-13.4 2.6-5.8 3.4-12 2.4-17.8z"
-  }))), _react.default.createElement("div", {
-    className: "react-tenor--results"
-  }, results.map(function (result) {
-    return _react.default.createElement(_result.default, {
-      key: result.id,
-      result: result,
-      onSelect: onSelect
-    });
-  })));
+var KEYS = {
+  Tab: 9,
+  ArrowLeft: 37,
+  ArrowRight: 39
 };
 
 var Tenor =
@@ -78,73 +55,231 @@ var Tenor =
 function (_Component) {
   _inherits(Tenor, _Component);
 
-  function Tenor() {
-    var _getPrototypeOf2;
-
+  function Tenor(props) {
     var _this;
 
     _classCallCheck(this, Tenor);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tenor).call(this, props));
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Tenor)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "fetchAutocomplete", function (currentSearch) {
+      return _this.client.autocomplete(currentSearch).then(function (autocomplete) {
+        var search = _this.state.search;
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "inputRef", _react.default.createRef());
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
-      results: [],
-      search: "",
-      searching: false
+        if (search === currentSearch) {
+          _this.mountedSetState({
+            autocomplete: autocomplete
+          });
+        }
+      });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSearchChange", function (_ref2) {
-      var search = _ref2.target.value;
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "fetchSuggestions", function (currentSearch) {
+      return _this.client.suggestions(currentSearch).then(function (suggestions) {
+        var search = _this.state.search;
+
+        if (search === currentSearch) {
+          _this.mountedSetState({
+            suggestions: suggestions
+          });
+        }
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleWindowClick", function (event) {
+      var contentRef = _this.props.contentRef;
+      var search = _this.state.search;
+
+      if (!search) {
+        return;
+      }
+
+      var container = (contentRef || _this.contentRef).current;
+
+      if (container.contains(event.target)) {
+        return;
+      }
+
+      if (_this.timeout) {
+        clearTimeout(_this.timeout);
+      }
+
+      _this.setState(DEFAULT_STATE);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleWindowKeyDown", function (event) {
+      var contentRef = _this.props.contentRef;
+
+      if (!(contentRef || _this.contentRef).current.contains(event.target) || [KEYS.ArrowLeft, KEYS.ArrowRight].indexOf(event.keyCode) === -1 || !event.metaKey) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (event.keyCode === KEYS.ArrowLeft) {
+        _this.handlePageLeft();
+      } else {
+        _this.handlePageRight();
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePageLeft", function () {
+      _this.setState(function (_ref) {
+        var page = _ref.page;
+        return {
+          page: page === 0 ? 0 : page - 1
+        };
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePageRight", function () {
+      var _this$state = _this.state,
+          page = _this$state.page,
+          pages = _this$state.pages,
+          search = _this$state.search,
+          searching = _this$state.searching;
+
+      if (!search || searching) {
+        return Promise.resolve();
+      }
+
+      if (page < pages.length - 1) {
+        _this.setState(function (_ref2) {
+          var prevPage = _ref2.page;
+          return {
+            page: prevPage + 1
+          };
+        });
+
+        return Promise.resolve();
+      }
+
+      return _this.client.search(search, {
+        pos: pages[page].next
+      }).then(function (nextPage) {
+        if (nextPage.results) {
+          _this.mountedSetState(function (_ref3) {
+            var prevPage = _ref3.page,
+                prevPages = _ref3.pages;
+            return {
+              page: prevPage + 1,
+              pages: prevPages.concat([nextPage]),
+              searching: false
+            };
+          });
+        }
+      }).catch(function () {
+        _this.mountedSetState({
+          searching: false
+        });
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSearchChange", function (_ref4) {
+      var search = _ref4.target.value;
 
       if (_this.timeout) {
         clearTimeout(_this.timeout);
       }
 
       if (!search.length) {
-        _this.setState({
-          results: [],
-          search: search,
-          searching: false
-        });
+        _this.setState(DEFAULT_STATE);
 
         return;
       }
 
       _this.setState({
+        autocomplete: null,
         search: search,
         searching: true
       });
+
+      _this.fetchAutocomplete(search);
+
+      _this.fetchSuggestions(search);
 
       _this.timeout = setTimeout(function () {
         return _this.performSearch(search);
       }, DELAY);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "performSearch", function (query) {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSearchKeyDown", function (event) {
+      var _this$state2 = _this.state,
+          autocomplete = _this$state2.autocomplete,
+          prevSearch = _this$state2.search;
+
+      if (event.keyCode !== KEYS.Tab || !autocomplete || !prevSearch) {
+        return;
+      }
+
+      var lowerAutocomplete = autocomplete.toLowerCase();
+      var lowerSearch = prevSearch.toLowerCase().replace(/\s/g, "");
+
+      if (lowerAutocomplete === lowerSearch) {
+        return;
+      }
+
+      event.preventDefault();
+      var typeahead = lowerAutocomplete.replace(lowerSearch, "");
+      var search = "".concat(prevSearch).concat(typeahead);
+
+      _this.setState({
+        autocomplete: null,
+        search: search,
+        searching: true
+      });
+
+      _this.fetchSuggestions(search);
+
+      _this.performSearch(search);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSuggestionClick", function (suggestion) {
+      if (_this.timeout) {
+        clearTimeout(_this.timeout);
+      }
+
+      _this.setState({
+        search: suggestion,
+        searching: true
+      });
+
+      _this.performSearch(suggestion);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "performSearch", function (search) {
       if (!_this.componentIsMounted) {
         return Promise.resolve();
       }
 
-      var _this$props = _this.props,
-          base = _this$props.base,
-          token = _this$props.token;
-      return new _client.default({
-        base: base,
-        token: token
-      }).search(query).then(function (results) {
-        _this.setState({
-          results: results,
+      return _this.client.search(search).then(function (page) {
+        _this.mountedSetState({
+          page: 0,
+          pages: [page],
+          searching: false
+        });
+      }).catch(function () {
+        _this.mountedSetState({
           searching: false
         });
       });
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "mountedSetState", function (mutation) {
+      if (_this.componentIsMounted) {
+        _this.setState(mutation);
+      }
+    });
+
+    var base = props.base,
+        token = props.token;
+    _this.client = new _client.default({
+      base: base,
+      token: token
+    });
+    _this.contentRef = _react.default.createRef();
+    _this.inputRef = _react.default.createRef();
+    _this.state = DEFAULT_STATE;
     return _this;
   }
 
@@ -152,10 +287,28 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.componentIsMounted = true;
+      window.addEventListener("keydown", this.handleWindowKeyDown);
+      window.addEventListener("click", this.handleWindowClick);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var _this$props = this.props,
+          base = _this$props.base,
+          token = _this$props.token;
+
+      if (base !== prevProps.base || token !== prevProps.token) {
+        this.client = new _client.default({
+          base: base,
+          token: token
+        });
+      }
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
+      window.removeEventListener("click", this.handleWindowClick);
+      window.removeEventListener("keydown", this.handleWindowKeyDown);
       this.componentIsMounted = false;
     }
   }, {
@@ -169,18 +322,27 @@ function (_Component) {
       var _this$props2 = this.props,
           contentRef = _this$props2.contentRef,
           onSelect = _this$props2.onSelect;
-      var _this$state = this.state,
-          results = _this$state.results,
-          search = _this$state.search,
-          searching = _this$state.searching;
-      return _react.default.createElement(Search, {
-        contentRef: contentRef,
+      var _this$state3 = this.state,
+          autocomplete = _this$state3.autocomplete,
+          page = _this$state3.page,
+          pages = _this$state3.pages,
+          search = _this$state3.search,
+          searching = _this$state3.searching,
+          suggestions = _this$state3.suggestions;
+      return _react.default.createElement(_search.default, {
+        autocomplete: autocomplete,
+        contentRef: contentRef || this.contentRef,
         inputRef: this.inputRef,
+        onPageLeft: this.handlePageLeft,
+        onPageRight: this.handlePageRight,
         onSearchChange: this.handleSearchChange,
+        onSearchKeyDown: this.handleSearchKeyDown,
+        onSuggestionClick: this.handleSuggestionClick,
         onSelect: onSelect,
-        results: results,
+        results: pages[page] ? pages[page].results : [],
         search: search,
-        searching: searching
+        searching: searching,
+        suggestions: suggestions
       });
     }
   }]);
