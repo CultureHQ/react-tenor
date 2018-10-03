@@ -76,13 +76,19 @@
 }
 
 .react-tenor--results {
-  background-color: white;
   display: flex;
   flex-wrap: wrap;
 }
 
 .react-tenor--result {
-  background-color: none;
+  background: #6a89af;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, .1),
+    rgba(255, 255, 255, .1) 15px,
+    transparent 0,
+    transparent 30px
+  );
   background-size: cover;
   border: 0;
   cursor: pointer;
