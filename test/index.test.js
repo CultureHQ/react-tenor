@@ -23,10 +23,10 @@ test("performs searches", () => (
     await component.instance().performSearch(search);
 
     component.update();
-    expect(component.find(Result)).toHaveLength(results.length);
+    expect(component.find(Result)).toHaveLength(results.search.length);
 
     component.find(Result).at(3).simulate("click");
-    expect(selected).toEqual(results[3]);
+    expect(selected).toEqual(results.search[3]);
 
     component.unmount();
   })
@@ -46,7 +46,7 @@ test("dedups fast searches", () => (
       // Yeah this is not great, but if you're going to test setTimeout,
       // sometimes you just want to use setTimeout.
       setTimeout(() => {
-        expect(server.requests).toEqual(1);
+        expect(server.requests.search).toEqual(1);
 
         resolve();
       }, 300);

@@ -8,9 +8,9 @@ test("renders without crashing", () => {
   let selected = null;
   const onSelect = result => { selected = result; };
 
-  const component = shallow(<Result result={results[0]} onSelect={onSelect} />);
+  const component = shallow(<Result result={results.search[0]} onSelect={onSelect} />);
   expect(component.type()).toEqual("button");
 
   component.simulate("click");
-  expect(selected).toEqual(results[0]);
+  expect(selected).toEqual(results.search[0]);
 });
