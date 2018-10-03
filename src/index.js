@@ -25,11 +25,13 @@ const Search = ({
         </svg>
       )}
     </div>
-    <div className="react-tenor--results">
-      {results.map(result => (
-        <Result key={result.id} result={result} onSelect={onSelect} />
-      ))}
-    </div>
+    {results.length > 0 && (
+      <div className="react-tenor--results">
+        {results.map(result => (
+          <Result key={result.id} result={result} onSelect={onSelect} />
+        ))}
+      </div>
+    )}
   </div>
 );
 
@@ -40,12 +42,15 @@ class Tenor extends Component {
     const { base, token } = props;
     this.client = new Client({ base, token });
 
+    this.contentRef = React.createRef();
     this.inputRef = React.createRef();
+
     this.state = { results: [], search: "", searching: false };
   }
 
   componentDidMount() {
     this.componentIsMounted = true;
+    window.addEventListener("click", this.handleWindowClick);
   }
 
   componentDidUpdate(prevProps) {
@@ -58,7 +63,21 @@ class Tenor extends Component {
 
   componentWillUnmount() {
     this.componentIsMounted = false;
+    window.removeEventListener("click", this.handleWindowClick);
   }
+
+  handleWindowClick = event => {
+    const { contentRef } = this.props;
+    const { search } = this.state;
+
+    if (search && !(contentRef || this.contentRef).current.contains(event.target)) {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+
+      this.setState({ results: [], search: "", searching: false });
+    }
+  };
 
   handleSearchChange = ({ target: { value: search } }) => {
     if (this.timeout) {
@@ -96,7 +115,7 @@ class Tenor extends Component {
 
     return (
       <Search
-        contentRef={contentRef}
+        contentRef={contentRef || this.contentRef}
         inputRef={this.inputRef}
         onSearchChange={this.handleSearchChange}
         onSelect={onSelect}
