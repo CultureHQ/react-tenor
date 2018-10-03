@@ -11,8 +11,44 @@
     <title>react-tenor</title>
 
     <style type="text/css">
-      body { background-color: #f7f7f7; }
-      .react-tenor { margin: 50px auto; }
+body {
+  background-color: #f7f7f7;
+}
+
+.container {
+  margin: 40px auto;
+  text-align: center;
+}
+
+h1 a {
+  color: #2c3e4f;
+  text-decoration: none;
+}
+
+h1 a:hover {
+  color: #6a89af;
+  text-decoration: underline;
+}
+
+.selected {
+  background: #6a89af;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, .1),
+    rgba(255, 255, 255, .1) 15px,
+    transparent 0,
+    transparent 30px
+  );
+  display: inline-block;
+  margin-bottom: 20px;
+  min-height: 100px;
+  min-width: 100px;
+}
+
+.react-tenor {
+  margin: 0 auto;
+  text-align: left;
+}
     </style>
   </head>
   <body>
