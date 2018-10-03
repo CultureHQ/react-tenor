@@ -10,6 +10,11 @@ class Client {
     this.token = options.token || "LIVDSRZULELA";
   }
 
+  autocomplete(search) {
+    return fetch(`${this.base}/autocomplete${this.autocompleteQueryFor(search)}`)
+      .then(response => response.json()).then(({ results }) => results[0]);
+  }
+
   search(search) {
     return fetch(`${this.base}/search${this.searchQueryFor(search)}`)
       .then(response => response.json()).then(({ results }) => results);
@@ -18,6 +23,15 @@ class Client {
   suggestions(search) {
     return fetch(`${this.base}/search_suggestions${this.suggestionsQueryFor(search)}`)
       .then(response => response.json()).then(({ results }) => results);
+  }
+
+  autocompleteQueryFor(search) {
+    return stringify({
+      key: this.token,
+      q: search,
+      limit: 1,
+      locale: "en_US"
+    });
   }
 
   searchQueryFor(search) {
