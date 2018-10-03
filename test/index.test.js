@@ -182,7 +182,7 @@ test("creates a new client when the token or base changes", () => {
 
 test("handles when the search returns an error", () => {
   const component = mount(<Tenor />);
-  component.instance().client.search = () => Promise.reject("error");
+  component.instance().client.search = () => Promise.reject(new Error("error"));
 
   component.instance().performSearch("test");
   expect(component.state().searching).toBe(false);

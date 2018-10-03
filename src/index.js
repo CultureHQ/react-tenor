@@ -147,15 +147,15 @@ class Tenor extends Component {
     });
   };
 
-  focus() {
-    this.inputRef.current.focus();
-  }
-
   mountedSetState = mutation => {
     if (this.componentIsMounted) {
       this.setState(mutation);
     }
   };
+
+  focus() {
+    this.inputRef.current.focus();
+  }
 
   render() {
     const { contentRef, onSelect } = this.props;

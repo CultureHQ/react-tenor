@@ -21,7 +21,9 @@ const Spinner = () => (
   </svg>
 );
 
-const SearchBar = ({ autocomplete, inputRef, search, searching, onSearchChange, onSearchKeyDown }) => (
+const SearchBar = ({
+  autocomplete, inputRef, search, searching, onSearchChange, onSearchKeyDown
+}) => (
   <div className="react-tenor--search-bar">
     <input
       ref={inputRef}
