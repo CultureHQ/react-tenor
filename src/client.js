@@ -10,20 +10,34 @@ class Client {
     this.token = options.token || "LIVDSRZULELA";
   }
 
-  search(q) {
-    return fetch(`${this.base}/search${this.queryFor(q)}`)
+  search(search) {
+    return fetch(`${this.base}/search${this.searchQueryFor(search)}`)
       .then(response => response.json()).then(({ results }) => results);
   }
 
-  queryFor(q) {
+  suggestions(search) {
+    return fetch(`${this.base}/search_suggestions${this.suggestionsQueryFor(search)}`)
+      .then(response => response.json()).then(({ results }) => results);
+  }
+
+  searchQueryFor(search) {
     return stringify({
       key: this.token,
-      q,
+      q: search,
       limit: 12,
       locale: "en_US",
       safesearch: "mild",
       media_filter: "minimal",
       ar_range: "all"
+    });
+  }
+
+  suggestionsQueryFor(search) {
+    return stringify({
+      key: this.token,
+      q: search,
+      limit: 5,
+      locale: "en_US"
     });
   }
 }

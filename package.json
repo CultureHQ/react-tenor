@@ -8,7 +8,7 @@
     "build:js": "babel src --out-dir dist --copy-files",
     "build:docs": "TOKEN=LIVDSRZULELA webpack --mode production",
     "lint": "eslint .",
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --hot --mode development",
     "test": "jest"
   },
   "repository": {
