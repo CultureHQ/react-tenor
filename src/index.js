@@ -16,7 +16,7 @@ const Search = ({
   }
 
   let typeahead = null;
-  if (autocomplete) {
+  if (autocomplete && search) {
     typeahead = autocomplete.toLowerCase().replace(search.toLowerCase().trim(), "");
   }
 
@@ -159,18 +159,20 @@ class Tenor extends Component {
   handleSearchKeyDown = event => {
     const { autocomplete, search: prevSearch } = this.state;
 
-    const lowerAutocomplete = autocomplete.toLowerCase();
-    const lowerSearch = prevSearch.toLowerCase();
+    if (event.keyCode === TAB_KEY && autocomplete && prevSearch) {
+      const lowerAutocomplete = autocomplete.toLowerCase();
+      const lowerSearch = prevSearch.toLowerCase();
 
-    if (lowerAutocomplete !== lowerSearch && event.keyCode === TAB_KEY) {
-      event.preventDefault();
+      if (lowerAutocomplete !== lowerSearch) {
+        event.preventDefault();
 
-      const typeahead = lowerAutocomplete.replace(lowerSearch, "");
-      const search = `${prevSearch}${typeahead}`;
+        const typeahead = lowerAutocomplete.replace(lowerSearch, "");
+        const search = `${prevSearch}${typeahead}`;
 
-      this.setState({ autocomplete: null, search, searching: true });
-      this.fetchSuggestions(search);
-      this.performSearch(search);
+        this.setState({ autocomplete: null, search, searching: true });
+        this.fetchSuggestions(search);
+        this.performSearch(search);
+      }
     }
   };
 
