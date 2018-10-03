@@ -77,36 +77,123 @@ test("allows you to call focus() on the parent", () => {
   expect(document.activeElement.classList[0]).toEqual("react-tenor--search");
 });
 
-test("handles clicking a suggestion", () => (
-  withTestServer(8083, async () => {
-    const component = mount(<Tenor base="http://localhost:8083" token="token" />);
+describe("suggestions", () => {
+  test("handles clicking a suggestion", () => (
+    withTestServer(8083, async () => {
+      const component = mount(<Tenor base="http://localhost:8083" token="token" />);
 
-    component.setState({ search: "test" });
-    await component.instance().fetchSuggestions("test");
-    component.update();
+      component.setState({ search: "test" });
+      await component.instance().fetchSuggestions("test");
+      component.update();
 
-    expect(component.find("Suggestion")).toHaveLength(5);
+      expect(component.find("Suggestion")).toHaveLength(5);
 
-    component.find("Suggestion").at(2).find("button").simulate("click");
-    expect(component.state().search).toEqual(results.search_suggestions[2]);
+      component.find("Suggestion").at(2).find("button").simulate("click");
 
-    await component.instance().performSearch(results.search_suggestions[2]);
-  })
-));
+      expect(component.state().search).toEqual(results.search_suggestions[2]);
+      await component.instance().performSearch(results.search_suggestions[2]);
+    })
+  ));
 
-test("handles tab completing the typeahead", () => (
-  withTestServer(8084, async () => {
-    const component = mount(<Tenor base="http://localhost:8084" token="token" />);
+  test("clears the timeout", () => {
+    const component = mount(<Tenor />);
+    component.setState({ search: "t", suggestions: ["test"] });
+
+    component.instance().client.search = () => Promise.resolve(results.search);
+    component.instance().timeout = setTimeout(() => {}, 1000);
+
+    component.find("Suggestion").find("button").simulate("click");
+    expect(component.state().search).toEqual("test");
+  });
+});
+
+describe("tab completion", () => {
+  const BACKSPACE_KEY = 8;
+  const TAB_KEY = 9;
+
+  test("handles tab completing the typeahead", () => (
+    withTestServer(8084, async () => {
+      const component = mount(<Tenor base="http://localhost:8084" token="token" />);
+
+      component.setState({ search: "t" });
+      await component.instance().fetchAutocomplete("t");
+      component.update();
+
+      expect(component.find("Autocomplete")).toHaveLength(1);
+
+      component.find("input").simulate("keyDown", { keyCode: TAB_KEY });
+      expect(component.state().search).toEqual(results.autocomplete[0]);
+
+      await component.instance().performSearch(results.autocomplete[0]);
+    })
+  ));
+
+  test("ignores other key inputs", () => {
+    const component = mount(<Tenor />);
+
+    component.find("input").simulate("keyDown", { keyCode: BACKSPACE_KEY });
+    expect(component.state().search).toEqual("");
+  });
+
+  test("ignores when the autocomplete matches the search", () => {
+    const component = mount(<Tenor />);
+    component.setState({ autocomplete: "test", search: "test" });
+
+    component.find("input").simulate("keyDown", { keyCode: TAB_KEY });
+    expect(component.state().search).toEqual("test");
+  });
+});
+
+describe("auto close", () => {
+  test("handles clicking outside the component", () => {
+    const contentRef = React.createRef();
+    const component = mount(<Tenor contentRef={contentRef} />);
+
+    component.instance().handleWindowClick({ target: document.body });
+    expect(component.state().search).toEqual("");
 
     component.setState({ search: "t" });
-    await component.instance().fetchAutocomplete("t");
-    component.update();
+    component.instance().handleWindowClick({ target: contentRef.current });
+    expect(component.state().search).toEqual("t");
 
-    expect(component.find("Autocomplete")).toHaveLength(1);
+    component.instance().handleWindowClick({ target: document.body });
+    expect(component.state().search).toEqual("");
+  });
 
-    component.find("input").simulate("keyDown", { keyCode: 9 });
-    expect(component.state().search).toEqual(results.autocomplete[0]);
+  test("clears the timeout", () => {
+    const component = mount(<Tenor />);
+    component.setState({ search: "t" });
 
-    await component.instance().performSearch(results.autocomplete[0]);
-  })
-));
+    component.instance().timeout = setTimeout(() => {}, 1000);
+    component.instance().handleWindowClick({ target: document.body });
+    expect(component.state().search).toEqual("");
+  });
+});
+
+test("creates a new client when the token or base changes", () => {
+  const component = mount(<Tenor base="https://example.com" token="token" />);
+
+  component.setProps({ token: "other-token" });
+  expect(component.instance().client.token).toEqual("other-token");
+
+  component.setProps({ base: "https://other-example.com" });
+  expect(component.instance().client.base).toEqual("https://other-example.com");
+});
+
+test("handles when the search returns an error", () => {
+  const component = mount(<Tenor />);
+  component.instance().client.search = () => Promise.reject("error");
+
+  component.instance().performSearch("test");
+  expect(component.state().searching).toBe(false);
+});
+
+test("unmounts cleanly", async () => {
+  const component = mount(<Tenor />);
+  const instance = component.instance();
+
+  setTimeout(() => instance.mountedSetState({ foo: "bar" }), 100);
+  component.unmount();
+
+  await new Promise(resolve => setTimeout(resolve, 100));
+});
