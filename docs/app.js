@@ -1,29 +1,23 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
 import Tenor from "../src";
 import "../src/styles.css";
 
-class App extends Component {
-  state = { selected: null };
+const App = () => {
+  const [selected, setSelected] = useState(null);
 
-  handleSelect = selected => {
-    this.setState({ selected });
-  };
-
-  render() {
-    const { selected } = this.state;
-
-    return (
-      <main className="container">
-        <h1><a href="https://github.com/CultureHQ/react-tenor">react-tenor</a></h1>
-        <div className="selected">
-          {selected && <img src={selected.media[0].tinygif.url} alt="Selected GIF" />}
-        </div>
-        <Tenor onSelect={this.handleSelect} />
-      </main>
-    );
-  }
-}
+  return (
+    <main className="container">
+      <h1>
+        <a href="https://github.com/CultureHQ/react-tenor">react-tenor</a>
+      </h1>
+      <div className="selected">
+        {selected && <img src={selected.media[0].tinygif.url} alt="Selected GIF" />}
+      </div>
+      <Tenor onSelect={setSelected} />
+    </main>
+  );
+};
 
 ReactDOM.render(<App />, document.getElementById("main"));
