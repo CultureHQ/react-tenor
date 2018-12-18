@@ -1,9 +1,9 @@
 import React from "react";
 import { mount } from "enzyme";
 
-import Tenor from "../src";
+import Tenor from "../src/Tenor";
 import Result from "../src/Result";
-import withTestServer, { results } from "./test-server";
+import withTestServer, { results } from "./withTestServer";
 
 test("performs searches", withTestServer(8081, async () => {
   let selected = null;

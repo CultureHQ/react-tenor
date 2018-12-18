@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-import Tenor from "../src";
+import Tenor from "../src/Tenor";
 import "../src/styles.css";
 
 const App = () => {

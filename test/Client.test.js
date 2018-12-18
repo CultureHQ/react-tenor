@@ -1,5 +1,5 @@
 import Client from "../src/Client";
-import withTestServer, { results } from "./test-server";
+import withTestServer, { results } from "./withTestServer";
 
 test("sets sane defaults", () => {
   const client = new Client();

@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import Result from "../src/Result";
-import { results } from "./test-server";
+import { results } from "./withTestServer";
 
 test("renders without crashing", () => {
   let selected = null;
