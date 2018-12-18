@@ -1,7 +1,7 @@
 import React from "react";
 
-import Result from "./result";
-import Suggestion from "./suggestion";
+import Result from "./Result";
+import Suggestion from "./Suggestion";
 
 const Autocomplete = ({ autocomplete, search }) => {
   const prefix = search.toLowerCase().replace(/\s/g, "");

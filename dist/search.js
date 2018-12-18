@@ -7,9 +7,9 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _result = _interopRequireDefault(require("./result"));
+var _Result = _interopRequireDefault(require("./Result"));
 
-var _suggestion = _interopRequireDefault(require("./suggestion"));
+var _Suggestion = _interopRequireDefault(require("./Suggestion"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64,7 +64,7 @@ var Suggestions = function Suggestions(_ref3) {
   return _react.default.createElement("div", {
     className: "react-tenor--suggestions"
   }, suggestions.map(function (suggestion) {
-    return _react.default.createElement(_suggestion.default, {
+    return _react.default.createElement(_Suggestion.default, {
       key: suggestion,
       suggestion: suggestion,
       onSuggestionClick: onSuggestionClick
@@ -80,7 +80,7 @@ var Results = function Results(_ref4) {
   return _react.default.createElement("div", {
     className: "react-tenor--results"
   }, results.map(function (result) {
-    return _react.default.createElement(_result.default, {
+    return _react.default.createElement(_Result.default, {
       key: result.id,
       result: result,
       onSelect: onSelect

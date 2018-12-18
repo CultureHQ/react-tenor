@@ -7,9 +7,9 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _client = _interopRequireDefault(require("./client"));
+var _Client = _interopRequireDefault(require("./Client"));
 
-var _search = _interopRequireDefault(require("./search"));
+var _Search = _interopRequireDefault(require("./Search"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -273,7 +273,7 @@ function (_Component) {
 
     var base = props.base,
         token = props.token;
-    _this.client = new _client.default({
+    _this.client = new _Client.default({
       base: base,
       token: token
     });
@@ -298,7 +298,7 @@ function (_Component) {
           token = _this$props.token;
 
       if (base !== prevProps.base || token !== prevProps.token) {
-        this.client = new _client.default({
+        this.client = new _Client.default({
           base: base,
           token: token
         });
@@ -329,7 +329,7 @@ function (_Component) {
           search = _this$state3.search,
           searching = _this$state3.searching,
           suggestions = _this$state3.suggestions;
-      return _react.default.createElement(_search.default, {
+      return _react.default.createElement(_Search.default, {
         autocomplete: autocomplete,
         contentRef: contentRef || this.contentRef,
         inputRef: this.inputRef,

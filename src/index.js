@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import Client from "./client";
-import Search from "./search";
+import Client from "./Client";
+import Search from "./Search";
 
 const DEFAULT_STATE = {
   autocomplete: null,

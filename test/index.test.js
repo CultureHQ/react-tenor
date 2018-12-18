@@ -2,7 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 
 import Tenor from "../src";
-import Result from "../src/result";
+import Result from "../src/Result";
 import withTestServer, { results } from "./test-server";
 
 test("performs searches", withTestServer(8081, async () => {

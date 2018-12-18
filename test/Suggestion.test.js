@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import Suggestion from "../src/suggestion";
+import Suggestion from "../src/Suggestion";
 
 test("renders without crashing", () => {
   let selected = null;

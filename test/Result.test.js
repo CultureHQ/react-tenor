@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 
-import Result from "../src/result";
+import Result from "../src/Result";
 import { results } from "./test-server";
 
 test("renders without crashing", () => {

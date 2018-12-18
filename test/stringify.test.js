@@ -1,4 +1,4 @@
-import { stringify } from "../src/client";
+import { stringify } from "../src/Client";
 
 test("works for empty objects", () => {
   const stringified = stringify({});
