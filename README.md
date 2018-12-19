@@ -1,6 +1,5 @@
 # react-tenor
 
-[![Build Status](https://travis-ci.com/CultureHQ/react-tenor.svg?branch=master)](https://travis-ci.com/CultureHQ/react-tenor)
 [![Package Version](https://img.shields.io/npm/v/react-tenor.svg)](https://www.npmjs.com/package/react-tenor)
 
 A React component for selected GIFs from [Tenor](https://tenor.com/gifapi).
