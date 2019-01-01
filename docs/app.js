@@ -5,7 +5,7 @@ import Tenor from "../src/Tenor";
 import "../src/styles.css";
 
 const App = () => {
- const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null);
 
   return (
     <>
