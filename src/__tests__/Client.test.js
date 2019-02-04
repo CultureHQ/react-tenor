@@ -1,4 +1,4 @@
-import Client from "../src/Client";
+import Client from "../Client";
 import withTestServer, { results } from "./withTestServer";
 
 test("sets sane defaults", () => {

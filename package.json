@@ -54,7 +54,8 @@
   },
   "jest": {
     "setupFilesAfterEnv": [
-      "./test/setupTests.js"
-    ]
+      "./setupTests.js"
+    ],
+    "testRegex": ".test.js"
   }
 }
