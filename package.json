@@ -4,9 +4,10 @@
   "description": "Integrate with the Tenor GIF API",
   "main": "dist/Tenor.js",
   "scripts": {
-    "build": "yarn build:js && yarn build:docs",
-    "build:js": "babel src --out-dir dist --copy-files",
+    "build": "yarn build:js && yarn build:docs && yarn build:css",
+    "build:js": "babel src --out-dir dist --ignore '**/__tests__'",
     "build:docs": "webpack --mode production",
+    "build:css": "cp src/styles.css dist/styles.css",
     "lint": "eslint .",
     "start": "webpack-dev-server --mode development --hot",
     "test": "jest"
