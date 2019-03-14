@@ -793,9 +793,9 @@
     minimist "^1.2.0"
 
 "@culturehq/eslint-config@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@culturehq/eslint-config/-/eslint-config-1.0.0.tgz#c838d71b5c35ab9c27a47f538d177bbca172f5b9"
-  integrity sha512-iUxYinRA6Q1hsBMzq5nTXThDiD3EUEyJrxoExWZYnPjp3P+5iTFd5AvmMzqKsuHbrEOXmwjTY6U4eFA6Q+Y0LQ==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@culturehq/eslint-config/-/eslint-config-1.0.1.tgz#464fbf470283f489861c6877fa3a7f2906f05f50"
+  integrity sha512-G3vmFFpps/CnDuPe2JDDezf2gOgu0LR2LK2DY0WARdYWsJvyWOvsA6nLdZ0rgtDhc1KI7H+eV8B+dOIZDl0qHg==
   dependencies:
     babel-eslint "^10.0.1"
     eslint-config-airbnb "^17.1.0"
