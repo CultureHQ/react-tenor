@@ -27,11 +27,11 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -62,7 +62,7 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Tenor).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "fetchAutocomplete", function (currentSearch) {
+    _defineProperty(_assertThisInitialized(_this), "fetchAutocomplete", function (currentSearch) {
       return _this.client.autocomplete(currentSearch).then(function (autocomplete) {
         var search = _this.state.search;
 
@@ -74,7 +74,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "fetchSuggestions", function (currentSearch) {
+    _defineProperty(_assertThisInitialized(_this), "fetchSuggestions", function (currentSearch) {
       return _this.client.suggestions(currentSearch).then(function (suggestions) {
         var search = _this.state.search;
 
@@ -86,7 +86,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleWindowClick", function (event) {
+    _defineProperty(_assertThisInitialized(_this), "handleWindowClick", function (event) {
       var contentRef = _this.props.contentRef;
       var search = _this.state.search;
 
@@ -107,7 +107,7 @@ function (_Component) {
       _this.setState(DEFAULT_STATE);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleWindowKeyDown", function (event) {
+    _defineProperty(_assertThisInitialized(_this), "handleWindowKeyDown", function (event) {
       var contentRef = _this.props.contentRef;
 
       if (!(contentRef || _this.contentRef).current.contains(event.target) || [KEYS.ArrowLeft, KEYS.ArrowRight].indexOf(event.keyCode) === -1 || !event.metaKey) {
@@ -123,7 +123,7 @@ function (_Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePageLeft", function () {
+    _defineProperty(_assertThisInitialized(_this), "handlePageLeft", function () {
       _this.setState(function (_ref) {
         var page = _ref.page;
         return {
@@ -132,7 +132,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handlePageRight", function () {
+    _defineProperty(_assertThisInitialized(_this), "handlePageRight", function () {
       var _this$state = _this.state,
           page = _this$state.page,
           pages = _this$state.pages,
@@ -175,7 +175,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSearchChange", function (_ref4) {
+    _defineProperty(_assertThisInitialized(_this), "handleSearchChange", function (_ref4) {
       var search = _ref4.target.value;
 
       if (_this.timeout) {
@@ -203,7 +203,7 @@ function (_Component) {
       }, DELAY);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSearchKeyDown", function (event) {
+    _defineProperty(_assertThisInitialized(_this), "handleSearchKeyDown", function (event) {
       var _this$state2 = _this.state,
           autocomplete = _this$state2.autocomplete,
           prevSearch = _this$state2.search;
@@ -234,7 +234,7 @@ function (_Component) {
       _this.performSearch(search);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSuggestionClick", function (suggestion) {
+    _defineProperty(_assertThisInitialized(_this), "handleSuggestionClick", function (suggestion) {
       if (_this.timeout) {
         clearTimeout(_this.timeout);
       }
@@ -247,7 +247,7 @@ function (_Component) {
       _this.performSearch(suggestion);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "performSearch", function (search) {
+    _defineProperty(_assertThisInitialized(_this), "performSearch", function (search) {
       if (!_this.componentIsMounted) {
         return Promise.resolve();
       }
@@ -265,7 +265,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "mountedSetState", function (mutation) {
+    _defineProperty(_assertThisInitialized(_this), "mountedSetState", function (mutation) {
       if (_this.componentIsMounted) {
         _this.setState(mutation);
       }
