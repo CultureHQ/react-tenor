@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -11,9 +11,9 @@ var _Client = _interopRequireDefault(require("./Client"));
 
 var _Search = _interopRequireDefault(require("./Search"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -168,7 +168,7 @@ function (_Component) {
             };
           });
         }
-      }).catch(function () {
+      })["catch"](function () {
         _this.mountedSetState({
           searching: false
         });
@@ -258,7 +258,7 @@ function (_Component) {
           pages: [page],
           searching: false
         });
-      }).catch(function () {
+      })["catch"](function () {
         _this.mountedSetState({
           searching: false
         });
@@ -273,12 +273,12 @@ function (_Component) {
 
     var base = props.base,
         token = props.token;
-    _this.client = new _Client.default({
+    _this.client = new _Client["default"]({
       base: base,
       token: token
     });
-    _this.contentRef = _react.default.createRef();
-    _this.inputRef = _react.default.createRef();
+    _this.contentRef = _react["default"].createRef();
+    _this.inputRef = _react["default"].createRef();
     _this.state = DEFAULT_STATE;
     return _this;
   }
@@ -298,7 +298,7 @@ function (_Component) {
           token = _this$props.token;
 
       if (base !== prevProps.base || token !== prevProps.token) {
-        this.client = new _Client.default({
+        this.client = new _Client["default"]({
           base: base,
           token: token
         });
@@ -329,7 +329,7 @@ function (_Component) {
           search = _this$state3.search,
           searching = _this$state3.searching,
           suggestions = _this$state3.suggestions;
-      return _react.default.createElement(_Search.default, {
+      return _react["default"].createElement(_Search["default"], {
         autocomplete: autocomplete,
         contentRef: contentRef || this.contentRef,
         inputRef: this.inputRef,
@@ -351,4 +351,4 @@ function (_Component) {
 }(_react.Component);
 
 var _default = Tenor;
-exports.default = _default;
+exports["default"] = _default;
