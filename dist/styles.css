@@ -14,7 +14,7 @@
 
 .react-tenor--search {
   background-color: white;
-  border: 0;
+  border: 1px solid #f7f7f7;
   box-sizing: border-box;
   color: #555;
   font-family: Arial;
@@ -23,6 +23,11 @@
   overflow: visible;
   padding: .25em .5em;
   width: 100%;
+}
+
+.react-tenor--search:focus {
+  box-shadow: 0 0 2px 2px #6a89af;
+  outline: none;
 }
 
 .react-tenor--autocomplete {
@@ -63,12 +68,18 @@
 
 .react-tenor--suggestions button {
   background: #6a89af;
+  border: 1px solid #f7f7f7;
   border-radius: 5px;
   color: white;
   cursor: pointer;
   display: inline-block;
   font-size: 1em;
   padding: 3px 5px;
+}
+
+.react-tenor--suggestions button:focus {
+  box-shadow: 0 0 2px 2px #6a89af;
+  outline: none;
 }
 
 .react-tenor--suggestions button + button {
@@ -107,6 +118,13 @@
   display: block;
   height: 100%;
   width: 100%;
+}
+
+.react-tenor--result:focus {
+  box-shadow: 0 0 2px 2px #6a89af;
+  border: 1px solid #f7f7f7;
+  outline: none;
+  z-index: 1;
 }
 
 .react-tenor--result:hover {
