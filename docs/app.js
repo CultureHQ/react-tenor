@@ -22,7 +22,7 @@ const App = () => {
       {ReactDOM.createPortal(
         <footer>
           <p>
-            Copyright (c) 2018 CultureHQ
+            Copyright (c) 2019 CultureHQ
             <br />
             <a href="https://github.com/CultureHQ/react-tenor">
               github.com/CultureHQ/react-tenor
