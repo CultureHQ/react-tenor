@@ -194,8 +194,8 @@ describe("pagination", () => {
   const ARROW_LEFT_KEY = 37;
   const ARROW_RIGHT_KEY = 39;
 
-  const mountTenor = (props, state) => {
-    const component = mount(<Tenor {...props} />);
+  const mountTenor = ({ base, token }, state) => {
+    const component = mount(<Tenor base={base} token={token} />);
     component.setState(state);
 
     component.pressKey = keyCode => {
