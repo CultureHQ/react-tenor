@@ -1,7 +1,6 @@
 import React from "react";
 
 import Result from "./Result";
-import Suggestion from "./Suggestion";
 
 const Autocomplete = ({ autocomplete, search }) => {
   const prefix = search.toLowerCase().replace(/\s/g, "");
@@ -41,6 +40,12 @@ const SearchBar = ({
     {searching && <Spinner />}
   </div>
 );
+
+const Suggestion = ({ suggestion, onSuggestionClick }) => {
+  const onClick = () => onSuggestionClick(suggestion);
+
+  return <button type="button" onClick={onClick}>{suggestion}</button>;
+};
 
 const Suggestions = ({ suggestions, onSuggestionClick }) => (
   <div className="react-tenor--suggestions">

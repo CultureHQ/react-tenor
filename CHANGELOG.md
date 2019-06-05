@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.2.1] - 2019-06-05
+### Changed
+- Rebuilt dist with correct capitalization of file names.
+
 ## [1.2.0] - 2019-05-22
 ### Added
 - Switched to using `@culturehq/scripts` for development.
@@ -38,7 +42,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Don't build the final distribution with `webpack`, just use `babel`.
 - Rename `example` to `docs` so we can publish to github pages.
 
-[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/CultureHQ/react-tenor/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/CultureHQ/react-tenor/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/CultureHQ/react-tenor/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/CultureHQ/react-tenor/compare/v0.2.0...v1.0.0

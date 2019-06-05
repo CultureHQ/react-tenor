@@ -9,8 +9,6 @@ var _react = _interopRequireDefault(require("react"));
 
 var _Result = _interopRequireDefault(require("./Result"));
 
-var _Suggestion = _interopRequireDefault(require("./Suggestion"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Autocomplete = function Autocomplete(_ref) {
@@ -58,13 +56,27 @@ var SearchBar = function SearchBar(_ref2) {
   }), searching && _react["default"].createElement(Spinner, null));
 };
 
-var Suggestions = function Suggestions(_ref3) {
-  var suggestions = _ref3.suggestions,
+var Suggestion = function Suggestion(_ref3) {
+  var suggestion = _ref3.suggestion,
       onSuggestionClick = _ref3.onSuggestionClick;
+
+  var onClick = function onClick() {
+    return onSuggestionClick(suggestion);
+  };
+
+  return _react["default"].createElement("button", {
+    type: "button",
+    onClick: onClick
+  }, suggestion);
+};
+
+var Suggestions = function Suggestions(_ref4) {
+  var suggestions = _ref4.suggestions,
+      onSuggestionClick = _ref4.onSuggestionClick;
   return _react["default"].createElement("div", {
     className: "react-tenor--suggestions"
   }, suggestions.map(function (suggestion) {
-    return _react["default"].createElement(_Suggestion["default"], {
+    return _react["default"].createElement(Suggestion, {
       key: suggestion,
       suggestion: suggestion,
       onSuggestionClick: onSuggestionClick
@@ -72,11 +84,11 @@ var Suggestions = function Suggestions(_ref3) {
   }));
 };
 
-var Results = function Results(_ref4) {
-  var results = _ref4.results,
-      onPageLeft = _ref4.onPageLeft,
-      onPageRight = _ref4.onPageRight,
-      onSelect = _ref4.onSelect;
+var Results = function Results(_ref5) {
+  var results = _ref5.results,
+      onPageLeft = _ref5.onPageLeft,
+      onPageRight = _ref5.onPageRight,
+      onSelect = _ref5.onSelect;
   return _react["default"].createElement("div", {
     className: "react-tenor--results"
   }, results.map(function (result) {
@@ -94,9 +106,9 @@ var Results = function Results(_ref4) {
   }));
 };
 
-var PageControl = function PageControl(_ref5) {
-  var direction = _ref5.direction,
-      onClick = _ref5.onClick;
+var PageControl = function PageControl(_ref6) {
+  var direction = _ref6.direction,
+      onClick = _ref6.onClick;
   return _react["default"].createElement("button", {
     "aria-label": "Page ".concat(direction),
     className: "react-tenor--page-".concat(direction),
@@ -105,20 +117,20 @@ var PageControl = function PageControl(_ref5) {
   }, _react["default"].createElement("div", null));
 };
 
-var Search = function Search(_ref6) {
-  var autocomplete = _ref6.autocomplete,
-      contentRef = _ref6.contentRef,
-      inputRef = _ref6.inputRef,
-      onPageLeft = _ref6.onPageLeft,
-      onPageRight = _ref6.onPageRight,
-      onSearchChange = _ref6.onSearchChange,
-      onSearchKeyDown = _ref6.onSearchKeyDown,
-      onSuggestionClick = _ref6.onSuggestionClick,
-      onSelect = _ref6.onSelect,
-      results = _ref6.results,
-      search = _ref6.search,
-      searching = _ref6.searching,
-      suggestions = _ref6.suggestions;
+var Search = function Search(_ref7) {
+  var autocomplete = _ref7.autocomplete,
+      contentRef = _ref7.contentRef,
+      inputRef = _ref7.inputRef,
+      onPageLeft = _ref7.onPageLeft,
+      onPageRight = _ref7.onPageRight,
+      onSearchChange = _ref7.onSearchChange,
+      onSearchKeyDown = _ref7.onSearchKeyDown,
+      onSuggestionClick = _ref7.onSuggestionClick,
+      onSelect = _ref7.onSelect,
+      results = _ref7.results,
+      search = _ref7.search,
+      searching = _ref7.searching,
+      suggestions = _ref7.suggestions;
   var classList = "react-tenor";
 
   if (suggestions.length > 0 || results.length > 0) {
