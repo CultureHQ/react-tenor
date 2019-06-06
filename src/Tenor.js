@@ -30,13 +30,25 @@ class Tenor extends Component {
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
 
-    this.state = DEFAULT_STATE;
+    this.state = {
+      ...DEFAULT_STATE,
+      search: props.initialSearch || "",
+      searching: !!props.initialSearch
+    };
   }
 
   componentDidMount() {
+    const { initialSearch } = this.props;
+
     this.componentIsMounted = true;
     window.addEventListener("keydown", this.handleWindowKeyDown);
     window.addEventListener("click", this.handleWindowClick);
+
+    if (initialSearch) {
+      this.fetchAutocomplete(initialSearch);
+      this.fetchSuggestions(initialSearch);
+      this.performSearch(initialSearch);
+    }
   }
 
   componentDidUpdate(prevProps) {

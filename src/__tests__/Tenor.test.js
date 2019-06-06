@@ -50,6 +50,17 @@ test("dedups fast searches", withTestServer(8082, server => {
   });
 }));
 
+test("allows passing an initialSearch prop", withTestServer(8083, async () => {
+  const component = mount(
+    <Tenor base="http://localhost:8083" token="token" initialSearch="happy" />
+  );
+
+  await component.instance().performSearch();
+  component.update();
+
+  expect(component.find(Result)).toHaveLength(results.search.length);
+}));
+
 test("does not enqueue searches for empty inputs", () => {
   const component = mount(<Tenor />);
 

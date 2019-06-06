@@ -22,6 +22,10 @@ If you need to change the API endpoint that this component hits, you can set the
 
 If you need access to the actual `div` that `Tenor` renders, you can pass any valid `React` ref to the `contentRef` prop.
 
+### `initialSearch`
+
+If you want the search bar to start pre-populated with a specific value, you can pass an `initialSearch` prop.
+
 ### `focus()`
 
 The `Tenor` component has a `focus()` member function that can be called to request focus be placed on the search input.
