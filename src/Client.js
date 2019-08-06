@@ -8,6 +8,7 @@ class Client {
   constructor(options = {}) {
     this.base = options.base || "https://api.tenor.com/v1";
     this.token = options.token || "LIVDSRZULELA";
+    this.defaultResults = options.defaultResults || false;
   }
 
   autocomplete(search) {
@@ -16,7 +17,11 @@ class Client {
   }
 
   search(search, params = {}) {
-    return fetch(`${this.base}/search${this.searchQueryFor(search, params)}`)
+    let searchQuery = `${this.base}/search${this.searchQueryFor(search, params)}`;
+    if(this.defaultResults && !search) {
+      searchQuery = `${this.base}/trending${this.searchQueryFor(search, params)}`;
+    }
+    return fetch(searchQuery)
       .then(response => response.json());
   }
 
