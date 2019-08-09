@@ -130,6 +130,7 @@ class Tenor extends Component {
   };
 
   handlePageRight = () => {
+    const { defaultResults } = this.props;
     const {
       page,
       pages,
@@ -137,7 +138,7 @@ class Tenor extends Component {
       searching
     } = this.state;
 
-    if ((!this.props.defaultResults && !search) || searching) {
+    if ((!defaultResults && !search) || searching) {
       return Promise.resolve();
     }
 
@@ -160,11 +161,13 @@ class Tenor extends Component {
   };
 
   handleSearchChange = ({ target: { value: search } }) => {
+    const { defaultResults } = this.props;
+
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
 
-    if (!this.props.defaultResults && !search.length) {
+    if (!defaultResults && !search.length) {
       this.setState(DEFAULT_STATE);
       return;
     }

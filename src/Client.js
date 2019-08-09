@@ -18,11 +18,12 @@ class Client {
 
   search(search, params = {}) {
     let searchQuery = `${this.base}/search${this.searchQueryFor(search, params)}`;
-    if(this.defaultResults && !search) {
+
+    if (this.defaultResults && !search) {
       searchQuery = `${this.base}/trending${this.searchQueryFor(search, params)}`;
     }
-    return fetch(searchQuery)
-      .then(response => response.json());
+
+    return fetch(searchQuery).then(response => response.json());
   }
 
   suggestions(search) {
