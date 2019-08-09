@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 - The `autoFocus` prop to focus on the input when the component mounts.
+- The `defaultResults` prop to display trending results in empty search.
 
 ### Changed
 
