@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.4.0] - 2019-08-09
+
 ### Added
 
 - The `autoFocus` prop to focus on the input when the component mounts.
@@ -83,7 +85,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Don't build the final distribution with `webpack`, just use `babel`.
 - Rename `example` to `docs` so we can publish to github pages.
 
-[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/CultureHQ/react-tenor/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/CultureHQ/react-tenor/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/CultureHQ/react-tenor/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/CultureHQ/react-tenor/compare/v1.2.1...v1.3.0

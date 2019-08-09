@@ -1,6 +1,6 @@
 {
   "name": "react-tenor",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Integrate with the Tenor GIF API",
   "main": "dist/Tenor.js",
   "scripts": {
