@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Changed
 
 - No longer rely on `fetch` being available.
+- [INTERNAL] Refactor Client.js to be simpler.
+- Ensure `pointer` cursor on pagination controls.
+- Align typeahead text with current text.
 
 ## [1.3.2] - 2019-06-07
 
