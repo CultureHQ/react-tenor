@@ -34,7 +34,12 @@ const withTestServer = (port, callback) => async () => {
     const requestKey = getRequestKey(request.url);
     server.requests[requestKey] += 1;
 
-    response.writeHead(200, { "Content-Type": "application/json" });
+    response.writeHead(200, {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS, GET"
+    });
+
     response.write(JSON.stringify({ results: results[requestKey], next: "12" }));
     response.end();
   });

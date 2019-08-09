@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- No longer rely on `fetch` being available.
+
 ## [1.3.2] - 2019-06-07
 
 ### Changed

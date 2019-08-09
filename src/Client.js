@@ -4,6 +4,25 @@ export const stringify = query => (
   ), "?"))
 );
 
+const fetch = uri => new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState !== 4) {
+      return;
+    }
+
+    if (xhr.status >= 200 && xhr.status < 300) {
+      resolve(JSON.parse(xhr.responseText));
+    } else {
+      reject(new Error(xhr.responseText));
+    }
+  };
+
+  xhr.open("GET", uri);
+  xhr.send();
+});
+
 class Client {
   constructor(options = {}) {
     this.base = options.base || "https://api.tenor.com/v1";
@@ -13,7 +32,7 @@ class Client {
 
   autocomplete(search) {
     return fetch(`${this.base}/autocomplete${this.autocompleteQueryFor(search)}`)
-      .then(response => response.json()).then(({ results }) => results[0]);
+      .then(({ results }) => results[0]);
   }
 
   search(search, params = {}) {
@@ -23,12 +42,12 @@ class Client {
       searchQuery = `${this.base}/trending${this.searchQueryFor(search, params)}`;
     }
 
-    return fetch(searchQuery).then(response => response.json());
+    return fetch(searchQuery);
   }
 
   suggestions(search) {
     return fetch(`${this.base}/search_suggestions${this.suggestionsQueryFor(search)}`)
-      .then(response => response.json()).then(({ results }) => results);
+      .then(({ results }) => results);
   }
 
   autocompleteQueryFor(search) {
