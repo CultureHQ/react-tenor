@@ -24,8 +24,8 @@ class Tenor extends Component {
   constructor(props) {
     super(props);
 
-    const { base, token } = props;
-    this.client = new Client({ base, token });
+    const { base, token, defaultResults } = props;
+    this.client = new Client({ base, token, defaultResults });
 
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
@@ -38,13 +38,13 @@ class Tenor extends Component {
   }
 
   componentDidMount() {
-    const { initialSearch } = this.props;
+    const { initialSearch, defaultResults } = this.props;
 
     this.componentIsMounted = true;
     window.addEventListener("keydown", this.handleWindowKeyDown);
     window.addEventListener("click", this.handleWindowClick);
 
-    if (initialSearch) {
+    if (initialSearch || defaultResults) {
       this.fetchAutocomplete(initialSearch);
       this.fetchSuggestions(initialSearch);
       this.performSearch(initialSearch);
@@ -137,7 +137,7 @@ class Tenor extends Component {
       searching
     } = this.state;
 
-    if (!search || searching) {
+    if ((!this.props.defaultResults && !search) || searching) {
       return Promise.resolve();
     }
 
@@ -164,7 +164,7 @@ class Tenor extends Component {
       clearTimeout(this.timeout);
     }
 
-    if (!search.length) {
+    if (!this.props.defaultResults && !search.length) {
       this.setState(DEFAULT_STATE);
       return;
     }

@@ -26,6 +26,10 @@ If you need access to the actual `div` that `Tenor` renders, you can pass any va
 
 If you want the search bar to start pre-populated with a specific value, you can pass an `initialSearch` prop.
 
+### `defaultResults`
+
+If you need to show trending results in an initial rendering without any initialSearch, you can pass `defaultResults` prop.
+
 ### `focus()`
 
 The `Tenor` component has a `focus()` member function that can be called to request focus be placed on the search input.
