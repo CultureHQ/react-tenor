@@ -40,7 +40,7 @@
   padding: .25em .5em;
   pointer-events: none;
   position: absolute;
-  top: 0;
+  top: 1px;
 }
 
 .react-tenor--autocomplete span {
@@ -141,6 +141,7 @@
 .react-tenor--page-right {
   background: #6a89af;
   border: 0;
+  cursor: pointer;
   height: 1.8em;
   position: absolute;
   top: calc(50% - .9em);

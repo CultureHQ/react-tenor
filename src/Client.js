@@ -1,8 +1,14 @@
-export const stringify = query => (
-  encodeURI(Object.keys(query).reduce((accum, key, index) => (
-    `${accum}${index === 0 ? "" : "&"}${key}=${query[key]}`
-  ), "?"))
-);
+export const stringify = query => {
+  const keyValuePairs = [];
+
+  Object.keys(query).forEach(key => {
+    if (query[key] !== undefined) {
+      keyValuePairs.push(`${key}=${query[key]}`);
+    }
+  });
+
+  return encodeURI(`?${keyValuePairs.join("&")}`);
+};
 
 const fetch = (base, path, query) => new Promise((resolve, reject) => {
   const xhr = new XMLHttpRequest();
@@ -39,7 +45,7 @@ class Client {
     });
   }
 
-  search(search, pos = null) {
+  search(search, pos = undefined) {
     const searchQuery = (this.defaultResults && !search) ? "/trending" : "/search";
 
     return fetch(this.base, searchQuery, {
