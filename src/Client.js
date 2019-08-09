@@ -4,7 +4,7 @@ export const stringify = query => (
   ), "?"))
 );
 
-const fetch = uri => new Promise((resolve, reject) => {
+const fetch = (base, path, query) => new Promise((resolve, reject) => {
   const xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = () => {
@@ -19,7 +19,7 @@ const fetch = uri => new Promise((resolve, reject) => {
     }
   };
 
-  xhr.open("GET", uri);
+  xhr.open("GET", `${base}${path}${stringify(query)}`);
   xhr.send();
 });
 
@@ -31,27 +31,7 @@ class Client {
   }
 
   autocomplete(search) {
-    return fetch(`${this.base}/autocomplete${this.autocompleteQueryFor(search)}`)
-      .then(({ results }) => results[0]);
-  }
-
-  search(search, params = {}) {
-    let searchQuery = `${this.base}/search${this.searchQueryFor(search, params)}`;
-
-    if (this.defaultResults && !search) {
-      searchQuery = `${this.base}/trending${this.searchQueryFor(search, params)}`;
-    }
-
-    return fetch(searchQuery);
-  }
-
-  suggestions(search) {
-    return fetch(`${this.base}/search_suggestions${this.suggestionsQueryFor(search)}`)
-      .then(({ results }) => results);
-  }
-
-  autocompleteQueryFor(search) {
-    return stringify({
+    return fetch(this.base, "/autocomplete", {
       key: this.token,
       q: search,
       limit: 1,
@@ -59,20 +39,23 @@ class Client {
     });
   }
 
-  searchQueryFor(search, params) {
-    return stringify(Object.assign({}, {
+  search(search, pos = null) {
+    const searchQuery = (this.defaultResults && !search) ? "/trending" : "/search";
+
+    return fetch(this.base, searchQuery, {
       key: this.token,
       q: search,
       limit: 12,
       locale: "en_US",
       safesearch: "mild",
       media_filter: "minimal",
-      ar_range: "all"
-    }, params));
+      ar_range: "all",
+      pos
+    });
   }
 
-  suggestionsQueryFor(search) {
-    return stringify({
+  suggestions(search) {
+    return fetch(this.base, "/search_suggestions", {
       key: this.token,
       q: search,
       limit: 5,

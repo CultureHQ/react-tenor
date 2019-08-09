@@ -66,7 +66,7 @@ class Tenor extends Component {
   }
 
   fetchAutocomplete = currentSearch => (
-    this.client.autocomplete(currentSearch).then(autocomplete => {
+    this.client.autocomplete(currentSearch).then(({ results: [autocomplete] }) => {
       const { search } = this.state;
 
       if (search === currentSearch) {
@@ -76,7 +76,7 @@ class Tenor extends Component {
   );
 
   fetchSuggestions = currentSearch => (
-    this.client.suggestions(currentSearch).then(suggestions => {
+    this.client.suggestions(currentSearch).then(({ results: suggestions }) => {
       const { search } = this.state;
 
       if (search === currentSearch) {
@@ -147,7 +147,7 @@ class Tenor extends Component {
       return Promise.resolve();
     }
 
-    return this.client.search(search, { pos: pages[page].next }).then(nextPage => {
+    return this.client.search(search, pages[page].next).then(nextPage => {
       if (nextPage.results) {
         this.mountedSetState(({ page: prevPage, pages: prevPages }) => ({
           page: prevPage + 1,
