@@ -120,10 +120,10 @@ describe("tab completion", () => {
     const component = mount(<Tenor base="http://localhost:8084" token="token" />);
 
     component.setState({ search: "t" });
-    await component.instance().fetchAutocomplete("t");
+    await component.instance().fetchAutoComplete("t");
     component.update();
 
-    expect(component.find("Autocomplete")).toHaveLength(1);
+    expect(component.find("AutoComplete")).toHaveLength(1);
 
     component.find("input").simulate("keyDown", { keyCode: TAB_KEY });
     expect(component.state().search).toEqual(results.autocomplete[0]);
@@ -138,9 +138,9 @@ describe("tab completion", () => {
     expect(component.state().search).toEqual("");
   });
 
-  test("ignores when the autocomplete matches the search", () => {
+  test("ignores when the autoComplete matches the search", () => {
     const component = mount(<Tenor />);
-    component.setState({ autocomplete: "test", search: "test" });
+    component.setState({ autoComplete: "test", search: "test" });
 
     component.find("input").simulate("keyDown", { keyCode: TAB_KEY });
     expect(component.state().search).toEqual("test");

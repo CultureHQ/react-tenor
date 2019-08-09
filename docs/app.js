@@ -17,7 +17,7 @@ const App = () => {
         <div className="selected">
           {selected && <img src={selected.media[0].tinygif.url} alt="Selected GIF" />}
         </div>
-        <Tenor onSelect={setSelected} />
+        <Tenor autoFocus defaultResults onSelect={setSelected} />
       </main>
       {ReactDOM.createPortal(
         <footer>

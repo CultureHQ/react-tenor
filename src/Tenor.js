@@ -4,7 +4,8 @@ import Client from "./Client";
 import Search from "./Search";
 
 const DEFAULT_STATE = {
-  autocomplete: null,
+  autoComplete: null,
+  autoFocus: false,
   page: 0,
   pages: [],
   search: "",
@@ -38,16 +39,20 @@ class Tenor extends Component {
   }
 
   componentDidMount() {
-    const { initialSearch, defaultResults } = this.props;
+    const { autoFocus, initialSearch, defaultResults } = this.props;
 
     this.componentIsMounted = true;
     window.addEventListener("keydown", this.handleWindowKeyDown);
     window.addEventListener("click", this.handleWindowClick);
 
     if (initialSearch || defaultResults) {
-      this.fetchAutocomplete(initialSearch);
+      this.fetchAutoComplete(initialSearch);
       this.fetchSuggestions(initialSearch);
       this.performSearch(initialSearch);
+    }
+
+    if (autoFocus) {
+      this.focus();
     }
   }
 
@@ -65,12 +70,12 @@ class Tenor extends Component {
     this.componentIsMounted = false;
   }
 
-  fetchAutocomplete = currentSearch => (
-    this.client.autocomplete(currentSearch).then(({ results: [autocomplete] }) => {
+  fetchAutoComplete = currentSearch => (
+    this.client.autocomplete(currentSearch).then(({ results: [autoComplete] }) => {
       const { search } = this.state;
 
       if (search === currentSearch) {
-        this.mountedSetState({ autocomplete });
+        this.mountedSetState({ autoComplete });
       }
     })
   );
@@ -172,32 +177,32 @@ class Tenor extends Component {
       return;
     }
 
-    this.setState({ autocomplete: null, search, searching: true });
-    this.fetchAutocomplete(search);
+    this.setState({ autoComplete: null, search, searching: true });
+    this.fetchAutoComplete(search);
     this.fetchSuggestions(search);
     this.timeout = setTimeout(() => this.performSearch(search), DELAY);
   };
 
   handleSearchKeyDown = event => {
-    const { autocomplete, search: prevSearch } = this.state;
+    const { autoComplete, search: prevSearch } = this.state;
 
-    if (event.keyCode !== KEYS.Tab || !autocomplete || !prevSearch) {
+    if (event.keyCode !== KEYS.Tab || !autoComplete || !prevSearch) {
       return;
     }
 
-    const lowerAutocomplete = autocomplete.toLowerCase();
+    const lowerAutoComplete = autoComplete.toLowerCase();
     const lowerSearch = prevSearch.toLowerCase().replace(/\s/g, "");
 
-    if (lowerAutocomplete === lowerSearch) {
+    if (lowerAutoComplete === lowerSearch) {
       return;
     }
 
     event.preventDefault();
 
-    const typeahead = lowerAutocomplete.replace(lowerSearch, "");
+    const typeahead = lowerAutoComplete.replace(lowerSearch, "");
     const search = `${prevSearch}${typeahead}`;
 
-    this.setState({ autocomplete: null, search, searching: true });
+    this.setState({ autoComplete: null, search, searching: true });
     this.fetchSuggestions(search);
     this.performSearch(search);
   };
@@ -236,12 +241,12 @@ class Tenor extends Component {
   render() {
     const { contentRef, onSelect } = this.props;
     const {
-      autocomplete, page, pages, search, searching, suggestions
+      autoComplete, page, pages, search, searching, suggestions
     } = this.state;
 
     return (
       <Search
-        autocomplete={autocomplete}
+        autoComplete={autoComplete}
         contentRef={contentRef || this.contentRef}
         inputRef={this.inputRef}
         onPageLeft={this.handlePageLeft}

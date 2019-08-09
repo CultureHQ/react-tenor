@@ -2,9 +2,9 @@ import React from "react";
 
 import Result from "./Result";
 
-const Autocomplete = ({ autocomplete, search }) => {
+const AutoComplete = ({ autoComplete, search }) => {
   const prefix = search.toLowerCase().replace(/\s/g, "");
-  const typeahead = autocomplete.toLowerCase().replace(prefix, "");
+  const typeahead = autoComplete.toLowerCase().replace(prefix, "");
 
   return (
     <div className="react-tenor--autocomplete">
@@ -21,7 +21,7 @@ const Spinner = () => (
 );
 
 const SearchBar = ({
-  autocomplete, inputRef, search, searching, onSearchChange, onSearchKeyDown
+  autoComplete, inputRef, search, searching, onSearchChange, onSearchKeyDown
 }) => (
   <div className="react-tenor--search-bar">
     <input
@@ -34,8 +34,8 @@ const SearchBar = ({
       onKeyDown={onSearchKeyDown}
       placeholder="Search Tenor"
     />
-    {autocomplete && search && (
-      <Autocomplete autocomplete={autocomplete} search={search} />
+    {autoComplete && search && (
+      <AutoComplete autoComplete={autoComplete} search={search} />
     )}
     {searching && <Spinner />}
   </div>
@@ -81,7 +81,7 @@ const PageControl = ({ direction, onClick }) => (
 );
 
 const Search = ({
-  autocomplete, contentRef, inputRef, onPageLeft, onPageRight, onSearchChange,
+  autoComplete, contentRef, inputRef, onPageLeft, onPageRight, onSearchChange,
   onSearchKeyDown, onSuggestionClick, onSelect, results, search, searching,
   suggestions
 }) => {
@@ -93,7 +93,7 @@ const Search = ({
   return (
     <div className={classList} ref={contentRef}>
       <SearchBar
-        autocomplete={autocomplete}
+        autoComplete={autoComplete}
         inputRef={inputRef}
         search={search}
         searching={searching}
