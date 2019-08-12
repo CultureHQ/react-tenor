@@ -26,9 +26,9 @@ const getRequestKey = url => (
 const withTestServer = (port, callback) => async () => {
   const server = http.createServer();
 
-  server.requests = Object.keys(results).reduce((accum, key) => (
-    Object.assign({}, accum, { [key]: 0 })
-  ), {});
+  server.requests = Object.keys(results).reduce(
+    (accum, key) => ({ ...accum, [key]: 0 }), {}
+  );
 
   server.on("request", (request, response) => {
     const requestKey = getRequestKey(request.url);
