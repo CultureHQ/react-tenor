@@ -1,8 +1,18 @@
-import React, { Component } from "react";
+import * as React from "react";
+
+import * as TenorAPI from "./TenorAPI";
 
 const BASE = "https://tenor.com/view/";
 
-class Result extends Component {
+type ResultProps = {
+  result: TenorAPI.Result;
+};
+
+type ResultState = {
+  loaded: boolean;
+};
+
+class Result extends React.Component<ResultProps, ResultState> {
   state = { loaded: false };
 
   componentDidMount() {

@@ -1,8 +1,14 @@
-import React from "react";
+import * as React from "react";
 
+import * as TenorAPI from "./TenorAPI";
 import Result from "./Result";
 
-const AutoComplete = ({ autoComplete, search }) => {
+type AutoCompleteProps = {
+  autoComplete: string;
+  search: string;
+};
+
+const AutoComplete = ({ autoComplete, search }: AutoCompleteProps) => {
   const prefix = search.toLowerCase().replace(/\s/g, "");
   const typeahead = autoComplete.toLowerCase().replace(prefix, "");
 
@@ -20,9 +26,18 @@ const Spinner = () => (
   </svg>
 );
 
+type SearchBarProps = {
+  autoComplete: string;
+  inputRef: React.RefObject<HTMLInputElement>;
+  onSearchChange: (search: string) => void;
+  onSearchKeyDown: (event: React.MouseEvent) => void;
+  search: string;
+  searching: boolean;
+};
+
 const SearchBar = ({
   autoComplete, inputRef, search, searching, onSearchChange, onSearchKeyDown
-}) => (
+}: SearchBarProps) => (
   <div className="react-tenor--search-bar">
     <input
       ref={inputRef}
@@ -41,13 +56,23 @@ const SearchBar = ({
   </div>
 );
 
-const Suggestion = ({ suggestion, onSuggestionClick }) => {
+type SuggestionProps = {
+  onSuggestionClick: (suggestion: TenorAPI.Suggestion) => void;
+  suggestion: TenorAPI.Suggestion;
+};
+
+const Suggestion = ({ suggestion, onSuggestionClick }: SuggestionProps) => {
   const onClick = () => onSuggestionClick(suggestion);
 
   return <button type="button" onClick={onClick}>{suggestion}</button>;
 };
 
-const Suggestions = ({ suggestions, onSuggestionClick }) => (
+type SuggestionsProps = {
+  onSuggestionClick: (suggestion: TenorAPI.Suggestion) => void;
+  suggestions: TenorAPI.Suggestion[];
+};
+
+const Suggestions = ({ suggestions, onSuggestionClick }: SuggestionsProps) => (
   <div className="react-tenor--suggestions">
     {suggestions.map(suggestion => (
       <Suggestion
@@ -59,17 +84,12 @@ const Suggestions = ({ suggestions, onSuggestionClick }) => (
   </div>
 );
 
-const Results = ({ results, onPageLeft, onPageRight, onSelect }) => (
-  <div className="react-tenor--results">
-    {results.map(result => (
-      <Result key={result.id} result={result} onSelect={onSelect} />
-    ))}
-    <PageControl direction="left" onClick={onPageLeft} />
-    <PageControl direction="right" onClick={onPageRight} />
-  </div>
-);
+type PageControlProps = {
+  direction: "left" | "right";
+  onClick: (event: React.MouseEvent) => void;
+};
 
-const PageControl = ({ direction, onClick }) => (
+const PageControl = ({ direction, onClick }: PageControlProps) => (
   <button
     aria-label={`Page ${direction}`}
     className={`react-tenor--page-${direction}`}
@@ -80,11 +100,32 @@ const PageControl = ({ direction, onClick }) => (
   </button>
 );
 
+type ResultProps = {
+  onPageLeft: (event: React.MouseEvent) => void;
+  onPageRight: (event: React.MouseEvent) => void;
+  onSelect: (result: TenorAPI.Result) => void;
+  results: TenorAPI.Result[];
+};
+
+const Results = ({ results, onPageLeft, onPageRight, onSelect }: ResultProps) => (
+  <div className="react-tenor--results">
+    {results.map(result => (
+      <Result key={result.id} result={result} onSelect={onSelect} />
+    ))}
+    <PageControl direction="left" onClick={onPageLeft} />
+    <PageControl direction="right" onClick={onPageRight} />
+  </div>
+);
+
+type SearchProps = AutoCompleteProps & SearchBarProps & ResultProps & SuggestionsProps & {
+  contentRef: React.RefObject<HTMLDivElement>;
+};
+
 const Search = ({
   autoComplete, contentRef, inputRef, onPageLeft, onPageRight, onSearchChange,
   onSearchKeyDown, onSuggestionClick, onSelect, results, search, searching,
   suggestions
-}) => {
+}: SearchProps) => {
   let classList = "react-tenor";
   if (suggestions.length > 0 || results.length > 0) {
     classList = `${classList} react-tenor-active`;

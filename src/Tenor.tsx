@@ -46,8 +46,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   private contentRef: React.RefObject<HTMLDivElement>;
   private inputRef: React.RefObject<HTMLInputElement>;
 
-  private timeout: ReturnType<typeof setTimeout>;
-
+  private timeout: ReturnType<typeof setTimeout> | null;
   private componentIsMounted: boolean;
 
   constructor(props) {
@@ -58,6 +57,9 @@ class Tenor extends React.Component<TenorProps, TenorState> {
 
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
+
+    this.timeout = null;
+    this.componentIsMounted = false;
 
     this.state = {
       ...DEFAULT_STATE,
