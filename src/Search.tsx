@@ -27,10 +27,10 @@ const Spinner = () => (
 );
 
 type SearchBarProps = {
-  autoComplete: string;
+  autoComplete: string | null;
   inputRef: React.RefObject<HTMLInputElement>;
-  onSearchChange: (search: string) => void;
-  onSearchKeyDown: (event: React.MouseEvent) => void;
+  onSearchChange: (event: React.KeyboardEvent) => void;
+  onSearchKeyDown: (event: React.KeyboardEvent) => void;
   search: string;
   searching: boolean;
 };
@@ -57,8 +57,8 @@ const SearchBar = ({
 );
 
 type SuggestionProps = {
-  onSuggestionClick: (suggestion: TenorAPI.Suggestion) => void;
-  suggestion: TenorAPI.Suggestion;
+  onSuggestionClick: (suggestion: string) => void;
+  suggestion: string;
 };
 
 const Suggestion = ({ suggestion, onSuggestionClick }: SuggestionProps) => {
@@ -68,8 +68,8 @@ const Suggestion = ({ suggestion, onSuggestionClick }: SuggestionProps) => {
 };
 
 type SuggestionsProps = {
-  onSuggestionClick: (suggestion: TenorAPI.Suggestion) => void;
-  suggestions: TenorAPI.Suggestion[];
+  onSuggestionClick: (suggestion: string) => void;
+  suggestions: string[];
 };
 
 const Suggestions = ({ suggestions, onSuggestionClick }: SuggestionsProps) => (

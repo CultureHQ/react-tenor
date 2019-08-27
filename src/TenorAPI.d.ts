@@ -6,8 +6,6 @@ declare namespace TenorAPI {
     itemurl: string;
     media: Media[]
   };
-
-  type Suggestion = {};
 }
 
 export = TenorAPI;

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import * as TenorAPI from "./TenorAPI";
 import Client from "./Client";
 import Search from "./Search";
 
@@ -27,6 +28,7 @@ type TenorProps = {
   contentRef?: React.RefObject<HTMLDivElement>;
   defaultResults?: boolean;
   initialSearch?: string;
+  onSelect: (result: TenorAPI.Result) => void;
   token: string;
 };
 
@@ -49,7 +51,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   private timeout: ReturnType<typeof setTimeout> | null;
   private componentIsMounted: boolean;
 
-  constructor(props) {
+  constructor(props: TenorProps) {
     super(props);
 
     const { base, token, defaultResults } = props;
@@ -87,10 +89,10 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   }
 
   componentDidUpdate(prevProps: TenorProps) {
-    const { base, token } = this.props;
+    const { base, token, defaultResults } = this.props;
 
-    if (base !== prevProps.base || token !== prevProps.token) {
-      this.client = new Client({ base, token });
+    if (base !== prevProps.base || token !== prevProps.token || defaultResults !== prevProps.defaultResults) {
+      this.client = new Client({ base, token, defaultResults });
     }
   }
 
@@ -140,7 +142,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.setState(DEFAULT_STATE);
   };
 
-  handleWindowKeyDown = (event: React.MouseEvent) => {
+  handleWindowKeyDown = (event: React.KeyboardEvent) => {
     const { contentRef } = this.props;
 
     if (
@@ -195,8 +197,9 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     });
   };
 
-  handleSearchChange = ({ target: { value: search } }) => {
+  handleSearchChange = (event: React.KeyboardEvent) => {
     const { defaultResults } = this.props;
+    const search = event.target.value;
 
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -237,7 +240,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.performSearch(search);
   };
 
-  handleSuggestionClick = suggestion => {
+  handleSuggestionClick = (suggestion: string) => {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }

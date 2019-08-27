@@ -3,7 +3,7 @@ type Query = {
 };
 
 export const stringify = (query: Query) => {
-  const keyValuePairs = [];
+  const keyValuePairs: string[] = [];
 
   Object.keys(query).forEach(key => {
     if (query[key] !== undefined) {
@@ -33,14 +33,24 @@ const fetch = (base: string, path: string, query: Query) => new Promise((resolve
   xhr.send();
 });
 
+type ClientOptions = {
+  base: string | null;
+  token: string | null;
+  defaultResults?: boolean;
+};
+
 class Client {
-  constructor(options = {}) {
-    this.base = options.base || "https://api.tenor.com/v1";
-    this.token = options.token || "LIVDSRZULELA";
-    this.defaultResults = options.defaultResults || false;
+  private base: string;
+  private token: string;
+  private defaultResults: boolean;
+
+  constructor({ base, token, defaultResults }: ClientOptions) {
+    this.base = base || "https://api.tenor.com/v1";
+    this.token = token || "LIVDSRZULELA";
+    this.defaultResults = defaultResults || false;
   }
 
-  autocomplete(search) {
+  autocomplete(search: string) {
     return fetch(this.base, "/autocomplete", {
       key: this.token,
       q: search,
@@ -49,7 +59,7 @@ class Client {
     });
   }
 
-  search(search, pos = undefined) {
+  search(search: string, pos = undefined) {
     const searchQuery = (this.defaultResults && !search) ? "/trending" : "/search";
 
     return fetch(this.base, searchQuery, {
@@ -64,7 +74,7 @@ class Client {
     });
   }
 
-  suggestions(search) {
+  suggestions(search: string) {
     return fetch(this.base, "/search_suggestions", {
       key: this.token,
       q: search,

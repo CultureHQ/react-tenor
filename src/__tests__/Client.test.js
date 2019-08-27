@@ -2,7 +2,7 @@ import Client from "../Client";
 import withTestServer, { results } from "./withTestServer";
 
 test("sets sane defaults", () => {
-  const client = new Client();
+  const client = new Client({});
 
   expect(client.base).toContain("api.tenor.com");
   expect(typeof client.token).toEqual("string");

@@ -5,6 +5,7 @@ import * as TenorAPI from "./TenorAPI";
 const BASE = "https://tenor.com/view/";
 
 type ResultProps = {
+  onSelect: (result: TenorAPI.Result) => void;
   result: TenorAPI.Result;
 };
 
@@ -13,16 +14,24 @@ type ResultState = {
 };
 
 class Result extends React.Component<ResultProps, ResultState> {
-  state = { loaded: false };
+  private componentIsMounted: boolean;
+  private image: Image;
+
+  constructor(props: ResultProps) {
+    super(props);
+
+    this.componentIsMounted = false;
+    this.image = new Image();
+
+    this.state = { loaded: false };
+  }
 
   componentDidMount() {
     this.componentIsMounted = true;
 
     const { result } = this.props;
 
-    this.image = new Image();
     this.image.src = result.media[0].tinygif.url;
-
     this.image.onload = () => {
       if (this.componentIsMounted) {
         this.setState({ loaded: true });
