@@ -1,4 +1,8 @@
-export const stringify = query => {
+type Query = {
+  [key: string]: string | number | undefined
+};
+
+export const stringify = (query: Query) => {
   const keyValuePairs = [];
 
   Object.keys(query).forEach(key => {
@@ -10,7 +14,7 @@ export const stringify = query => {
   return encodeURI(`?${keyValuePairs.join("&")}`);
 };
 
-const fetch = (base, path, query) => new Promise((resolve, reject) => {
+const fetch = (base: string, path: string, query: Query) => new Promise((resolve, reject) => {
   const xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = () => {
