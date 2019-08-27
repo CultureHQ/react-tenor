@@ -29,8 +29,8 @@ const Spinner = () => (
 type SearchBarProps = {
   autoComplete: string | null;
   inputRef: React.RefObject<HTMLInputElement>;
-  onSearchChange: (event: React.KeyboardEvent) => void;
-  onSearchKeyDown: (event: React.KeyboardEvent) => void;
+  onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   search: string;
   searching: boolean;
 };
@@ -117,7 +117,7 @@ const Results = ({ results, onPageLeft, onPageRight, onSelect }: ResultProps) =>
   </div>
 );
 
-type SearchProps = AutoCompleteProps & SearchBarProps & ResultProps & SuggestionsProps & {
+type SearchProps = SearchBarProps & ResultProps & SuggestionsProps & {
   contentRef: React.RefObject<HTMLDivElement>;
 };
 

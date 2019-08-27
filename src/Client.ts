@@ -1,3 +1,5 @@
+import * as TenorAPI from "./TenorAPI";
+
 type Query = {
   [key: string]: string | number | undefined
 };
@@ -14,24 +16,26 @@ export const stringify = (query: Query) => {
   return encodeURI(`?${keyValuePairs.join("&")}`);
 };
 
-const fetch = (base: string, path: string, query: Query) => new Promise((resolve, reject) => {
-  const xhr = new XMLHttpRequest();
+const fetch = <T extends object>(base: string, path: string, query: Query): Promise<T> => (
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
 
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState !== 4) {
-      return;
-    }
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== 4) {
+        return;
+      }
 
-    if (xhr.status >= 200 && xhr.status < 300) {
-      resolve(JSON.parse(xhr.responseText));
-    } else {
-      reject(new Error(xhr.responseText));
-    }
-  };
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(JSON.parse(xhr.responseText));
+      } else {
+        reject(new Error(xhr.responseText));
+      }
+    };
 
-  xhr.open("GET", `${base}${path}${stringify(query)}`);
-  xhr.send();
-});
+    xhr.open("GET", `${base}${path}${stringify(query)}`);
+    xhr.send();
+  })
+);
 
 type ClientOptions = {
   base: string | null;
@@ -51,7 +55,7 @@ class Client {
   }
 
   autocomplete(search: string) {
-    return fetch(this.base, "/autocomplete", {
+    return fetch<TenorAPI.AutocompleteResponse>(this.base, "/autocomplete", {
       key: this.token,
       q: search,
       limit: 1,
@@ -59,10 +63,10 @@ class Client {
     });
   }
 
-  search(search: string, pos = undefined) {
+  search(search: string, pos?: number) {
     const searchQuery = (this.defaultResults && !search) ? "/trending" : "/search";
 
-    return fetch(this.base, searchQuery, {
+    return fetch<TenorAPI.SearchResponse>(this.base, searchQuery, {
       key: this.token,
       q: search,
       limit: 12,
@@ -75,7 +79,7 @@ class Client {
   }
 
   suggestions(search: string) {
-    return fetch(this.base, "/search_suggestions", {
+    return fetch<TenorAPI.SuggestionsResponse>(this.base, "/search_suggestions", {
       key: this.token,
       q: search,
       limit: 5,

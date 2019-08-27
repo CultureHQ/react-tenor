@@ -36,10 +36,10 @@ type TenorState = {
   autoComplete: string | null;
   autoFocus: boolean;
   page: number;
-  pages: [];
+  pages: TenorAPI.SearchResponse[];
   search: string;
   searching: boolean;
-  suggestions: []
+  suggestions: string[]
 };
 
 class Tenor extends React.Component<TenorProps, TenorState> {
@@ -122,7 +122,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     })
   );
 
-  handleWindowClick = (event: React.MouseEvent) => {
+  handleWindowClick = (event: MouseEvent) => {
     const { contentRef } = this.props;
     const { search } = this.state;
 
@@ -131,7 +131,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     }
 
     const container = (contentRef || this.contentRef).current;
-    if (container.contains(event.target)) {
+    if (container && (event.target instanceof Element) && container.contains(event.target)) {
       return;
     }
 
@@ -142,11 +142,12 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.setState(DEFAULT_STATE);
   };
 
-  handleWindowKeyDown = (event: React.KeyboardEvent) => {
+  handleWindowKeyDown = (event: KeyboardEvent) => {
     const { contentRef } = this.props;
+    const container = (contentRef || this.contentRef).current;
 
     if (
-      !(contentRef || this.contentRef).current.contains(event.target)
+      (container && (event.target instanceof Element) && !container.contains(event.target))
       || ([KEYS.ArrowLeft, KEYS.ArrowRight].indexOf(event.keyCode) === -1)
       || !event.metaKey
     ) {
@@ -197,7 +198,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     });
   };
 
-  handleSearchChange = (event: React.KeyboardEvent) => {
+  handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { defaultResults } = this.props;
     const search = event.target.value;
 
@@ -216,7 +217,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.timeout = setTimeout(() => this.performSearch(search), DELAY);
   };
 
-  handleSearchKeyDown = (event: React.KeyboardEvent) => {
+  handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { autoComplete, search: prevSearch } = this.state;
 
     if (event.keyCode !== KEYS.Tab || !autoComplete || !prevSearch) {
@@ -261,14 +262,18 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     });
   };
 
-  mountedSetState = mutation => {
+  mountedSetState = <K extends keyof TenorState>(state: ((prevState: TenorState) => Pick<TenorState, K>) | Pick<TenorState, K>) => {
     if (this.componentIsMounted) {
-      this.setState(mutation);
+      this.setState<K>(state);
     }
   };
 
   focus() {
-    this.inputRef.current.focus();
+    const input = this.inputRef.current;
+
+    if (input) {
+      input.focus();
+    }
   }
 
   render() {
