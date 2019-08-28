@@ -4,7 +4,7 @@ import * as TenorAPI from "./TenorAPI";
 import Client from "./Client";
 import Search from "./Search";
 
-const DEFAULT_STATE = {
+export const defaultState = {
   autoComplete: null,
   autoFocus: false,
   page: 0,
@@ -14,9 +14,9 @@ const DEFAULT_STATE = {
   suggestions: []
 };
 
-const DELAY = 250;
+const searchDelay = 250;
 
-const KEYS = {
+const keyCodes = {
   Tab: 9,
   ArrowLeft: 37,
   ArrowRight: 39
@@ -34,7 +34,6 @@ type TenorProps = {
 
 type TenorState = {
   autoComplete: string | null;
-  autoFocus: boolean;
   page: number;
   pages: TenorAPI.SearchResponse[];
   search: string;
@@ -47,15 +46,15 @@ type SetState<K extends keyof TenorState> = (
 );
 
 class Tenor extends React.Component<TenorProps, TenorState> {
-  private client: Client;
+  public client: Client;
 
-  private componentIsMounted: boolean;
+  public componentIsMounted: boolean;
 
-  private contentRef: React.RefObject<HTMLDivElement>;
+  public contentRef: React.RefObject<HTMLDivElement>;
 
-  private inputRef: React.RefObject<HTMLInputElement>;
+  public inputRef: React.RefObject<HTMLInputElement>;
 
-  private timeout: ReturnType<typeof setTimeout> | null;
+  public timeout: ReturnType<typeof setTimeout> | null;
 
   constructor(props: TenorProps) {
     super(props);
@@ -70,7 +69,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.componentIsMounted = false;
 
     this.state = {
-      ...DEFAULT_STATE,
+      ...defaultState,
       search: props.initialSearch || "",
       searching: !!(props.initialSearch || props.defaultResults)
     };
@@ -152,7 +151,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
       clearTimeout(this.timeout);
     }
 
-    this.setState(DEFAULT_STATE);
+    this.setState(defaultState);
   };
 
   handleWindowKeyDown = (event: KeyboardEvent) => {
@@ -161,7 +160,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
 
     if (
       (container && (event.target instanceof Element) && !container.contains(event.target))
-      || ([KEYS.ArrowLeft, KEYS.ArrowRight].indexOf(event.keyCode) === -1)
+      || ([keyCodes.ArrowLeft, keyCodes.ArrowRight].indexOf(event.keyCode) === -1)
       || !event.metaKey
     ) {
       return;
@@ -169,7 +168,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
 
     event.preventDefault();
 
-    if (event.keyCode === KEYS.ArrowLeft) {
+    if (event.keyCode === keyCodes.ArrowLeft) {
       this.handlePageLeft();
     } else {
       this.handlePageRight();
@@ -198,17 +197,18 @@ class Tenor extends React.Component<TenorProps, TenorState> {
       return Promise.resolve();
     }
 
-    return this.client.search(search, pages[page].next).then(nextPage => {
-      if (nextPage.results) {
-        this.mountedSetState(({ page: prevPage, pages: prevPages }) => ({
-          page: prevPage + 1,
-          pages: prevPages.concat([nextPage]),
-          searching: false
-        }));
-      }
-    }).catch(() => {
-      this.mountedSetState({ searching: false });
-    });
+    return this.client.search(search, pages[page].next)
+      .then((nextPage: TenorAPI.SearchResponse) => {
+        if (nextPage.results) {
+          this.mountedSetState(({ page: prevPage, pages: prevPages }) => ({
+            page: prevPage + 1,
+            pages: prevPages.concat([nextPage]),
+            searching: false
+          }));
+        }
+      }).catch(() => {
+        this.mountedSetState({ searching: false });
+      });
   };
 
   handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -221,10 +221,10 @@ class Tenor extends React.Component<TenorProps, TenorState> {
 
     if (!search.length) {
       if (defaultResults) {
-        this.setState({ ...DEFAULT_STATE, searching: true });
+        this.setState({ ...defaultState, searching: true });
         this.performSearch(search);
       } else {
-        this.setState(DEFAULT_STATE);
+        this.setState(defaultState);
       }
       return;
     }
@@ -232,13 +232,13 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.setState({ autoComplete: null, search, searching: true });
     this.fetchAutoComplete(search);
     this.fetchSuggestions(search);
-    this.timeout = setTimeout(() => this.performSearch(search), DELAY);
+    this.timeout = setTimeout(() => this.performSearch(search), searchDelay);
   };
 
   handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { autoComplete, search: prevSearch } = this.state;
 
-    if (event.keyCode !== KEYS.Tab || !autoComplete || !prevSearch) {
+    if (event.keyCode !== keyCodes.Tab || !autoComplete || !prevSearch) {
       return;
     }
 

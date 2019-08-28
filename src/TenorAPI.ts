@@ -12,7 +12,7 @@ export type AutocompleteResponse = {
 };
 
 export type SearchResponse = {
-  next?: number;
+  next?: string;
   results: Result[];
 };
 

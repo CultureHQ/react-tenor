@@ -1,18 +1,63 @@
-import React from "react";
-import { mount } from "enzyme";
+import * as React from "react";
+import { mount, ReactWrapper } from "enzyme";
 
-import Tenor from "../Tenor";
+import * as TenorAPI from "../TenorAPI";
+import Tenor, { defaultState } from "../Tenor";
 import Result from "../Result";
-import withTestServer, { results } from "./withTestServer";
+import withTestServer, { TestServer, results } from "./withTestServer";
+
+const ARROW_LEFT_KEY = 37;
+const ARROW_RIGHT_KEY = 39;
+
+type TenorProps = React.ComponentProps<typeof Tenor>;
+type TenorState = Tenor["state"];
+
+type MountedTenor = ReactWrapper<TenorProps, TenorState, Tenor> & {
+  pressKey: (keyCode: number) => void;
+  pressArrowLeftKey: () => void;
+  pressArrowRightKey: () => void;
+};
+
+type MountedTenorProps = Partial<Pick<TenorProps, keyof TenorProps>>;
+type MountedTenorState = Partial<Pick<TenorState, keyof TenorState>>;
+
+const mountTenor = (props: MountedTenorProps = {}, state: MountedTenorState = {}): MountedTenor => {
+  const component = mount<Tenor>(
+    <Tenor
+      base={props.base}
+      contentRef={props.contentRef}
+      initialSearch={props.initialSearch}
+      onSelect={props.onSelect || jest.fn()}
+      token={props.token || "token"}
+    />
+  ) as MountedTenor;
+
+  component.setState({ ...defaultState, ...state });
+
+  component.pressKey = keyCode => {
+    component.instance().handleWindowKeyDown({
+      ...new KeyboardEvent("keydown"),
+      keyCode,
+      metaKey: true,
+      target: component.instance().contentRef.current,
+      preventDefault: () => {}
+    });
+  };
+
+  component.pressArrowLeftKey = () => component.pressKey(ARROW_LEFT_KEY);
+  component.pressArrowRightKey = () => component.pressKey(ARROW_RIGHT_KEY);
+
+  return component;
+};
 
 test("performs searches", withTestServer(8081, async () => {
-  let selected = null;
-  const onSelect = result => { selected = result; };
-  const search = "Happy";
+  let selected: TenorAPI.Result | null = null;
+  const onSelect = (result: TenorAPI.Result) => {
+    selected = result;
+  };
 
-  const component = mount(
-    <Tenor base="http://localhost:8081" token="token" onSelect={onSelect} />
-  );
+  const search = "Happy";
+  const component = mountTenor({ base: "http://localhost:8081", onSelect });
   component.find("input").simulate("change", { target: { value: search } });
 
   component.update();
@@ -30,13 +75,13 @@ test("performs searches", withTestServer(8081, async () => {
   component.unmount();
 }));
 
-test("dedups fast searches", withTestServer(8082, server => {
-  const component = mount(<Tenor base="http://localhost:8082" token="token" />);
-  const search = "Happy";
+test("dedups fast searches", withTestServer(8082, (server: TestServer) => {
+  const component = mountTenor({ base: "http://localhost:8082" });
 
+  const search = "Happy";
   search.split("").forEach((_, index) => {
     const value = search.slice(0, index + 1);
-    component.instance().handleSearchChange({ target: { value } });
+    component.find("input").simulate("change", { target: { value } });
   });
 
   return new Promise(resolve => {
@@ -51,42 +96,44 @@ test("dedups fast searches", withTestServer(8082, server => {
 }));
 
 test("allows passing an initialSearch prop", withTestServer(8083, async () => {
-  const component = mount(
-    <Tenor base="http://localhost:8083" token="token" initialSearch="happy" />
-  );
+  const component = mountTenor({ base: "http://localhost:8083", initialSearch: "happy" });
 
-  await component.instance().performSearch();
+  await component.instance().performSearch("");
   component.update();
 
   expect(component.find(Result)).toHaveLength(results.search.length);
 }));
 
 test("does not enqueue searches for empty inputs", () => {
-  const component = mount(<Tenor />);
+  const component = mountTenor();
 
-  component.instance().handleSearchChange({ target: { value: "" } });
+  component.find("input").simulate("change", { target: { value: "" } });
 
   expect(component.instance().timeout).toBe(null);
 });
 
 test("handles the contentRef prop", () => {
-  const contentRef = React.createRef();
-  const component = mount(<Tenor contentRef={contentRef} />);
+  const contentRef = React.createRef<HTMLDivElement>();
+  const component = mountTenor({ contentRef });
 
   expect(contentRef.current).not.toBe(null);
   component.unmount();
 });
 
 test("allows you to call focus() on the parent", () => {
-  const component = mount(<Tenor />);
+  const component = mountTenor();
 
   component.instance().focus();
-  expect(document.activeElement.classList[0]).toEqual("react-tenor--search");
+
+  const { activeElement } = document;
+
+  expect(activeElement).toBeTruthy();
+  expect((activeElement as HTMLElement).classList[0]).toEqual("react-tenor--search");
 });
 
 describe("suggestions", () => {
   test("handles clicking a suggestion", withTestServer(8083, async () => {
-    const component = mount(<Tenor base="http://localhost:8083" token="token" />);
+    const component = mountTenor({ base: "http://localhost:8083" });
 
     component.setState({ search: "test" });
     await component.instance().fetchSuggestions("test");
@@ -101,7 +148,7 @@ describe("suggestions", () => {
   }));
 
   test("clears the timeout", () => {
-    const component = mount(<Tenor />);
+    const component = mountTenor();
     component.setState({ search: "t", suggestions: ["test"] });
 
     component.instance().client.search = () => Promise.resolve({ results: results.search });
@@ -117,7 +164,7 @@ describe("tab completion", () => {
   const TAB_KEY = 9;
 
   test("handles tab completing the typeahead", withTestServer(8084, async () => {
-    const component = mount(<Tenor base="http://localhost:8084" token="token" />);
+    const component = mountTenor({ base: "http://localhost:8084" });
 
     component.setState({ search: "t" });
     await component.instance().fetchAutoComplete("t");
@@ -132,14 +179,14 @@ describe("tab completion", () => {
   }));
 
   test("ignores other key inputs", () => {
-    const component = mount(<Tenor />);
+    const component = mountTenor();
 
     component.find("input").simulate("keyDown", { keyCode: BACKSPACE_KEY });
     expect(component.state().search).toEqual("");
   });
 
   test("ignores when the autoComplete matches the search", () => {
-    const component = mount(<Tenor />);
+    const component = mountTenor();
     component.setState({ autoComplete: "test", search: "test" });
 
     component.find("input").simulate("keyDown", { keyCode: TAB_KEY });
@@ -149,32 +196,32 @@ describe("tab completion", () => {
 
 describe("auto close", () => {
   test("handles clicking outside the component", () => {
-    const contentRef = React.createRef();
-    const component = mount(<Tenor contentRef={contentRef} />);
+    const contentRef = React.createRef<HTMLDivElement>();
+    const component = mountTenor({ contentRef });
 
-    component.instance().handleWindowClick({ target: document.body });
+    component.instance().handleWindowClick(new MouseEvent("click"));
     expect(component.state().search).toEqual("");
 
     component.setState({ search: "t" });
-    component.instance().handleWindowClick({ target: contentRef.current });
+    component.instance().handleWindowClick({ ...new MouseEvent("click"), target: contentRef.current });
     expect(component.state().search).toEqual("t");
 
-    component.instance().handleWindowClick({ target: document.body });
+    component.instance().handleWindowClick(new MouseEvent("click"));
     expect(component.state().search).toEqual("");
   });
 
   test("clears the timeout", () => {
-    const component = mount(<Tenor />);
+    const component = mountTenor();
     component.setState({ search: "t" });
 
     component.instance().timeout = setTimeout(() => {}, 1000);
-    component.instance().handleWindowClick({ target: document.body });
+    component.instance().handleWindowClick(new MouseEvent("click"));
     expect(component.state().search).toEqual("");
   });
 });
 
 test("creates a new client when the token or base changes", () => {
-  const component = mount(<Tenor base="https://example.com" token="token" />);
+  const component = mountTenor({ base: "https://example.com" });
 
   component.setProps({ token: "other-token" });
   expect(component.instance().client.token).toEqual("other-token");
@@ -184,7 +231,7 @@ test("creates a new client when the token or base changes", () => {
 });
 
 test("handles when the search returns an error", () => {
-  const component = mount(<Tenor />);
+  const component = mountTenor();
   component.instance().client.search = () => Promise.reject(new Error("error"));
 
   component.instance().performSearch("test");
@@ -192,40 +239,18 @@ test("handles when the search returns an error", () => {
 });
 
 test("unmounts cleanly", async () => {
-  const component = mount(<Tenor />);
+  const component = mountTenor();
   const instance = component.instance();
 
-  setTimeout(() => instance.mountedSetState({ foo: "bar" }), 100);
+  setTimeout(() => instance.mountedSetState({ search: "foobar" }), 100);
   component.unmount();
 
   await new Promise(resolve => setTimeout(resolve, 100));
 });
 
 describe("pagination", () => { /* eslint-disable @typescript-eslint/no-empty-function */
-  const ARROW_LEFT_KEY = 37;
-  const ARROW_RIGHT_KEY = 39;
-
-  const mountTenor = ({ base, token }, state) => {
-    const component = mount(<Tenor base={base} token={token} />);
-    component.setState(state);
-
-    component.pressKey = keyCode => {
-      component.instance().handleWindowKeyDown({
-        keyCode,
-        metaKey: true,
-        target: component.instance().contentRef.current,
-        preventDefault() {}
-      });
-    };
-
-    component.pressArrowLeftKey = () => component.pressKey(ARROW_LEFT_KEY);
-    component.pressArrowRightKey = () => component.pressKey(ARROW_RIGHT_KEY);
-
-    return component;
-  };
-
   test("paging left", () => {
-    const component = mount(<Tenor />);
+    const component = mountTenor();
     expect(component.state().page).toEqual(0);
 
     component.instance().handlePageLeft();
@@ -291,6 +316,7 @@ describe("pagination", () => { /* eslint-disable @typescript-eslint/no-empty-fun
     const component = mountTenor({}, { page: 1 });
 
     component.instance().handleWindowKeyDown({
+      ...new KeyboardEvent("keydown"),
       keyCode: ARROW_LEFT_KEY,
       metaKey: true,
       target: document.body,
@@ -339,7 +365,7 @@ describe("pagination", () => { /* eslint-disable @typescript-eslint/no-empty-fun
       searching: false
     });
 
-    component.instance().client.search = () => Promise.resolve({});
+    component.instance().client.search = () => Promise.resolve({ results: [] });
     component.pressArrowRightKey();
 
     expect(component.state().page).toEqual(0);

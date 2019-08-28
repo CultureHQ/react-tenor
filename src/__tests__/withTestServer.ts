@@ -1,10 +1,10 @@
-import http from "http";
+import { createServer } from "http";
 
 let counter = 0;
 
 const makeId = () => {
   counter += 1;
-  return counter;
+  return counter.toString();
 };
 
 const makeResult = () => ({
@@ -19,19 +19,29 @@ export const results = { /* eslint-disable @typescript-eslint/camelcase */
   search: [makeResult(), makeResult(), makeResult(), makeResult(), makeResult()]
 };
 
-const getRequestKey = url => (
+const getRequestKey = (url: string) => (
   url.slice(1).substring(0, url.indexOf("?") - 1)
 );
 
-const withTestServer = (port, callback) => async () => {
-  const server = http.createServer();
+export type TestServer = ReturnType<typeof createServer> & {
+  requests: {
+    autocomplete: number;
+    search_suggestions: number;
+    search: number;
+  };
+};
 
-  server.requests = Object.keys(results).reduce(
-    (accum, key) => ({ ...accum, [key]: 0 }), {}
-  );
+const withTestServer = (port: number, callback: ((server: TestServer) => void)) => async () => {
+  const server = createServer() as TestServer;
+
+  server.requests = {
+    autocomplete: 0,
+    search_suggestions: 0,
+    search: 0
+  };
 
   server.on("request", (request, response) => {
-    const requestKey = getRequestKey(request.url);
+    const requestKey = getRequestKey(request.url) as ("autocomplete" | "search_suggestions" | "search");
     server.requests[requestKey] += 1;
 
     response.writeHead(200, {
