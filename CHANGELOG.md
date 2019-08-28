@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Switch to TypeScript for development.
+- Do not fire off autocomplete and suggestion requests when the search is blank but you have `defaultResults` selected.
+
 ## [1.4.0] - 2019-08-09
 
 ### Added
