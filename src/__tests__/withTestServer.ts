@@ -1,5 +1,7 @@
 import { createServer } from "http";
 
+import { Result } from "../TenorAPI";
+
 let counter = 0;
 
 const makeId = () => {
@@ -7,11 +9,25 @@ const makeId = () => {
   return counter.toString();
 };
 
-const makeResult = () => ({
-  id: makeId(),
-  itemurl: "https://tenor.com/view/this-is-a-test-gif-12345",
-  media: [{ tinygif: { url: "https://via.placeholder.com/10x10" } }]
-});
+const makeResult = (): Result => {
+  const media = {
+    preview: "https://via.placeholder.com/10x10",
+    url: "https://via.placeholder.com/10x10",
+    dims: [10, 10],
+    size: 100
+  };
+
+  return {
+    created: 12345,
+    hasaudio: false,
+    id: makeId(),
+    media: [{ tinygif: media, gif: media, mp4: media }],
+    tags: [],
+    itemurl: "https://tenor.com/view/this-is-a-test-gif-12345",
+    hascaption: false,
+    url: "https://tenor.com/12345"
+  };
+};
 
 export const results = { /* eslint-disable @typescript-eslint/camelcase */
   autocomplete: ["test", "testing", "test2", "testingtesting", "testy testerson"],

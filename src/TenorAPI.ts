@@ -1,10 +1,25 @@
-type MediaType = { url: string };
-type Media = { tinygif: MediaType };
+type MediaType = {
+  preview: string;
+  url: string;
+  dims: number[];
+  size: number;
+};
+
+type Media = {
+  tinygif: MediaType;
+  gif: MediaType;
+  mp4: MediaType;
+};
 
 export type Result = {
+  created: number;
+  hasaudio: boolean;
   id: string;
-  itemurl: string;
   media: Media[];
+  tags: string[];
+  itemurl: string;
+  hascaption: boolean;
+  url: string;
 };
 
 export type AutocompleteResponse = {

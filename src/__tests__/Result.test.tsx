@@ -1,23 +1,19 @@
 import * as React from "react";
 import { shallow } from "enzyme";
 
-import * as TenorAPI from "../TenorAPI";
 import Result from "../Result";
 import { results } from "./withTestServer";
 
 type OnLoadCallback = (event: Event) => void;
 
 test("renders without crashing", () => {
-  let selected: TenorAPI.Result | null = null;
-  const onSelect = (result: TenorAPI.Result) => {
-    selected = result;
-  };
-
+  const onSelect = jest.fn();
   const component = shallow<Result>(<Result result={results.search[0]} onSelect={onSelect} />);
+
   expect(component.type()).toEqual("button");
 
   component.simulate("click");
-  expect(selected).toEqual(results.search[0]);
+  expect(onSelect).toHaveBeenCalledWith(results.search[0]);
 });
 
 test("loads the image in the background", () => {
