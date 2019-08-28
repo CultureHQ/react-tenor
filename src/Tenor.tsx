@@ -24,7 +24,7 @@ const KEYS = {
 
 type TenorProps = {
   autoFocus?: boolean;
-  base: string;
+  base?: string;
   contentRef?: React.RefObject<HTMLDivElement>;
   defaultResults?: boolean;
   initialSearch?: string;
@@ -66,7 +66,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.state = {
       ...DEFAULT_STATE,
       search: props.initialSearch || "",
-      searching: !!props.initialSearch
+      searching: !props.initialSearch && !props.defaultResults
     };
   }
 
@@ -77,10 +77,13 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     window.addEventListener("keydown", this.handleWindowKeyDown);
     window.addEventListener("click", this.handleWindowClick);
 
-    if (initialSearch || defaultResults) {
+    if (initialSearch) {
       this.fetchAutoComplete(initialSearch);
       this.fetchSuggestions(initialSearch);
-      this.performSearch(initialSearch);
+    }
+
+    if (initialSearch || defaultResults) {
+      this.performSearch(initialSearch || "");
     }
 
     if (autoFocus) {
@@ -206,8 +209,13 @@ class Tenor extends React.Component<TenorProps, TenorState> {
       clearTimeout(this.timeout);
     }
 
-    if (!defaultResults && !search.length) {
-      this.setState(DEFAULT_STATE);
+    if (!search.length) {
+      if (defaultResults) {
+        this.setState({ ...DEFAULT_STATE, searching: true });
+        this.performSearch(search);
+      } else {
+        this.setState(DEFAULT_STATE);
+      }
       return;
     }
 
@@ -302,4 +310,5 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   }
 }
 
+export { Result } from "./TenorAPI";
 export default Tenor;

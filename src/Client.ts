@@ -38,8 +38,8 @@ const fetch = <T extends object>(base: string, path: string, query: Query): Prom
 );
 
 type ClientOptions = {
-  base: string | null;
-  token: string | null;
+  base?: string;
+  token?: string;
   defaultResults?: boolean;
 };
 
