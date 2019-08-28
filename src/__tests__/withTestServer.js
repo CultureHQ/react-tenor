@@ -13,7 +13,7 @@ const makeResult = () => ({
   media: [{ tinygif: { url: "https://via.placeholder.com/10x10" } }]
 });
 
-export const results = {
+export const results = { /* eslint-disable @typescript-eslint/camelcase */
   autocomplete: ["test", "testing", "test2", "testingtesting", "testy testerson"],
   search_suggestions: ["test", "unit test", "acceptance test", "testing", "how to test"],
   search: [makeResult(), makeResult(), makeResult(), makeResult(), makeResult()]

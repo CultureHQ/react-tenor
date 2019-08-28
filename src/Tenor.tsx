@@ -39,17 +39,23 @@ type TenorState = {
   pages: TenorAPI.SearchResponse[];
   search: string;
   searching: boolean;
-  suggestions: string[]
+  suggestions: string[];
 };
+
+type SetState<K extends keyof TenorState> = (
+  ((prev: TenorState) => Pick<TenorState, K>) | Pick<TenorState, K>
+);
 
 class Tenor extends React.Component<TenorProps, TenorState> {
   private client: Client;
 
+  private componentIsMounted: boolean;
+
   private contentRef: React.RefObject<HTMLDivElement>;
+
   private inputRef: React.RefObject<HTMLInputElement>;
 
   private timeout: ReturnType<typeof setTimeout> | null;
-  private componentIsMounted: boolean;
 
   constructor(props: TenorProps) {
     super(props);
@@ -66,7 +72,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.state = {
       ...DEFAULT_STATE,
       search: props.initialSearch || "",
-      searching: !props.initialSearch && !props.defaultResults
+      searching: !!(props.initialSearch || props.defaultResults)
     };
   }
 
@@ -94,7 +100,11 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   componentDidUpdate(prevProps: TenorProps) {
     const { base, token, defaultResults } = this.props;
 
-    if (base !== prevProps.base || token !== prevProps.token || defaultResults !== prevProps.defaultResults) {
+    if (
+      base !== prevProps.base
+      || token !== prevProps.token
+      || defaultResults !== prevProps.defaultResults
+    ) {
       this.client = new Client({ base, token, defaultResults });
     }
   }
@@ -270,7 +280,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     });
   };
 
-  mountedSetState = <K extends keyof TenorState>(state: ((prevState: TenorState) => Pick<TenorState, K>) | Pick<TenorState, K>) => {
+  mountedSetState = <K extends keyof TenorState>(state: SetState<K>) => {
     if (this.componentIsMounted) {
       this.setState<K>(state);
     }

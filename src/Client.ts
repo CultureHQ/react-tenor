@@ -1,7 +1,7 @@
 import * as TenorAPI from "./TenorAPI";
 
 type Query = {
-  [key: string]: string | number | undefined
+  [key: string]: string | number | undefined;
 };
 
 export const stringify = (query: Query) => {
@@ -43,9 +43,11 @@ type ClientOptions = {
   defaultResults?: boolean;
 };
 
-class Client {
+class Client { /* eslint-disable @typescript-eslint/camelcase */
   private base: string;
+
   private token: string;
+
   private defaultResults: boolean;
 
   constructor({ base, token, defaultResults }: ClientOptions) {

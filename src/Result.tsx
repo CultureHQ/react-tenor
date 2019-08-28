@@ -15,6 +15,7 @@ type ResultState = {
 
 class Result extends React.Component<ResultProps, ResultState> {
   private componentIsMounted: boolean;
+
   private image: HTMLImageElement;
 
   constructor(props: ResultProps) {

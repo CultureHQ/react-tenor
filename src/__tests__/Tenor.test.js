@@ -66,7 +66,7 @@ test("does not enqueue searches for empty inputs", () => {
 
   component.instance().handleSearchChange({ target: { value: "" } });
 
-  expect(component.instance().timeout).toBe(undefined);
+  expect(component.instance().timeout).toBe(null);
 });
 
 test("handles the contentRef prop", () => {
@@ -201,7 +201,7 @@ test("unmounts cleanly", async () => {
   await new Promise(resolve => setTimeout(resolve, 100));
 });
 
-describe("pagination", () => {
+describe("pagination", () => { /* eslint-disable @typescript-eslint/no-empty-function */
   const ARROW_LEFT_KEY = 37;
   const ARROW_RIGHT_KEY = 39;
 
