@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-import Tenor from "../src/Tenor";
+import Tenor, { Result } from "../src/Tenor";
 import "../src/styles.css";
 
 const App = () => {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = React.useState<Result | null>(null);
 
   return (
     <>
@@ -17,7 +17,7 @@ const App = () => {
         <div className="selected">
           {selected && <img src={selected.media[0].tinygif.url} alt="Selected GIF" />}
         </div>
-        <Tenor autoFocus defaultResults onSelect={setSelected} />
+        <Tenor autoFocus defaultResults token="LIVDSRZULELA" onSelect={setSelected} />
       </main>
       {ReactDOM.createPortal(
         <footer>

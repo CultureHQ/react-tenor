@@ -1,18 +1,38 @@
-import React, { Component } from "react";
+import * as React from "react";
+
+import * as TenorAPI from "./TenorAPI";
 
 const BASE = "https://tenor.com/view/";
 
-class Result extends Component {
-  state = { loaded: false };
+type ResultProps = {
+  onSelect: (result: TenorAPI.Result) => void;
+  result: TenorAPI.Result;
+};
+
+type ResultState = {
+  loaded: boolean;
+};
+
+class Result extends React.Component<ResultProps, ResultState> {
+  private componentIsMounted: boolean;
+
+  public image: HTMLImageElement;
+
+  constructor(props: ResultProps) {
+    super(props);
+
+    this.componentIsMounted = false;
+    this.image = new Image();
+
+    this.state = { loaded: false };
+  }
 
   componentDidMount() {
     this.componentIsMounted = true;
 
     const { result } = this.props;
 
-    this.image = new Image();
     this.image.src = result.media[0].tinygif.url;
-
     this.image.onload = () => {
       if (this.componentIsMounted) {
         this.setState({ loaded: true });

@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import * as React from "react";
 
+import * as TenorAPI from "./TenorAPI";
 import Client from "./Client";
 import Search from "./Search";
 
-const DEFAULT_STATE = {
+export const defaultState = {
   autoComplete: null,
   autoFocus: false,
   page: 0,
@@ -13,16 +14,49 @@ const DEFAULT_STATE = {
   suggestions: []
 };
 
-const DELAY = 250;
+const searchDelay = 250;
 
-const KEYS = {
+const keyCodes = {
   Tab: 9,
   ArrowLeft: 37,
   ArrowRight: 39
 };
 
-class Tenor extends Component {
-  constructor(props) {
+type TenorProps = {
+  autoFocus?: boolean;
+  base?: string;
+  contentRef?: React.RefObject<HTMLDivElement>;
+  defaultResults?: boolean;
+  initialSearch?: string;
+  onSelect: (result: TenorAPI.Result) => void;
+  token: string;
+};
+
+type TenorState = {
+  autoComplete: string | null;
+  page: number;
+  pages: TenorAPI.SearchResponse[];
+  search: string;
+  searching: boolean;
+  suggestions: string[];
+};
+
+type SetState<K extends keyof TenorState> = (
+  ((prev: TenorState) => Pick<TenorState, K>) | Pick<TenorState, K>
+);
+
+class Tenor extends React.Component<TenorProps, TenorState> {
+  public client: Client;
+
+  public componentIsMounted: boolean;
+
+  public contentRef: React.RefObject<HTMLDivElement>;
+
+  public inputRef: React.RefObject<HTMLInputElement>;
+
+  public timeout: ReturnType<typeof setTimeout> | null;
+
+  constructor(props: TenorProps) {
     super(props);
 
     const { base, token, defaultResults } = props;
@@ -31,10 +65,13 @@ class Tenor extends Component {
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
 
+    this.timeout = null;
+    this.componentIsMounted = false;
+
     this.state = {
-      ...DEFAULT_STATE,
+      ...defaultState,
       search: props.initialSearch || "",
-      searching: !!props.initialSearch
+      searching: !!(props.initialSearch || props.defaultResults)
     };
   }
 
@@ -45,10 +82,13 @@ class Tenor extends Component {
     window.addEventListener("keydown", this.handleWindowKeyDown);
     window.addEventListener("click", this.handleWindowClick);
 
-    if (initialSearch || defaultResults) {
+    if (initialSearch) {
       this.fetchAutoComplete(initialSearch);
       this.fetchSuggestions(initialSearch);
-      this.performSearch(initialSearch);
+    }
+
+    if (initialSearch || defaultResults) {
+      this.performSearch(initialSearch || "");
     }
 
     if (autoFocus) {
@@ -56,11 +96,15 @@ class Tenor extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { base, token } = this.props;
+  componentDidUpdate(prevProps: TenorProps) {
+    const { base, token, defaultResults } = this.props;
 
-    if (base !== prevProps.base || token !== prevProps.token) {
-      this.client = new Client({ base, token });
+    if (
+      base !== prevProps.base
+      || token !== prevProps.token
+      || defaultResults !== prevProps.defaultResults
+    ) {
+      this.client = new Client({ base, token, defaultResults });
     }
   }
 
@@ -70,7 +114,7 @@ class Tenor extends Component {
     this.componentIsMounted = false;
   }
 
-  fetchAutoComplete = currentSearch => (
+  fetchAutoComplete = (currentSearch: string) => (
     this.client.autocomplete(currentSearch).then(({ results: [autoComplete] }) => {
       const { search } = this.state;
 
@@ -80,7 +124,7 @@ class Tenor extends Component {
     })
   );
 
-  fetchSuggestions = currentSearch => (
+  fetchSuggestions = (currentSearch: string) => (
     this.client.suggestions(currentSearch).then(({ results: suggestions }) => {
       const { search } = this.state;
 
@@ -90,7 +134,7 @@ class Tenor extends Component {
     })
   );
 
-  handleWindowClick = event => {
+  handleWindowClick = (event: MouseEvent) => {
     const { contentRef } = this.props;
     const { search } = this.state;
 
@@ -99,7 +143,7 @@ class Tenor extends Component {
     }
 
     const container = (contentRef || this.contentRef).current;
-    if (container.contains(event.target)) {
+    if (container && (event.target instanceof Element) && container.contains(event.target)) {
       return;
     }
 
@@ -107,15 +151,16 @@ class Tenor extends Component {
       clearTimeout(this.timeout);
     }
 
-    this.setState(DEFAULT_STATE);
+    this.setState(defaultState);
   };
 
-  handleWindowKeyDown = event => {
+  handleWindowKeyDown = (event: KeyboardEvent) => {
     const { contentRef } = this.props;
+    const container = (contentRef || this.contentRef).current;
 
     if (
-      !(contentRef || this.contentRef).current.contains(event.target)
-      || ([KEYS.ArrowLeft, KEYS.ArrowRight].indexOf(event.keyCode) === -1)
+      (container && (event.target instanceof Element) && !container.contains(event.target))
+      || ([keyCodes.ArrowLeft, keyCodes.ArrowRight].indexOf(event.keyCode) === -1)
       || !event.metaKey
     ) {
       return;
@@ -123,7 +168,7 @@ class Tenor extends Component {
 
     event.preventDefault();
 
-    if (event.keyCode === KEYS.ArrowLeft) {
+    if (event.keyCode === keyCodes.ArrowLeft) {
       this.handlePageLeft();
     } else {
       this.handlePageRight();
@@ -152,41 +197,48 @@ class Tenor extends Component {
       return Promise.resolve();
     }
 
-    return this.client.search(search, pages[page].next).then(nextPage => {
-      if (nextPage.results) {
-        this.mountedSetState(({ page: prevPage, pages: prevPages }) => ({
-          page: prevPage + 1,
-          pages: prevPages.concat([nextPage]),
-          searching: false
-        }));
-      }
-    }).catch(() => {
-      this.mountedSetState({ searching: false });
-    });
+    return this.client.search(search, pages[page].next)
+      .then((nextPage: TenorAPI.SearchResponse) => {
+        if (nextPage.results) {
+          this.mountedSetState(({ page: prevPage, pages: prevPages }) => ({
+            page: prevPage + 1,
+            pages: prevPages.concat([nextPage]),
+            searching: false
+          }));
+        }
+      }).catch(() => {
+        this.mountedSetState({ searching: false });
+      });
   };
 
-  handleSearchChange = ({ target: { value: search } }) => {
+  handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { defaultResults } = this.props;
+    const search = event.target.value;
 
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
 
-    if (!defaultResults && !search.length) {
-      this.setState(DEFAULT_STATE);
+    if (!search.length) {
+      if (defaultResults) {
+        this.setState({ ...defaultState, searching: true });
+        this.performSearch(search);
+      } else {
+        this.setState(defaultState);
+      }
       return;
     }
 
     this.setState({ autoComplete: null, search, searching: true });
     this.fetchAutoComplete(search);
     this.fetchSuggestions(search);
-    this.timeout = setTimeout(() => this.performSearch(search), DELAY);
+    this.timeout = setTimeout(() => this.performSearch(search), searchDelay);
   };
 
-  handleSearchKeyDown = event => {
+  handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { autoComplete, search: prevSearch } = this.state;
 
-    if (event.keyCode !== KEYS.Tab || !autoComplete || !prevSearch) {
+    if (event.keyCode !== keyCodes.Tab || !autoComplete || !prevSearch) {
       return;
     }
 
@@ -207,7 +259,7 @@ class Tenor extends Component {
     this.performSearch(search);
   };
 
-  handleSuggestionClick = suggestion => {
+  handleSuggestionClick = (suggestion: string) => {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
@@ -216,7 +268,7 @@ class Tenor extends Component {
     this.performSearch(suggestion);
   };
 
-  performSearch = search => {
+  performSearch = (search: string) => {
     if (!this.componentIsMounted) {
       return Promise.resolve();
     }
@@ -228,14 +280,18 @@ class Tenor extends Component {
     });
   };
 
-  mountedSetState = mutation => {
+  mountedSetState = <K extends keyof TenorState>(state: SetState<K>) => {
     if (this.componentIsMounted) {
-      this.setState(mutation);
+      this.setState<K>(state);
     }
   };
 
   focus() {
-    this.inputRef.current.focus();
+    const input = this.inputRef.current;
+
+    if (input) {
+      input.focus();
+    }
   }
 
   render() {
@@ -264,4 +320,5 @@ class Tenor extends Component {
   }
 }
 
+export { Result } from "./TenorAPI";
 export default Tenor;
