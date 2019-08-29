@@ -3,6 +3,7 @@
   "version": "1.4.0",
   "description": "Integrate with the Tenor GIF API",
   "main": "dist/Tenor.js",
+  "types": "dist/Tenor.d.ts",
   "scripts": {
     "compile": "tsc --noEmit",
     "docs": "webpack --mode production",
