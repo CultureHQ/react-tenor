@@ -50,9 +50,12 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
 
   public defaultResults: boolean;
 
-  constructor({ base, token, defaultResults }: ClientOptions) {
+  constructor({ base, token, locale, mediaFilter, safesearch, defaultResults }: ClientOptions) {
     this.base = base || "https://api.tenor.com/v1";
     this.token = token || "LIVDSRZULELA";
+    this.locale = locale || "en_US";
+    this.safesearch = safesearch || "mild";
+    this.mediaFilter = mediaFilter || "minimal";
     this.defaultResults = defaultResults || false;
   }
 
@@ -72,9 +75,9 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
       key: this.token,
       q: search,
       limit: 12,
-      locale: "en_US",
-      safesearch: "mild",
-      media_filter: "minimal",
+      locale: this.locale,
+      safesearch: this.safesearch,
+      media_filter: this.mediaFilter,
       ar_range: "all",
       pos
     });
@@ -85,7 +88,7 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
       key: this.token,
       q: search,
       limit: 5,
-      locale: "en_US"
+      locale: this.locale
     });
   }
 }

@@ -30,6 +30,9 @@ type TenorProps = {
   initialSearch?: string;
   onSelect: (result: TenorAPI.Result) => void;
   token: string;
+  locale?: string;
+  mediaFilter?: string;
+  safesearch?: string;
 };
 
 type TenorState = {
@@ -59,8 +62,8 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   constructor(props: TenorProps) {
     super(props);
 
-    const { base, token, defaultResults } = props;
-    this.client = new Client({ base, token, defaultResults });
+    const { base, token, locale, mediaFilter, safesearch, defaultResults } = props;
+    this.client = new Client({ base, token, locale, mediaFilter, safesearch, defaultResults });
 
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
@@ -97,14 +100,17 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   }
 
   componentDidUpdate(prevProps: TenorProps) {
-    const { base, token, defaultResults } = this.props;
+    const { base, token, locale, mediaFilter, safesearch, defaultResults } = this.props;
 
     if (
       base !== prevProps.base
       || token !== prevProps.token
+      || locale !== prevProps.locale
+      || mediaFilter !== prevProps.mediaFilter
+      || safesearch !== prevProps.safesearch
       || defaultResults !== prevProps.defaultResults
     ) {
-      this.client = new Client({ base, token, defaultResults });
+      this.client = new Client({ base, token, locale, mediaFilter, safesearch, defaultResults });
     }
   }
 
