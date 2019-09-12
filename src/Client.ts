@@ -47,9 +47,9 @@ type ClientOptions = {
 };
 
 class Client { /* eslint-disable @typescript-eslint/camelcase */
-  private base: string;
+  public base: string;
 
-  private token: string;
+  public token: string;
 
   private locale: string;
 

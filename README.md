@@ -24,7 +24,7 @@ Below is a list of all of the props you can pass to the `Tenor` component.
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | `autoFocus` | `boolean` | `false` | Indicates that the search bar of the component should request focus when it first mounts. |
-| `base` | `string` | `"https://api.tenor.com/v1"` | The base of the API that this component hits. |
+| `base` | `string` | `"api.tenor.com/v1"` | The base of the API that this component hits. |
 | `contentRef` | `Ref` | `null` | A ref to the `div` that the `Tenor` component renders. |
 | `defaultResults` | `boolean` | `false` | Indicates that the component should automatically search for trending results if the search input is empty. |
 | `initialSearch` | `string` | `""`  | The starting value of the search bar. |

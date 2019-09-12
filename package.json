@@ -5,10 +5,10 @@
   "main": "dist/Tenor.js",
   "types": "dist/Tenor.d.ts",
   "scripts": {
-    "compile": "tsc --noEmit",
+    "compile": "tsc --project tsconfig.test.json",
     "docs": "webpack --mode production",
     "lint": "chq-scripts lint",
-    "prepublishOnly": "rm -rf dist && yarn tsc --declaration && cp src/styles.css dist/styles.css",
+    "prepublishOnly": "rm -rf dist && yarn tsc && cp src/styles.css dist/styles.css",
     "start": "webpack-dev-server --mode development --hot",
     "test": "chq-scripts test"
   },
