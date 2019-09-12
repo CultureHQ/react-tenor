@@ -30,9 +30,9 @@ type TenorProps = {
   initialSearch?: string;
   onSelect: (result: TenorAPI.Result) => void;
   token: string;
-  locale: string;
-  mediaFilter: string;
-  safesearch: string;
+  locale?: string;
+  mediaFilter?: string;
+  safesearch?: string;
 };
 
 type TenorState = {
