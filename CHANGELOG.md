@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.5.0] - 2019-09-12
+
 ### Added
 
 - The `locale`, `mediaFilter`, and `safesearch` props.
@@ -95,7 +97,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Don't build the final distribution with `webpack`, just use `babel`.
 - Rename `example` to `docs` so we can publish to github pages.
 
-[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v1.4.0...HEAD
+[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/CultureHQ/react-tenor/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/CultureHQ/react-tenor/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/CultureHQ/react-tenor/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/CultureHQ/react-tenor/compare/v1.3.0...v1.3.1
