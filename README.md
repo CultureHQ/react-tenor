@@ -21,18 +21,18 @@ To get the styles, be sure it import `react-tenor/dist/styles.css` into your app
 
 Below is a list of all of the props you can pass to the `Tenor` component.
 
-| Name | Required | Type | Default | Description |
-| ---- | -------- | ---- | :-----: | ----------- |
-| `autoFocus` | `false` | `boolean` | `false` | Indicates that the search bar of the component should request focus when it first mounts. |
-| `base` | `false` | `string` | `"https://api.tenor.com/v1"` | The base of the API that this component hits. |
-| `contentRef` | `false` | `React.RefObject<HTMLDivElement>` | `null` | A ref to the `div` that the `Tenor` component renders. |
-| `defaultResults` | `false` | `boolean` | `false` | Indicates that the component should automatically search for trending results if the search input is empty. |
-| `initialSearch` | `false` | `string` | `""`  | The starting value of the search bar. |
-| `locale` | `false` | `string` | `"en_US"` | The locale that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
-| `mediaFilter` | `false` | `string` | `"minimal"`  | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
-| `onSelect` | `true` | `(result: TenorAPI.Result) => void` | | A callback for when the user selects a GIF. |
-| `safesearch` | `false` | `string` | `"mild"` | The safe search that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
-| `token` | `true` | `string` | | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `autoFocus` | `boolean` | `false` | Indicates that the search bar of the component should request focus when it first mounts. |
+| `base` | `string` | `"https://api.tenor.com/v1"` | The base of the API that this component hits. |
+| `contentRef` | `Ref` | `null` | A ref to the `div` that the `Tenor` component renders. |
+| `defaultResults` | `boolean` | `false` | Indicates that the component should automatically search for trending results if the search input is empty. |
+| `initialSearch` | `string` | `""`  | The starting value of the search bar. |
+| `locale` | `string` | `"en_US"` | The locale that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `mediaFilter` | `string` | `"minimal"`  | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `onSelect` | `Result => void` | | A callback for when the user selects a GIF. |
+| `safesearch` | `string` | `"mild"` | The safe search that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `token` | `string` | | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 
 ### Functions
 
