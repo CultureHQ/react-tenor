@@ -13,27 +13,30 @@ First, add `react-tenor` to your `package.json` `dependencies`, then install usi
 <Tenor token="your-token-here" onSelect={result => console.log(result)} />
 ```
 
+### Styles
+
 To get the styles, be sure it import `react-tenor/dist/styles.css` into your application. You can style it appropriately for your app by overriding the CSS classes used internally. They are listed in [`styles.css`](src/styles.css).
 
-### `base`
+### Props
 
-If you need to change the API endpoint that this component hits, you can set the `base` prop on the component to a valid URL.
+Below is a list of all of the props you can pass to the `Tenor` component.
 
-### `contentRef`
+| Name | Required | Type | Default | Description |
+| ---- | -------- | ---- | :-----: | ----------- |
+| `autoFocus` | `false` | `boolean` | `false` | Indicates that the search bar of the component should request focus when it first mounts. |
+| `base` | `false` | `string` | `"https://api.tenor.com/v1"` | The base of the API that this component hits. |
+| `contentRef` | `false` | `React.RefObject<HTMLDivElement>` | `null` | A ref to the `div` that the `Tenor` component renders. |
+| `defaultResults` | `false` | `boolean` | `false` | Indicates that the component should automatically search for trending results if the search input is empty. |
+| `initialSearch` | `false` | `string` | `""`  | The starting value of the search bar. |
+| `locale` | `false` | `string` | `"en_US"` | The locale that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `mediaFilter` | `false` | `string` | `"minimal"`  | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `onSelect` | `true` | `(result: TenorAPI.Result) => void` | | A callback for when the user selects a GIF. |
+| `safesearch` | `false` | `string` | `"mild"` | The safe search that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `token` | `true` | `string` | | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 
-If you need access to the actual `div` that `Tenor` renders, you can pass any valid `React` ref to the `contentRef` prop.
+### Functions
 
-### `initialSearch`
-
-If you want the search bar to start pre-populated with a specific value, you can pass an `initialSearch` prop.
-
-### `defaultResults`
-
-If you need to show trending results in an initial rendering without any initialSearch, you can pass `defaultResults` prop.
-
-### `focus()`
-
-The `Tenor` component has a `focus()` member function that can be called to request focus be placed on the search input.
+The `Tenor` component additionally has a `focus()` member function that can be called to request focus be placed on the search input.
 
 ## Testing locally
 

@@ -40,15 +40,24 @@ const fetch = <T extends object>(base: string, path: string, query: Query): Prom
 type ClientOptions = {
   base?: string;
   token?: string;
+  locale?: string;
+  safesearch?: string;
+  mediaFilter?: string;
   defaultResults?: boolean;
 };
 
 class Client { /* eslint-disable @typescript-eslint/camelcase */
-  public base: string;
+  private base: string;
 
-  public token: string;
+  private token: string;
 
-  public defaultResults: boolean;
+  private locale: string;
+
+  private safesearch: string;
+
+  private mediaFilter: string;
+
+  private defaultResults: boolean;
 
   constructor({ base, token, locale, mediaFilter, safesearch, defaultResults }: ClientOptions) {
     this.base = base || "https://api.tenor.com/v1";
