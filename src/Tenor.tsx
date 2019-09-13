@@ -32,7 +32,7 @@ type TenorProps = {
   token: string;
   locale?: string;
   mediaFilter?: string;
-  safesearch?: string;
+  contentFilter?: string;
 };
 
 type TenorState = {
@@ -62,8 +62,8 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   constructor(props: TenorProps) {
     super(props);
 
-    const { base, token, locale, mediaFilter, safesearch, defaultResults } = props;
-    this.client = new Client({ base, token, locale, mediaFilter, safesearch, defaultResults });
+    const { base, token, locale, mediaFilter, contentFilter, defaultResults } = props;
+    this.client = new Client({ base, token, locale, mediaFilter, contentFilter, defaultResults });
 
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
@@ -100,17 +100,17 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   }
 
   componentDidUpdate(prevProps: TenorProps) {
-    const { base, token, locale, mediaFilter, safesearch, defaultResults } = this.props;
+    const { base, token, locale, mediaFilter, contentFilter, defaultResults } = this.props;
 
     if (
       base !== prevProps.base
       || token !== prevProps.token
       || locale !== prevProps.locale
       || mediaFilter !== prevProps.mediaFilter
-      || safesearch !== prevProps.safesearch
+      || contentFilter !== prevProps.contentFilter
       || defaultResults !== prevProps.defaultResults
     ) {
-      this.client = new Client({ base, token, locale, mediaFilter, safesearch, defaultResults });
+      this.client = new Client({ base, token, locale, mediaFilter, contentFilter, defaultResults });
     }
   }
 

@@ -31,7 +31,7 @@ Below is a list of all of the props you can pass to the `Tenor` component.
 | `locale` | `string` | `"en_US"` | The locale that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 | `mediaFilter` | `string` | `"minimal"`  | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 | `onSelect` | `Result => void` | | A callback for when the user selects a GIF. |
-| `safesearch` | `string` | `"mild"` | The safe search that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `contentFilter` | `string` | `"mild"` | The content filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. Extra about [content filtering](https://tenor.com/gifapi/documentation#contentfilter) |
 | `token` | `string` | | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 
 ### Functions

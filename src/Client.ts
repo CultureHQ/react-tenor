@@ -41,7 +41,7 @@ type ClientOptions = {
   base?: string;
   token?: string;
   locale?: string;
-  safesearch?: string;
+  contentFilter?: string;
   mediaFilter?: string;
   defaultResults?: boolean;
 };
@@ -53,17 +53,17 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
 
   private locale: string;
 
-  private safesearch: string;
+  private contentFilter: string;
 
   private mediaFilter: string;
 
   private defaultResults: boolean;
 
-  constructor({ base, token, locale, mediaFilter, safesearch, defaultResults }: ClientOptions) {
+  constructor({ base, token, locale, mediaFilter, contentFilter, defaultResults }: ClientOptions) {
     this.base = base || "https://api.tenor.com/v1";
     this.token = token || "LIVDSRZULELA";
     this.locale = locale || "en_US";
-    this.safesearch = safesearch || "mild";
+    this.contentFilter = contentFilter || "mild";
     this.mediaFilter = mediaFilter || "minimal";
     this.defaultResults = defaultResults || false;
   }
@@ -85,7 +85,7 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
       q: search,
       limit: 12,
       locale: this.locale,
-      safesearch: this.safesearch,
+      contentfilter: this.contentFilter,
       media_filter: this.mediaFilter,
       ar_range: "all",
       pos
