@@ -25,13 +25,13 @@ Below is a list of all of the props you can pass to the `Tenor` component.
 | ---- | ---- | ------- | ----------- |
 | `autoFocus` | `boolean` | `false` | Indicates that the search bar of the component should request focus when it first mounts. |
 | `base` | `string` | `"api.tenor.com/v1"` | The base of the API that this component hits. |
+| `contentFilter` | `string` | `"mild"` | The content filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation#contentfilter) for details. |
 | `contentRef` | `Ref` | `null` | A ref to the `div` that the `Tenor` component renders. |
 | `defaultResults` | `boolean` | `false` | Indicates that the component should automatically search for trending results if the search input is empty. |
 | `initialSearch` | `string` | `""`  | The starting value of the search bar. |
 | `locale` | `string` | `"en_US"` | The locale that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 | `mediaFilter` | `string` | `"minimal"`  | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 | `onSelect` | `Result => void` | | A callback for when the user selects a GIF. |
-| `contentFilter` | `string` | `"mild"` | The content filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. Extra about [content filtering](https://tenor.com/gifapi/documentation#contentfilter) |
 | `token` | `string` | | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 
 ### Functions
