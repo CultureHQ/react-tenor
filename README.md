@@ -33,6 +33,7 @@ Below is a list of all of the props you can pass to the `Tenor` component.
 | `mediaFilter` | `string` | `"minimal"`  | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
 | `onSelect` | `Result => void` | | A callback for when the user selects a GIF. |
 | `token` | `string` | | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details. |
+| `searchPlaceholder` | `string` | `Search Tenor` | The placeholder that is applied to the search input field. |
 
 ### Functions
 
