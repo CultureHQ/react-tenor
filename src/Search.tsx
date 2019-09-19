@@ -33,10 +33,11 @@ type SearchBarProps = {
   onSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   search: string;
   searching: boolean;
+  placeholder?: string;
 };
 
 const SearchBar = ({
-  autoComplete, inputRef, search, searching, onSearchChange, onSearchKeyDown
+  autoComplete, inputRef, search, searching, onSearchChange, onSearchKeyDown, placeholder
 }: SearchBarProps) => (
   <div className="react-tenor--search-bar">
     <input
@@ -47,7 +48,7 @@ const SearchBar = ({
       value={search}
       onChange={onSearchChange}
       onKeyDown={onSearchKeyDown}
-      placeholder="Search Tenor"
+      placeholder={placeholder || "Search Tenor"}
     />
     {autoComplete && search && (
       <AutoComplete autoComplete={autoComplete} search={search} />
