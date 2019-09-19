@@ -33,6 +33,7 @@ type TenorProps = {
   locale?: string;
   mediaFilter?: string;
   contentFilter?: string;
+  searchPlaceholder?: string;
 };
 
 type TenorState = {
@@ -301,7 +302,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   }
 
   render() {
-    const { contentRef, onSelect } = this.props;
+    const { contentRef, onSelect, searchPlaceholder } = this.props;
     const {
       autoComplete, page, pages, search, searching, suggestions
     } = this.state;
@@ -321,6 +322,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
         search={search}
         searching={searching}
         suggestions={suggestions}
+        placeholder={searchPlaceholder}
       />
     );
   }
