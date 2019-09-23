@@ -125,7 +125,7 @@ type SearchProps = SearchBarProps & ResultProps & SuggestionsProps & {
 const Search = ({
   autoComplete, contentRef, inputRef, onPageLeft, onPageRight, onSearchChange,
   onSearchKeyDown, onSuggestionClick, onSelect, results, search, searching,
-  suggestions
+  suggestions, placeholder
 }: SearchProps) => {
   let classList = "react-tenor";
   if (suggestions.length > 0 || results.length > 0) {
@@ -141,6 +141,7 @@ const Search = ({
         searching={searching}
         onSearchChange={onSearchChange}
         onSearchKeyDown={onSearchKeyDown}
+        placeholder={placeholder}
       />
       {suggestions.length > 0 && (
         <Suggestions
