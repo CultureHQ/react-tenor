@@ -28,6 +28,7 @@ const mountTenor = (props: MountedTenorProps = {}, state: MountedTenorState = {}
       contentRef={props.contentRef}
       initialSearch={props.initialSearch}
       onSelect={props.onSelect || jest.fn()}
+      searchPlaceholder={props.searchPlaceholder}
       token={props.token || "token"}
     />
   ) as MountedTenor;
@@ -248,7 +249,15 @@ test("unmounts cleanly", async () => {
   await new Promise(resolve => setTimeout(resolve, 100));
 });
 
-describe("pagination", () => { /* eslint-disable @typescript-eslint/no-empty-function */
+test("searchPlaceholder", () => {
+  const searchPlaceholder = "Search GIFs!!";
+  const component = mountTenor({ searchPlaceholder });
+
+  const input = component.find("input");
+  expect(input.prop("placeholder")).toEqual(searchPlaceholder);
+});
+
+describe("pagination", () => {
   test("paging left", () => {
     const component = mountTenor();
     expect(component.state().page).toEqual(0);

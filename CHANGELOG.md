@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [2.1.1] - 2019-09-23
+
+### Changed
+
+- Correctly pass down the `searchPlaceholder` prop.
+
 ## [2.1.0] - 2019-09-19
 
 ### Added
@@ -109,7 +115,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Don't build the final distribution with `webpack`, just use `babel`.
 - Rename `example` to `docs` so we can publish to github pages.
 
-[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v2.1.0...HEAD
+[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/CultureHQ/react-tenor/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/CultureHQ/react-tenor/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/CultureHQ/react-tenor/compare/v1.5.0...v2.0.0
 [1.5.0]: https://github.com/CultureHQ/react-tenor/compare/v1.4.0...v1.5.0
