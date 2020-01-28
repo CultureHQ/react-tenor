@@ -121,17 +121,6 @@ test("handles the contentRef prop", () => {
   component.unmount();
 });
 
-test("allows you to call focus() on the parent", () => {
-  const component = mountTenor();
-
-  component.instance().focus();
-
-  const { activeElement } = document;
-
-  expect(activeElement).toBeTruthy();
-  expect((activeElement as HTMLElement).classList[0]).toEqual("react-tenor--search");
-});
-
 describe("suggestions", () => {
   test("handles clicking a suggestion", withTestServer(8083, async () => {
     const component = mountTenor({ base: "http://localhost:8083" });
