@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [2.2.0] - 2020-03-13
+
 ### Added
 
 - The `limit` prop to support setting how many results to return.
@@ -119,7 +121,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Don't build the final distribution with `webpack`, just use `babel`.
 - Rename `example` to `docs` so we can publish to github pages.
 
-[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v2.1.1...HEAD
+[unreleased]: https://github.com/CultureHQ/react-tenor/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/CultureHQ/react-tenor/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/CultureHQ/react-tenor/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/CultureHQ/react-tenor/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/CultureHQ/react-tenor/compare/v1.5.0...v2.0.0
