@@ -29,16 +29,12 @@ Below is a list of all of the props you can pass to the `Tenor` component.
 | `contentRef`        | `Ref`            | `null`               | A ref to the `div` that the `Tenor` component renders.                                                                                       |
 | `defaultResults`    | `boolean`        | `false`              | Indicates that the component should automatically search for trending results if the search input is empty.                                  |
 | `initialSearch`     | `string`         | `""`                 | The starting value of the search bar.                                                                                                        |
-| `limit`             | `number`         | 12                   | The number of results to return for each search.                                                                                             |
+| `limit`             | `number`         | `12`                 | The number of results to return for each search.                                                                                             |
 | `locale`            | `string`         | `"en_US"`            | The locale that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details.                       |
 | `mediaFilter`       | `string`         | `"minimal"`          | The media filter that gets passed up to tenor. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details.                 |
 | `onSelect`          | `Result => void` |                      | A callback for when the user selects a GIF.                                                                                                  |
 | `searchPlaceholder` | `string`         | `"Search Tenor"`     | The placeholder that is applied to the search input field.                                                                                   |
 | `token`             | `string`         |                      | The tenor API token. See the [tenor API docs](https://tenor.com/gifapi/documentation) for details.                                           |
-
-### Functions
-
-The `Tenor` component additionally has a `focus()` member function that can be called to request focus be placed on the search input.
 
 ## Testing locally
 
