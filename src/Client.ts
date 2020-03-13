@@ -44,6 +44,7 @@ type ClientOptions = {
   contentFilter?: string;
   mediaFilter?: string;
   defaultResults?: boolean;
+  limit?: number;
 };
 
 class Client { /* eslint-disable @typescript-eslint/camelcase */
@@ -59,13 +60,16 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
 
   private defaultResults: boolean;
 
-  constructor({ base, token, locale, mediaFilter, contentFilter, defaultResults }: ClientOptions) {
-    this.base = base || "https://api.tenor.com/v1";
-    this.token = token || "LIVDSRZULELA";
-    this.locale = locale || "en_US";
-    this.contentFilter = contentFilter || "mild";
-    this.mediaFilter = mediaFilter || "minimal";
-    this.defaultResults = defaultResults || false;
+  private limit: number;
+
+  constructor(opts: ClientOptions) {
+    this.base = opts.base || "https://api.tenor.com/v1";
+    this.token = opts.token || "LIVDSRZULELA";
+    this.locale = opts.locale || "en_US";
+    this.contentFilter = opts.contentFilter || "mild";
+    this.mediaFilter = opts.mediaFilter || "minimal";
+    this.defaultResults = opts.defaultResults || false;
+    this.limit = opts.limit || 12;
   }
 
   autocomplete(search: string) {
@@ -83,7 +87,7 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
     return fetch<TenorAPI.SearchResponse>(this.base, searchQuery, {
       key: this.token,
       q: search,
-      limit: 12,
+      limit: this.limit,
       locale: this.locale,
       contentfilter: this.contentFilter,
       media_filter: this.mediaFilter,

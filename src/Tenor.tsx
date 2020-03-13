@@ -34,6 +34,7 @@ type TenorProps = {
   mediaFilter?: string;
   contentFilter?: string;
   searchPlaceholder?: string;
+  limit?: number;
 };
 
 type TenorState = {
@@ -63,8 +64,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   constructor(props: TenorProps) {
     super(props);
 
-    const { base, token, locale, mediaFilter, contentFilter, defaultResults } = props;
-    this.client = new Client({ base, token, locale, mediaFilter, contentFilter, defaultResults });
+    this.client = this.makeClient();
 
     this.contentRef = React.createRef();
     this.inputRef = React.createRef();
@@ -101,7 +101,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
   }
 
   componentDidUpdate(prevProps: TenorProps) {
-    const { base, token, locale, mediaFilter, contentFilter, defaultResults } = this.props;
+    const { base, token, locale, mediaFilter, contentFilter, defaultResults, limit } = this.props;
 
     if (
       base !== prevProps.base
@@ -110,8 +110,9 @@ class Tenor extends React.Component<TenorProps, TenorState> {
       || mediaFilter !== prevProps.mediaFilter
       || contentFilter !== prevProps.contentFilter
       || defaultResults !== prevProps.defaultResults
+      || limit !== prevProps.limit
     ) {
-      this.client = new Client({ base, token, locale, mediaFilter, contentFilter, defaultResults });
+      this.client = this.makeClient();
     }
   }
 
@@ -292,6 +293,20 @@ class Tenor extends React.Component<TenorProps, TenorState> {
       this.setState<K>(state);
     }
   };
+
+  makeClient() {
+    const { base, token, locale, mediaFilter, contentFilter, defaultResults, limit } = this.props;
+
+    return new Client({
+      base,
+      token,
+      locale,
+      mediaFilter,
+      contentFilter,
+      defaultResults,
+      limit
+    });
+  }
 
   focus() {
     const input = this.inputRef.current;
