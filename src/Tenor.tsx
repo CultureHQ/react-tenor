@@ -79,7 +79,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const { autoFocus, initialSearch, defaultResults } = this.props;
 
     this.componentIsMounted = true;
@@ -100,7 +100,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     }
   }
 
-  componentDidUpdate(prevProps: TenorProps) {
+  componentDidUpdate(prevProps: TenorProps): void {
     const { base, token, locale, mediaFilter, contentFilter, defaultResults, limit } = this.props;
 
     if (
@@ -116,13 +116,13 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     window.removeEventListener("click", this.handleWindowClick);
     window.removeEventListener("keydown", this.handleWindowKeyDown);
     this.componentIsMounted = false;
   }
 
-  fetchAutoComplete = (currentSearch: string) => (
+  fetchAutoComplete = (currentSearch: string): Promise<void> => (
     this.client.autocomplete(currentSearch).then(({ results: [autoComplete] }) => {
       const { search } = this.state;
 
@@ -132,7 +132,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     })
   );
 
-  fetchSuggestions = (currentSearch: string) => (
+  fetchSuggestions = (currentSearch: string): Promise<void> => (
     this.client.suggestions(currentSearch).then(({ results: suggestions }) => {
       const { search } = this.state;
 
@@ -142,7 +142,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     })
   );
 
-  handleWindowClick = (event: MouseEvent) => {
+  handleWindowClick = (event: MouseEvent): void => {
     const { contentRef } = this.props;
     const { search } = this.state;
 
@@ -162,7 +162,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.setState(defaultState);
   };
 
-  handleWindowKeyDown = (event: KeyboardEvent) => {
+  handleWindowKeyDown = (event: KeyboardEvent): void => {
     const { contentRef } = this.props;
     const container = (contentRef || this.contentRef).current;
 
@@ -183,11 +183,11 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     }
   };
 
-  handlePageLeft = () => {
+  handlePageLeft = (): void => {
     this.setState(({ page }) => ({ page: page === 0 ? 0 : page - 1 }));
   };
 
-  handlePageRight = () => {
+  handlePageRight = (): Promise<void> => {
     const { defaultResults } = this.props;
     const {
       page,
@@ -219,7 +219,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
       });
   };
 
-  handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { defaultResults } = this.props;
     const search = event.target.value;
 
@@ -243,7 +243,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.timeout = setTimeout(() => this.performSearch(search), searchDelay);
   };
 
-  handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     const { autoComplete, search: prevSearch } = this.state;
 
     if (event.keyCode !== keyCodes.Tab || !autoComplete || !prevSearch) {
@@ -267,7 +267,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.performSearch(search);
   };
 
-  handleSuggestionClick = (suggestion: string) => {
+  handleSuggestionClick = (suggestion: string): void => {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
@@ -276,7 +276,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     this.performSearch(suggestion);
   };
 
-  performSearch = (search: string) => {
+  performSearch = (search: string): Promise<void> => {
     if (!this.componentIsMounted) {
       return Promise.resolve();
     }
@@ -288,13 +288,13 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     });
   };
 
-  mountedSetState = <K extends keyof TenorState>(state: SetState<K>) => {
+  mountedSetState = <K extends keyof TenorState>(state: SetState<K>): void => {
     if (this.componentIsMounted) {
       this.setState<K>(state);
     }
   };
 
-  makeClient() {
+  makeClient(): Client {
     const { base, token, locale, mediaFilter, contentFilter, defaultResults, limit } = this.props;
 
     return new Client({
@@ -308,7 +308,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     });
   }
 
-  focus() {
+  focus(): void {
     const input = this.inputRef.current;
 
     if (input) {
@@ -316,7 +316,7 @@ class Tenor extends React.Component<TenorProps, TenorState> {
     }
   }
 
-  render() {
+  render(): React.ReactElement {
     const { contentRef, onSelect, searchPlaceholder } = this.props;
     const {
       autoComplete, page, pages, search, searching, suggestions

@@ -27,7 +27,7 @@ class Result extends React.Component<ResultProps, ResultState> {
     this.state = { loaded: false };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.componentIsMounted = true;
 
     const { result } = this.props;
@@ -40,23 +40,23 @@ class Result extends React.Component<ResultProps, ResultState> {
     };
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.componentIsMounted = false;
   }
 
-  getLabel() {
+  getLabel(): string {
     const { result: { itemurl } } = this.props;
 
     return itemurl.replace(BASE, "").replace(/-gif-\d+$/, "").replace(/-/g, " ");
   }
 
-  handleClick = () => {
+  handleClick = (): void => {
     const { result, onSelect } = this.props;
 
     onSelect(result);
   };
 
-  render() {
+  render(): React.ReactElement {
     const { loaded } = this.state;
 
     return (

@@ -4,7 +4,7 @@ type Query = {
   [key: string]: string | number | undefined;
 };
 
-export const stringify = (query: Query) => {
+export const stringify = (query: Query): string => {
   const keyValuePairs: string[] = [];
 
   Object.keys(query).forEach(key => {
@@ -16,25 +16,27 @@ export const stringify = (query: Query) => {
   return encodeURI(`?${keyValuePairs.join("&")}`);
 };
 
-const fetch = <T extends object>(base: string, path: string, query: Query): Promise<T> => (
-  new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
+const fetch = (
+  <T extends Record<string, unknown>>(base: string, path: string, query: Query): Promise<T> => (
+    new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState !== 4) {
-        return;
-      }
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState !== 4) {
+          return;
+        }
 
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve(JSON.parse(xhr.responseText));
-      } else {
-        reject(new Error(xhr.responseText));
-      }
-    };
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          reject(new Error(xhr.responseText));
+        }
+      };
 
-    xhr.open("GET", `${base}${path}${stringify(query)}`);
-    xhr.send();
-  })
+      xhr.open("GET", `${base}${path}${stringify(query)}`);
+      xhr.send();
+    })
+  )
 );
 
 type ClientOptions = {
@@ -47,7 +49,7 @@ type ClientOptions = {
   limit?: number;
 };
 
-class Client { /* eslint-disable @typescript-eslint/camelcase */
+class Client {
   public base: string;
 
   public token: string;
@@ -72,7 +74,7 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
     this.limit = opts.limit || 12;
   }
 
-  autocomplete(search: string) {
+  autocomplete(search: string): Promise<TenorAPI.AutocompleteResponse> {
     return fetch<TenorAPI.AutocompleteResponse>(this.base, "/autocomplete", {
       key: this.token,
       q: search,
@@ -81,7 +83,7 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
     });
   }
 
-  search(search: string, pos?: string) {
+  search(search: string, pos?: string): Promise<TenorAPI.SearchResponse> {
     const searchQuery = (this.defaultResults && !search) ? "/trending" : "/search";
 
     return fetch<TenorAPI.SearchResponse>(this.base, searchQuery, {
@@ -96,7 +98,7 @@ class Client { /* eslint-disable @typescript-eslint/camelcase */
     });
   }
 
-  suggestions(search: string) {
+  suggestions(search: string): Promise<TenorAPI.SuggestionsResponse> {
     return fetch<TenorAPI.SuggestionsResponse>(this.base, "/search_suggestions", {
       key: this.token,
       q: search,

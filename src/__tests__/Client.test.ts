@@ -1,5 +1,6 @@
 import Client from "../Client";
-import withTestServer, { results } from "./withTestServer";
+import mockResults from "./mockResults";
+import withTestServer from "./withTestServer";
 
 test("sets sane defaults", () => {
   const client = new Client({});
@@ -12,5 +13,5 @@ test("fetches the expected results", withTestServer(8090, async () => {
   const client = new Client({ base: "http://localhost:8090", token: "token" });
   const response = await client.search("Happy");
 
-  expect(response.results).toEqual(results.search);
+  expect(response.results).toEqual(mockResults.search);
 }));

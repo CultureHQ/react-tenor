@@ -4,7 +4,8 @@ import { mount, ReactWrapper } from "enzyme";
 import * as TenorAPI from "../TenorAPI";
 import Tenor, { defaultState } from "../Tenor";
 import Result from "../Result";
-import withTestServer, { TestServer, results } from "./withTestServer";
+import mockResults from "./mockResults";
+import withTestServer, { TestServer } from "./withTestServer";
 
 const ARROW_LEFT_KEY = 37;
 const ARROW_RIGHT_KEY = 39;
@@ -68,10 +69,10 @@ test("performs searches", withTestServer(8081, async () => {
   await component.instance().performSearch(search);
 
   component.update();
-  expect(component.find(Result)).toHaveLength(results.search.length);
+  expect(component.find(Result)).toHaveLength(mockResults.search.length);
 
   component.find(Result).at(3).simulate("click");
-  expect(selected).toEqual(results.search[3]);
+  expect(selected).toEqual(mockResults.search[3]);
 
   component.unmount();
 }));
@@ -102,7 +103,7 @@ test("allows passing an initialSearch prop", withTestServer(8083, async () => {
   await component.instance().performSearch("");
   component.update();
 
-  expect(component.find(Result)).toHaveLength(results.search.length);
+  expect(component.find(Result)).toHaveLength(mockResults.search.length);
 }));
 
 test("does not enqueue searches for empty inputs", () => {
@@ -133,15 +134,15 @@ describe("suggestions", () => {
 
     component.find("Suggestion").at(2).find("button").simulate("click");
 
-    expect(component.state().search).toEqual(results.search_suggestions[2]);
-    await component.instance().performSearch(results.search_suggestions[2]);
+    expect(component.state().search).toEqual(mockResults.search_suggestions[2]);
+    await component.instance().performSearch(mockResults.search_suggestions[2]);
   }));
 
   test("clears the timeout", () => {
     const component = mountTenor();
     component.setState({ search: "t", suggestions: ["test"] });
 
-    component.instance().client.search = () => Promise.resolve({ results: results.search });
+    component.instance().client.search = () => Promise.resolve({ results: mockResults.search });
     component.instance().timeout = setTimeout(() => {}, 1000);
 
     component.find("Suggestion").find("button").simulate("click");
@@ -163,9 +164,9 @@ describe("tab completion", () => {
     expect(component.find("AutoComplete")).toHaveLength(1);
 
     component.find("input").simulate("keyDown", { keyCode: TAB_KEY });
-    expect(component.state().search).toEqual(results.autocomplete[0]);
+    expect(component.state().search).toEqual(mockResults.autocomplete[0]);
 
-    await component.instance().performSearch(results.autocomplete[0]);
+    await component.instance().performSearch(mockResults.autocomplete[0]);
   }));
 
   test("ignores other key inputs", () => {
@@ -271,8 +272,8 @@ describe("pagination", () => {
     const component = mountTenor({}, {
       page: 0,
       pages: [
-        { results: results.search, next: "12" },
-        { results: results.search, next: "24" }
+        { results: mockResults.search, next: "12" },
+        { results: mockResults.search, next: "24" }
       ],
       search: "test",
       searching: false
@@ -298,8 +299,8 @@ describe("pagination", () => {
     const component = mountTenor({}, {
       page: 0,
       pages: [
-        { results: results.search, next: "12" },
-        { results: results.search, next: "24" }
+        { results: mockResults.search, next: "12" },
+        { results: mockResults.search, next: "24" }
       ],
       search: "test",
       searching: false
@@ -328,8 +329,8 @@ describe("pagination", () => {
     const component = mountTenor({}, {
       page: 0,
       pages: [
-        { results: results.search, next: "12" },
-        { results: results.search, next: "24" }
+        { results: mockResults.search, next: "12" },
+        { results: mockResults.search, next: "24" }
       ],
       search: "test",
       searching: true
@@ -343,7 +344,7 @@ describe("pagination", () => {
   test("resets the searching state if the pagination call fails", () => {
     const component = mountTenor({}, {
       page: 0,
-      pages: [{ results: results.search, next: "12" }],
+      pages: [{ results: mockResults.search, next: "12" }],
       search: "test",
       searching: false
     });
@@ -358,7 +359,7 @@ describe("pagination", () => {
   test("does not increment page if the next page has no results", () => {
     const component = mountTenor({}, {
       page: 0,
-      pages: [{ results: results.search, next: "12" }],
+      pages: [{ results: mockResults.search, next: "12" }],
       search: "test",
       searching: false
     });
