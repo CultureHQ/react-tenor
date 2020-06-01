@@ -5,7 +5,7 @@ import * as TenorAPI from "../TenorAPI";
 import Tenor, { defaultState } from "../Tenor";
 import Result from "../Result";
 import mockResults from "./mockResults";
-import withTestServer, { TestServer } from "./withTestServer";
+import testServer from "./testServer";
 
 const ARROW_LEFT_KEY = 37;
 const ARROW_RIGHT_KEY = 39;
@@ -19,13 +19,13 @@ type MountedTenor = ReactWrapper<TenorProps, TenorState, Tenor> & {
   pressArrowRightKey: () => void;
 };
 
-type MountedTenorProps = Partial<Pick<TenorProps, keyof TenorProps>>;
-type MountedTenorState = Partial<Pick<TenorState, keyof TenorState>>;
+type MountedTenorProps = Partial<TenorProps>;
+type MountedTenorState = Partial<TenorState>;
 
 const mountTenor = (props: MountedTenorProps = {}, state: MountedTenorState = {}): MountedTenor => {
   const component = mount<Tenor>(
     <Tenor
-      base={props.base}
+      base={props.base || `http://localhost:${testServer.port}`}
       contentRef={props.contentRef}
       initialSearch={props.initialSearch}
       onSelect={props.onSelect || jest.fn()}
@@ -52,14 +52,14 @@ const mountTenor = (props: MountedTenorProps = {}, state: MountedTenorState = {}
   return component;
 };
 
-test("performs searches", withTestServer(8081, async () => {
+test("performs searches", async () => {
   let selected: TenorAPI.Result | null = null;
   const onSelect = (result: TenorAPI.Result) => {
     selected = result;
   };
 
   const search = "Happy";
-  const component = mountTenor({ base: "http://localhost:8081", onSelect });
+  const component = mountTenor({ onSelect });
   component.find("input").simulate("change", { target: { value: search } });
 
   component.update();
@@ -75,10 +75,11 @@ test("performs searches", withTestServer(8081, async () => {
   expect(selected).toEqual(mockResults.search[3]);
 
   component.unmount();
-}));
+});
 
-test("dedups fast searches", withTestServer(8082, (server: TestServer) => {
-  const component = mountTenor({ base: "http://localhost:8082" });
+test("dedups fast searches", () => {
+  const component = mountTenor();
+  const previousSearches = testServer.requests.search;
 
   const search = "Happy";
   search.split("").forEach((_, index) => {
@@ -90,21 +91,21 @@ test("dedups fast searches", withTestServer(8082, (server: TestServer) => {
     // Yeah this is not great, but if you're going to test setTimeout,
     // sometimes you just want to use setTimeout.
     setTimeout(() => {
-      expect(server.requests.search).toEqual(1);
+      expect(testServer.requests.search).toEqual(previousSearches + 1);
 
       resolve();
     }, 300);
   });
-}));
+});
 
-test("allows passing an initialSearch prop", withTestServer(8083, async () => {
-  const component = mountTenor({ base: "http://localhost:8083", initialSearch: "happy" });
+test("allows passing an initialSearch prop", async () => {
+  const component = mountTenor({ initialSearch: "happy" });
 
   await component.instance().performSearch("");
   component.update();
 
   expect(component.find(Result)).toHaveLength(mockResults.search.length);
-}));
+});
 
 test("does not enqueue searches for empty inputs", () => {
   const component = mountTenor();
@@ -123,8 +124,8 @@ test("handles the contentRef prop", () => {
 });
 
 describe("suggestions", () => {
-  test("handles clicking a suggestion", withTestServer(8083, async () => {
-    const component = mountTenor({ base: "http://localhost:8083" });
+  test("handles clicking a suggestion", async () => {
+    const component = mountTenor();
 
     component.setState({ search: "test" });
     await component.instance().fetchSuggestions("test");
@@ -136,7 +137,7 @@ describe("suggestions", () => {
 
     expect(component.state().search).toEqual(mockResults.search_suggestions[2]);
     await component.instance().performSearch(mockResults.search_suggestions[2]);
-  }));
+  });
 
   test("clears the timeout", () => {
     const component = mountTenor();
@@ -154,8 +155,8 @@ describe("tab completion", () => {
   const BACKSPACE_KEY = 8;
   const TAB_KEY = 9;
 
-  test("handles tab completing the typeahead", withTestServer(8084, async () => {
-    const component = mountTenor({ base: "http://localhost:8084" });
+  test("handles tab completing the typeahead", async () => {
+    const component = mountTenor();
 
     component.setState({ search: "t" });
     await component.instance().fetchAutoComplete("t");
@@ -167,7 +168,7 @@ describe("tab completion", () => {
     expect(component.state().search).toEqual(mockResults.autocomplete[0]);
 
     await component.instance().performSearch(mockResults.autocomplete[0]);
-  }));
+  });
 
   test("ignores other key inputs", () => {
     const component = mountTenor();
@@ -283,17 +284,15 @@ describe("pagination", () => {
     expect(component.state().page).toEqual(1);
   });
 
-  test("paging right when at the end", withTestServer(8085, async () => {
-    const component = mountTenor({ base: "http://localhost:8085", token: "token" }, {
-      search: "test"
-    });
+  test("paging right when at the end", async () => {
+    const component = mountTenor({ token: "token" }, { search: "test" });
 
     await component.instance().performSearch("test");
     component.update();
 
     await component.instance().handlePageRight();
     expect(component.state().page).toEqual(1);
-  }));
+  });
 
   test("paging right with the keys", () => {
     const component = mountTenor({}, {
