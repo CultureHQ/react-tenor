@@ -237,7 +237,9 @@ test("unmounts cleanly", async () => {
   setTimeout(() => instance.mountedSetState({ search: "foobar" }), 100);
   component.unmount();
 
-  await new Promise(resolve => setTimeout(resolve, 100));
+  await new Promise(resolve => {
+    setTimeout(resolve, 100);
+  });
 });
 
 test("searchPlaceholder", () => {

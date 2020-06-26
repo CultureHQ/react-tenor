@@ -46,7 +46,9 @@ export const startTestServer = (): Promise<void> => new Promise(resolve => {
 });
 
 export const stopTestServer = (): Promise<void> => (
-  new Promise(resolve => testServer.close(() => resolve()))
+  new Promise(resolve => {
+    testServer.close(() => resolve());
+  })
 );
 
 export default testServer;
