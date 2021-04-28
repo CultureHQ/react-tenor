@@ -38,7 +38,7 @@
     "@types/enzyme": "^3.10.7",
     "@types/jest": "^26.0.5",
     "@types/react": "^17.0.0",
-    "@types/react-dom": "^16.9.0",
+    "@types/react-dom": "^17.0.3",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^5.0.0",
