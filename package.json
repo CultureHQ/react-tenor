@@ -41,7 +41,7 @@
     "@types/react-dom": "^17.0.3",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.5",
-    "css-loader": "^5.0.0",
+    "css-loader": "^6.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "react": "^16.9.0",
